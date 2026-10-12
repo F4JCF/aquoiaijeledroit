@@ -68,7 +68,7 @@ input[type=number]:focus{outline:none;border-color:var(--mer)}
 .coches label:hover{background:var(--gris-clair)}
 .coches label:has(input:checked){border-color:var(--mer);background:var(--mer-clair)}
 .coches input{width:20px;height:20px;margin-top:3px;accent-color:var(--mer);flex:none}
-.cache{display:none}
+.cache{display:none!important}
 .nav{display:flex;justify-content:space-between;margin-top:26px;gap:12px}
 .btn{border:0;border-radius:10px;padding:12px 22px;cursor:pointer;font-weight:600}
 .btn.prim{background:var(--mer);color:#fff}
@@ -121,7 +121,7 @@ input[type=number]:focus{outline:none;border-color:var(--mer)}
 <aside>
   <img class="logo" src="{{ICONE}}" alt="">
   <h1 class="marque">À quoi ai-je <em>le droit&nbsp;?</em></h1>
-  <p class="sous">Aides, allocations, retraite, handicap, logement — un premier repérage en 5 minutes.</p>
+  <p class="sous">Aides, allocations, retraite, handicap, logement, droit du travail — un premier repérage en 5 minutes.</p>
   <nav id="etapes"></nav>
   <div class="majbloc">
     <div id="majInfo"></div>
@@ -199,6 +199,49 @@ input[type=number]:focus{outline:none;border-color:var(--mer)}
     <label><input type="checkbox" id="carriereLongue"><span>J'ai commencé à travailler avant 21 ans</span></label>
     <label class="si-fonct"><input type="checkbox" id="servicesActifs"><span>J'ai occupé un emploi classé en « catégorie active » (police municipale, sapeur-pompier, égoutier, certains emplois hospitaliers…)</span></label>
     <label><input type="checkbox" id="independant2"><span>J'ai aussi une activité indépendante ou une micro-entreprise à côté</span></label>
+  </div></div>
+</section>
+
+<!-- 3 bis. Travail -->
+<section class="panneau" id="p-travail" data-titre="Travail">
+  <h2>Votre travail</h2>
+  <p class="intro">Pour repérer vos droits de salarié(e) ou d'agent public. Si vous ne travaillez pas, vous pouvez passer cette étape.</p>
+  <div class="q pour-contrat"><span class="titre">Votre contrat</span>
+    <div class="choix" data-nom="contrat">
+      <label><input type="radio" name="contrat" value="cdi">CDI</label>
+      <label><input type="radio" name="contrat" value="cdd">CDD</label>
+      <label><input type="radio" name="contrat" value="interim">Intérim</label>
+      <label><input type="radio" name="contrat" value="apprenti">Apprentissage / alternance</label>
+      <label><input type="radio" name="contrat" value="saisonnier">Saisonnier</label>
+    </div>
+  </div>
+  <div class="q pour-prive"><span class="titre">Taille de l'entreprise</span>
+    <div class="choix" data-nom="effectif">
+      <label><input type="radio" name="effectif" value="petite">Moins de 11 salariés</label>
+      <label><input type="radio" name="effectif" value="moyenne">11 à 49 salariés</label>
+      <label><input type="radio" name="effectif" value="grande">50 salariés ou plus</label>
+    </div>
+  </div>
+  <div class="q"><label for="anciennete">Votre ancienneté chez cet employeur</label>
+    <input type="number" id="anciennete" min="0" max="50" step="0.5" placeholder="ex. 4"> an(s)
+    <div class="aide">Moins d'un an : indiquez par exemple 0,5 pour six mois.</div></div>
+  <div class="q"><span class="titre">Vous êtes concerné(e) par…</span><div class="coches">
+    <label><input type="checkbox" id="licenciement"><span>Un licenciement (envisagé, en cours ou récent)</span></label>
+    <label><input type="checkbox" id="depart"><span>L'envie de quitter mon emploi (démission, rupture conventionnelle)</span></label>
+    <label class="pour-contrat"><input type="checkbox" id="finContrat"><span>La fin de mon CDD ou de ma mission</span></label>
+    <label><input type="checkbox" id="heuresSup"><span>Des heures supplémentaires ou des dépassements d'horaires</span></label>
+    <label><input type="checkbox" id="salaireImpaye"><span>Un salaire, des primes ou des heures non payés</span></label>
+    <label><input type="checkbox" id="harcelement"><span>Un conflit, du harcèlement ou une discrimination au travail</span></label>
+    <label><input type="checkbox" id="arretMaladie"><span>Un arrêt maladie (en cours ou récent)</span></label>
+    <label><input type="checkbox" id="accidentTravail"><span>Un accident du travail ou une maladie professionnelle</span></label>
+    <label><input type="checkbox" id="inaptitude"><span>Des difficultés à tenir mon poste pour raison de santé</span></label>
+    <label><input type="checkbox" id="conges"><span>Des questions sur mes congés payés</span></label>
+    <label><input type="checkbox" id="naissance"><span>Une naissance ou une adoption (congé maternité, paternité)</span></label>
+    <label><input type="checkbox" id="reconversion"><span>Un projet de reconversion ou de formation longue</span></label>
+    <label><input type="checkbox" id="teletravail"><span>Le télétravail</span></label>
+    <label><input type="checkbox" id="horairesAtypiques"><span>Le travail de nuit, le dimanche ou les jours fériés</span></label>
+    <label class="pour-prive"><input type="checkbox" id="entrepriseDifficulte"><span>Mon employeur est en difficulté (redressement, liquidation)</span></label>
+    <label class="pour-public"><input type="checkbox" id="mobilite"><span>Une mutation, une disponibilité ou un détachement</span></label>
   </div></div>
 </section>
 
@@ -342,11 +385,13 @@ function profil(){
   const f=lireFormulaire(), n=k=>Math.max(0,parseInt(f[k])||0);
   const p={
     age:parseInt(f.age)||null, sit:f.situation||'', act:f.activite||'', log:f.logement||'', hand:f.handicap||'',
-    e0:n('e0'),e3:n('e3'),e6:n('e6'),e11:n('e11'),e18:n('e18'),e20:n('e20'),eTotal:n('eTotal'),
+    e0:n('e0'),anciennete:f.anciennete===''||f.anciennete==null?null:parseFloat(String(f.anciennete).replace(',','.')),contrat:f.contrat||'',effectif:f.effectif||'',e3:n('e3'),e6:n('e6'),e11:n('e11'),e18:n('e18'),e20:n('e20'),eTotal:n('eTotal'),
     revenu:f.revenu===''||f.revenu==null?null:+f.revenu, revenuPerso:f.revenuPerso===''||f.revenuPerso==null?null:+f.revenuPerso
   };
   ['grossesse','enfantHandicap','pasPension','tempsPartiel','carriereLongue','servicesActifs','independant2','procedure',
-   'logementAncien','adapter','difficulte','cherche','ald','autonomie','aidant','aideDomicile'].forEach(k=>p[k]=!!f[k]);
+   'logementAncien','adapter','difficulte','cherche','ald','autonomie','aidant','aideDomicile',
+   'licenciement','depart','finContrat','heuresSup','salaireImpaye','harcelement','arretMaladie','accidentTravail',
+   'inaptitude','conges','naissance','reconversion','teletravail','horairesAtypiques','entrepriseDifficulte','mobilite'].forEach(k=>p[k]=!!f[k]);
   p.couple=['couple','concubin'].includes(p.sit);
   p.enf20=p.e0+p.e3+p.e6+p.e11+p.e18;           // enfants de moins de 20 ans
   p.enf=p.enf20+p.e20;
@@ -354,6 +399,11 @@ function profil(){
   p.isole=!p.couple && p.enf>0;
   p.fonct=['fonct_t','fonct_e','fonct_h'].includes(p.act);
   p.travaille=['salarie','fonct_t','fonct_e','fonct_h','contractuel','independant'].includes(p.act);
+  p.prive=p.act==='salarie';
+  p.public=p.fonct||p.act==='contractuel';
+  p.exSalarie=['chomeur','chomeur_fin'].includes(p.act);
+  p.cdi=p.prive&&(p.contrat===''||p.contrat==='cdi');
+  p.precaire=['cdd','interim','saisonnier'].includes(p.contrat)||(p.act==='contractuel'&&p.contrat!=='cdi');
   p.actif=p.travaille||['chomeur','chomeur_fin','invalidite'].includes(p.act);
   p.locataire=['loc_prive','loc_hlm'].includes(p.log);
   p.proprio=['proprio','accedant'].includes(p.log);
@@ -464,6 +514,10 @@ function calculer(){
 document.addEventListener('change',()=>{
   const a=(document.querySelector('input[name=activite]:checked')||{}).value||'';
   document.querySelector('.si-fonct').classList.toggle('cache',!['fonct_t','fonct_e','fonct_h','retraite'].includes(a)&&a!=='');
+  const pub=['fonct_t','fonct_e','fonct_h'].includes(a), contr=a==='contractuel';
+  document.querySelectorAll('.pour-prive').forEach(e=>e.classList.toggle('cache',pub||contr));
+  document.querySelectorAll('.pour-public').forEach(e=>e.classList.toggle('cache',!(pub||contr||a==='')));
+  document.querySelectorAll('.pour-contrat').forEach(e=>e.classList.toggle('cache',pub));
 });
 
 // ===================== Mises à jour =====================
@@ -488,7 +542,7 @@ async function verifierMaj(silencieux){
   if(r.statut==='maj'&&r.regles){
     const nouv=typeof r.regles==='string'?JSON.parse(r.regles):r.regles;
     REGLES=nouv; afficherVersion();
-    const news=(nouv.nouveautes||[]).filter(n=>(n.date||'')>(dateIso(ancienne))).slice(0,6);
+    const news=(nouv.nouveautes||[]).filter(n=>n.v?cmpV(n.v,ancienne)>0:(n.date||'')>dateIso(ancienne)).slice(0,6);
     document.getElementById('bandeauReglesTxt').innerHTML=`<b>Les règles ont été mises à jour</b> (version du ${dateFr(nouv.mise_a_jour)}).`+
       (news.length?'<ul>'+news.map(n=>`<li>${dateFr(n.date)} — ${echapper(n.texte)}</li>`).join('')+'</ul>':'');
     document.getElementById('bandeauRegles').classList.add('on');
@@ -502,6 +556,7 @@ async function verifierMaj(silencieux){
     document.getElementById('bandeauApp').classList.add('on');
   }
 }
+const cmpV=(a,b)=>{const x=String(a).split('.').map(Number),y=String(b).split('.').map(Number);for(let i=0;i<Math.max(x.length,y.length);i++){const d=(x[i]||0)-(y[i]||0);if(d)return d>0?1:-1}return 0};
 const dateIso=v=>{const m=/^(\d{4})\.(\d+)\.(\d+)/.exec(v||'');return m?`${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`:''};
 afficherVersion();
 

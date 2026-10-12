@@ -1,6 +1,6 @@
 # À quoi ai-je le droit ?
 
-Logiciel Windows qui repère, en quelques questions, les aides et droits auxquels une personne peut prétendre : famille, minima sociaux, santé, logement, handicap, autonomie et aidants, retraite (dont CNRACL), emploi et impôts.
+Logiciel Windows qui repère, en quelques questions, les aides et droits auxquels une personne peut prétendre : famille, minima sociaux, santé, logement, handicap, autonomie et aidants, retraite (dont CNRACL), emploi, **droit du travail** (privé et fonction publique) et impôts.
 
 - **Aucune installation** : un seul fichier `AQuoiAiJeLeDroit.exe`, à lancer par double-clic.
 - **Confidentiel** : les réponses restent sur l'ordinateur. Rien n'est envoyé sur Internet.
@@ -42,7 +42,7 @@ Fonctionnement technique :
 3. **Augmenter `version`** (par exemple `2026.10.13` → `2027.1.15`) et mettre à jour `mise_a_jour` (`2027-01-15`).
 4. Ajouter une ligne en tête de `nouveautes` : elle s'affiche chez les utilisateurs.
    ```json
-   {"date": "2027-01-15", "texte": "Revalorisation de l'ASPA et nouvelle aide MaPrimeAdapt' élargie."}
+   {"date": "2027-01-15", "v": "2027.1.15", "texte": "Revalorisation de l'ASPA et nouvelle aide MaPrimeAdapt' élargie."}
    ```
 5. Valider (« Commit changes »).
 
@@ -62,7 +62,7 @@ Le contrôle automatique (onglet **Actions**) vérifie le fichier. Une croix rou
 | Clé | Rôle |
 |---|---|
 | `id` | identifiant unique (sans espace) |
-| `d` | domaine affiché : Famille, Ressources, Santé, Logement, Handicap, Autonomie, Retraite, Emploi & formation, Impôts (un nouveau nom crée un nouveau domaine) |
+| `d` | domaine affiché : Famille, Ressources, Santé, Logement, Handicap, Autonomie, Retraite, Emploi & formation, Droit du travail, Impôts (un nouveau nom crée un nouveau domaine) |
 | `t`, `o` | titre et organisme |
 | `l` | lien ; `{SP}`, `{CAF}`, `{MDPH}`, `{RETRAITE}`, `{CNRACL}`, `{IMPOTS}`, `{AGEES}`, `{RENOV}` sont remplacés par les adresses de la section `liens` |
 | `r`, `a` | résumé et démarche |
@@ -90,7 +90,8 @@ Le contrôle automatique (onglet **Actions**) vérifie le fichier. Une croix rou
 | `revenu`, `revenuPerso`, `ruc` | revenus du foyer, revenus personnels, revenu par unité de consommation |
 | `niv` | niveau de ressources 1 à 4 (seuils dans `seuils.niveaux_ruc`) |
 | cases à cocher | `grossesse`, `enfantHandicap`, `pasPension`, `tempsPartiel`, `carriereLongue`, `servicesActifs`, `independant2`, `procedure`, `logementAncien`, `adapter`, `difficulte`, `cherche`, `ald`, `autonomie`, `aidant`, `aideDomicile` |
-| déduits | `couple`, `isole` (parent seul), `fonct`, `travaille`, `actif`, `locataire`, `proprio`, `handDeclare`, `handOui` |
+| travail | `contrat` (`cdi`, `cdd`, `interim`, `apprenti`, `saisonnier`), `effectif` (`petite`, `moyenne`, `grande`), `anciennete` (années) ; cases `licenciement`, `depart`, `finContrat`, `heuresSup`, `salaireImpaye`, `harcelement`, `arretMaladie`, `accidentTravail`, `inaptitude`, `conges`, `naissance`, `reconversion`, `teletravail`, `horairesAtypiques`, `entrepriseDifficulte`, `mobilite` |
+| déduits | `couple`, `isole` (parent seul), `fonct`, `travaille`, `actif`, `locataire`, `proprio`, `handDeclare`, `handOui`, `prive` (salarié du privé), `public` (fonctionnaire ou contractuel), `exSalarie` (demandeur d'emploi), `cdi`, `precaire` |
 
 Un **nouveau champ** (nouvelle question) demande une nouvelle version du logiciel. Dans ce cas, mettre `app_min` dans `droits.json` à cette version : les anciennes versions garderont leurs règles et proposeront la mise à jour du logiciel.
 
