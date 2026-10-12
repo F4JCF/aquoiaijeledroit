@@ -99,9 +99,10 @@ Un **nouveau champ** (nouvelle question) demande une nouvelle version du logicie
 
 ## Publier une nouvelle version du logiciel
 
-1. Modifier le code, puis changer `var version = "…"` dans `maj.go`.
-2. Créer une étiquette : sur GitHub, **Releases → Draft a new release → Choose a tag** `v1.2.0` → **Publish**.
-3. GitHub Actions compile `AQuoiAiJeLeDroit.exe` et l'attache à la release en quelques minutes. Les utilisateurs voient alors le bandeau de mise à jour.
+1. Modifier le code, puis changer `var version = "…"` dans `maj.go` (par exemple `1.3.0`).
+2. Envoyer la modification sur `main`.
+
+GitHub Actions compile `AQuoiAiJeLeDroit.exe`, puis **crée seul la release `v1.3.0`** avec le fichier. Les utilisateurs voient ensuite le bandeau de mise à jour. Si le numéro ne change pas, rien n'est publié : les simples corrections de `droits.json` ne créent donc pas de release.
 
 ## Développement
 
