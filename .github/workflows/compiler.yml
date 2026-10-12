@@ -1,0 +1,58 @@
+name: Compiler
+
+# - À chaque modification : tests (dont la validation de droits.json) + exe téléchargeable dans « Actions ».
+# - À chaque étiquette vX.Y.Z : publication d'une release, que le logiciel détecte automatiquement.
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Tests et validation des règles
+        run: go test ./...
+
+      - name: Numéro de version
+        shell: bash
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then V="${GITHUB_REF#refs/tags/v}"; else V="$(grep -oP 'var version = "\K[^"]+' maj.go)"; fi
+          echo "V=$V" >> "$GITHUB_ENV"
+
+      - name: Icône et informations de version
+        shell: bash
+        run: |
+          go install github.com/tc-hib/go-winres@latest
+          go-winres make --in winres/winres.json --arch amd64 --file-version "$V.0" --product-version "$V.0"
+
+      - name: Compilation
+        shell: bash
+        env:
+          GOOS: windows
+          GOARCH: amd64
+          CGO_ENABLED: '0'
+        run: go build -trimpath -ldflags "-s -w -H windowsgui -X main.version=$V" -o AQuoiAiJeLeDroit.exe .
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AQuoiAiJeLeDroit-${{ env.V }}
+          path: AQuoiAiJeLeDroit.exe
+
+      - name: Publication de la release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: AQuoiAiJeLeDroit.exe
+          generate_release_notes: true

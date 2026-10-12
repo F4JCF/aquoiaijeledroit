@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>À quoi ai-je le droit ?</title>
+<style>
+:root{
+  --papier:#f6f3ec; --carte:#fffdf8; --encre:#1d2a2f; --doux:#5a666b; --ligne:#e2dccf;
+  --mer:#14524f; --mer-clair:#e3efec; --ambre:#b8660b; --ambre-clair:#fbefdc;
+  --gris-clair:#eeebe4; --rouge:#9c2f2f;
+  --rayon:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--papier);color:var(--encre);font:17px/1.5 "Segoe UI",system-ui,sans-serif;display:flex}
+button,input,select{font:inherit;color:inherit}
+a{color:var(--mer)}
+
+/* ---- Barre latérale ---- */
+aside{width:270px;flex:none;background:var(--mer);color:#eaf3f1;padding:28px 22px;display:flex;flex-direction:column;gap:6px;overflow:auto}
+.marque{font-family:Georgia,"Times New Roman",serif;font-size:27px;line-height:1.15;margin:0 0 4px;color:#fff}
+.marque em{font-style:normal;color:#f3c98b}
+.sous{font-size:14px;color:#b9d3cf;margin:0 0 22px}
+.etape{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;cursor:pointer;border:0;background:none;text-align:left;color:#cfe2df;width:100%}
+.etape .n{width:28px;height:28px;border-radius:50%;border:1.5px solid #7fa9a3;display:grid;place-items:center;font-size:14px;flex:none}
+.etape:hover{background:#1c625e}
+.etape.actif{background:#fff;color:var(--mer);font-weight:600}
+.etape.actif .n{background:var(--mer);border-color:var(--mer);color:#fff}
+.etape.fait .n{background:#2c7a74;border-color:#2c7a74;color:#fff}
+.logo{width:96px;height:96px;display:block;margin:0 0 10px -6px;filter:drop-shadow(0 4px 8px rgba(0,0,0,.25))}
+.majbloc{font-size:13px;color:#a9c8c3;border-top:1px solid #2c6d68;padding-top:14px;margin-top:auto;display:flex;flex-direction:column;gap:6px}
+.majbloc button{align-self:flex-start;background:#1c625e;color:#eaf3f1;border:1px solid #3d847e;border-radius:8px;padding:6px 12px;font-size:13px;cursor:pointer}
+.majbloc button:hover{background:#24706b}
+.majbloc button:disabled{opacity:.6;cursor:wait}
+#majEtat{min-height:1.2em}
+.bandeau{max-width:820px;margin:0 auto 22px;border-radius:var(--rayon);padding:14px 18px;display:none;gap:14px;align-items:flex-start;font-size:15px}
+.bandeau.on{display:flex}
+.bandeau.regles{background:var(--mer-clair);border:1px solid #b9d6d1}
+.bandeau.app{background:var(--ambre-clair);border:1px solid #edd2a8}
+.bandeau .txt{flex:1}
+.bandeau ul{margin:6px 0 0;padding-left:20px}
+.bandeau .fermer{background:none;border:0;font-size:20px;cursor:pointer;color:var(--doux);line-height:1}
+.confidentiel{font-size:13px;color:#a9c8c3;border-top:1px solid #2c6d68;padding-top:16px}
+
+/* ---- Zone principale ---- */
+main{flex:1;overflow:auto;padding:36px 48px 60px}
+.panneau{max-width:820px;margin:0 auto;display:none}
+.panneau.actif{display:block;animation:entree .25s ease}
+@keyframes entree{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+h2{font-family:Georgia,"Times New Roman",serif;font-weight:normal;font-size:32px;margin:0 0 6px}
+.intro{color:var(--doux);margin:0 0 28px}
+.q{background:var(--carte);border:1px solid var(--ligne);border-radius:var(--rayon);padding:20px 22px;margin-bottom:16px}
+.q > label,.q > .titre{display:block;font-weight:600;margin-bottom:10px}
+.aide{font-size:14px;color:var(--doux);margin-top:8px}
+.choix{display:flex;flex-wrap:wrap;gap:8px}
+.choix label{display:flex;align-items:center;gap:8px;padding:9px 15px;border:1.5px solid var(--ligne);border-radius:999px;cursor:pointer;background:#fff;user-select:none}
+.choix input{position:absolute;opacity:0;pointer-events:none}
+.choix label:has(input:checked){border-color:var(--mer);background:var(--mer-clair);color:var(--mer);font-weight:600}
+.choix label:has(input:focus-visible){outline:3px solid #f3c98b}
+input[type=number]{width:150px;padding:10px 12px;border:1.5px solid var(--ligne);border-radius:10px;background:#fff}
+input[type=number]:focus{outline:none;border-color:var(--mer)}
+.grille{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.grille label{font-weight:normal;font-size:15px;color:var(--doux);display:flex;flex-direction:column;gap:4px}
+.grille input{width:100%}
+.coches{display:flex;flex-direction:column;gap:8px}
+.coches label{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border-radius:10px;cursor:pointer;border:1.5px solid transparent}
+.coches label:hover{background:var(--gris-clair)}
+.coches label:has(input:checked){border-color:var(--mer);background:var(--mer-clair)}
+.coches input{width:20px;height:20px;margin-top:3px;accent-color:var(--mer);flex:none}
+.cache{display:none}
+.nav{display:flex;justify-content:space-between;margin-top:26px;gap:12px}
+.btn{border:0;border-radius:10px;padding:12px 22px;cursor:pointer;font-weight:600}
+.btn.prim{background:var(--mer);color:#fff}
+.btn.prim:hover{background:#0f403e}
+.btn.sec{background:transparent;border:1.5px solid var(--ligne)}
+.btn.sec:hover{background:var(--gris-clair)}
+.btn.lien{background:none;color:var(--doux);text-decoration:underline;padding:12px 6px;font-weight:normal}
+
+/* ---- Résultats ---- */
+.bilan{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 22px}
+.bilan div{background:var(--carte);border:1px solid var(--ligne);border-radius:var(--rayon);padding:14px 18px}
+.bilan b{display:block;font-family:Georgia,serif;font-size:34px;font-weight:normal;line-height:1.1}
+.bilan span{font-size:14px;color:var(--doux)}
+.filtres{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.filtres button{border:1.5px solid var(--ligne);background:#fff;border-radius:999px;padding:6px 14px;cursor:pointer;font-size:15px}
+.filtres button.on{background:var(--encre);color:#fff;border-color:var(--encre)}
+.domaine{font-family:Georgia,serif;font-size:22px;margin:28px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--ligne)}
+.droit{background:var(--carte);border:1px solid var(--ligne);border-left:5px solid var(--ligne);border-radius:var(--rayon);padding:16px 20px;margin-bottom:12px}
+.droit.probable{border-left-color:var(--mer)}
+.droit.possible{border-left-color:var(--ambre)}
+.droit.info{border-left-color:#8a96a0}
+.droit h3{margin:0;font-size:19px;display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.badge{font-size:12.5px;font-weight:600;padding:3px 10px;border-radius:999px;white-space:nowrap;flex:none}
+.probable .badge{background:var(--mer-clair);color:var(--mer)}
+.possible .badge{background:var(--ambre-clair);color:var(--ambre)}
+.info .badge{background:var(--gris-clair);color:#55606a}
+.droit p{margin:8px 0 0}
+.pourquoi{font-size:15px;color:var(--doux)}
+.demarche{font-size:15px}
+.droit .ouvrir{margin-top:10px;background:none;border:0;padding:0;color:var(--mer);font-weight:600;cursor:pointer;text-decoration:underline;font-size:15px}
+.avert{background:var(--ambre-clair);border-radius:var(--rayon);padding:14px 18px;font-size:15px;margin:24px 0}
+.outils{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.vide{color:var(--doux);font-style:italic}
+
+@media (max-width:900px){aside{width:220px}main{padding:28px 24px}.grille{grid-template-columns:repeat(2,1fr)}}
+@media print{
+  aside,.nav,.filtres,.outils,.droit .ouvrir{display:none!important}
+  body{display:block;background:#fff}
+  main{overflow:visible;padding:0}
+  .panneau{display:none!important}
+  #p-resultats{display:block!important}
+  .droit{break-inside:avoid}
+  .droit .url{display:block!important;font-size:12px;color:#444}
+}
+.url{display:none}
+</style>
+</head>
+<body>
+
+<aside>
+  <img class="logo" src="{{ICONE}}" alt="">
+  <h1 class="marque">À quoi ai-je <em>le droit&nbsp;?</em></h1>
+  <p class="sous">Aides, allocations, retraite, handicap, logement — un premier repérage en 5 minutes.</p>
+  <nav id="etapes"></nav>
+  <div class="majbloc">
+    <div id="majInfo"></div>
+    <button id="btnMaj" onclick="verifierMaj(false)">⟳ Rechercher les mises à jour</button>
+    <div id="majEtat"></div>
+  </div>
+  <div class="confidentiel">🔒 Tout reste sur cet ordinateur : aucune réponse n'est envoyée sur Internet.</div>
+</aside>
+
+<main>
+<div class="bandeau app" id="bandeauApp"><div class="txt" id="bandeauAppTxt"></div><button class="fermer" onclick="this.parentElement.classList.remove('on')" aria-label="Fermer">×</button></div>
+<div class="bandeau regles" id="bandeauRegles"><div class="txt" id="bandeauReglesTxt"></div><button class="fermer" onclick="this.parentElement.classList.remove('on')" aria-label="Fermer">×</button></div>
+
+<!-- 1. Vous -->
+<section class="panneau" id="p-vous" data-titre="Vous">
+  <h2>Parlons de vous</h2>
+  <p class="intro">Quelques questions simples. Aucune n'est obligatoire : plus vous répondez, plus le repérage est précis.</p>
+  <div class="q"><label for="age">Votre âge</label><input type="number" id="age" min="0" max="120" placeholder="ex. 62"> ans</div>
+  <div class="q"><span class="titre">Votre situation</span>
+    <div class="choix" data-nom="situation">
+      <label><input type="radio" name="situation" value="seul">Célibataire</label>
+      <label><input type="radio" name="situation" value="couple">Marié(e) ou pacsé(e)</label>
+      <label><input type="radio" name="situation" value="concubin">En concubinage</label>
+      <label><input type="radio" name="situation" value="separe">Divorcé(e) ou séparé(e)</label>
+      <label><input type="radio" name="situation" value="veuf">Veuf / veuve</label>
+    </div>
+  </div>
+</section>
+
+<!-- 2. Foyer -->
+<section class="panneau" id="p-foyer" data-titre="Enfants">
+  <h2>Vos enfants</h2>
+  <p class="intro">Indiquez le nombre d'enfants à votre charge dans chaque tranche d'âge (laissez vide s'il n'y en a pas).</p>
+  <div class="q"><span class="titre">Enfants à charge</span>
+    <div class="grille">
+      <label>Moins de 3 ans<input type="number" id="e0" min="0" max="15"></label>
+      <label>3 à 5 ans<input type="number" id="e3" min="0" max="15"></label>
+      <label>6 à 10 ans<input type="number" id="e6" min="0" max="15"></label>
+      <label>11 à 17 ans<input type="number" id="e11" min="0" max="15"></label>
+      <label>18 à 19 ans<input type="number" id="e18" min="0" max="15"></label>
+      <label>20 à 25 ans<input type="number" id="e20" min="0" max="15"></label>
+    </div>
+  </div>
+  <div class="q"><label for="eTotal">Nombre total d'enfants que vous avez élevés (y compris devenus adultes)</label>
+    <input type="number" id="eTotal" min="0" max="20"><div class="aide">Utile pour les majorations de retraite.</div></div>
+  <div class="q"><div class="coches">
+    <label><input type="checkbox" id="grossesse"><span>Une naissance ou une adoption est attendue</span></label>
+    <label><input type="checkbox" id="enfantHandicap"><span>Un enfant à charge est en situation de handicap</span></label>
+    <label><input type="checkbox" id="pasPension"><span>Je suis parent seul et l'autre parent ne verse pas (ou peu) de pension alimentaire</span></label>
+  </div></div>
+</section>
+
+<!-- 3. Activité -->
+<section class="panneau" id="p-activite" data-titre="Activité">
+  <h2>Votre activité</h2>
+  <p class="intro">Votre situation professionnelle actuelle.</p>
+  <div class="q"><span class="titre">Vous êtes…</span>
+    <div class="choix" data-nom="activite">
+      <label><input type="radio" name="activite" value="salarie">Salarié(e) du privé</label>
+      <label><input type="radio" name="activite" value="fonct_t">Fonctionnaire territorial(e)</label>
+      <label><input type="radio" name="activite" value="fonct_e">Fonctionnaire d'État</label>
+      <label><input type="radio" name="activite" value="fonct_h">Fonctionnaire hospitalier(e)</label>
+      <label><input type="radio" name="activite" value="contractuel">Contractuel(le) du public</label>
+      <label><input type="radio" name="activite" value="independant">Indépendant(e) / micro-entrepreneur</label>
+      <label><input type="radio" name="activite" value="chomeur">Demandeur d'emploi indemnisé</label>
+      <label><input type="radio" name="activite" value="chomeur_fin">Demandeur d'emploi en fin de droits</label>
+      <label><input type="radio" name="activite" value="invalidite">En invalidité / arrêt longue durée</label>
+      <label><input type="radio" name="activite" value="retraite">Retraité(e)</label>
+      <label><input type="radio" name="activite" value="etudiant">Étudiant(e)</label>
+      <label><input type="radio" name="activite" value="sans">Sans activité</label>
+    </div>
+  </div>
+  <div class="q"><div class="coches">
+    <label><input type="checkbox" id="tempsPartiel"><span>Je travaille à temps partiel</span></label>
+    <label><input type="checkbox" id="carriereLongue"><span>J'ai commencé à travailler avant 21 ans</span></label>
+    <label class="si-fonct"><input type="checkbox" id="servicesActifs"><span>J'ai occupé un emploi classé en « catégorie active » (police municipale, sapeur-pompier, égoutier, certains emplois hospitaliers…)</span></label>
+    <label><input type="checkbox" id="independant2"><span>J'ai aussi une activité indépendante ou une micro-entreprise à côté</span></label>
+  </div></div>
+</section>
+
+<!-- 4. Ressources -->
+<section class="panneau" id="p-ressources" data-titre="Ressources">
+  <h2>Vos ressources</h2>
+  <p class="intro">Un ordre de grandeur suffit. Il sert uniquement à estimer si les aides sous conditions de ressources peuvent vous concerner.</p>
+  <div class="q"><label for="revenu">Revenus mensuels nets de tout le foyer</label>
+    <input type="number" id="revenu" min="0" step="50" placeholder="ex. 2400"> € / mois
+    <div class="aide">Salaires, pensions, allocations chômage, revenus d'activité… de vous et de votre conjoint(e). Hors allocations familiales et aides au logement.</div></div>
+  <div class="q"><label for="revenuPerso">Dont vos revenus personnels</label>
+    <input type="number" id="revenuPerso" min="0" step="50" placeholder="ex. 1600"> € / mois
+    <div class="aide">Certaines aides (comme l'AAH) ne tiennent plus compte des revenus du conjoint.</div></div>
+  <div class="q"><div class="coches">
+    <label><input type="checkbox" id="procedure"><span>J'ai (ou vais avoir) une procédure en justice ou besoin d'un avocat</span></label>
+  </div></div>
+</section>
+
+<!-- 5. Logement -->
+<section class="panneau" id="p-logement" data-titre="Logement">
+  <h2>Votre logement</h2>
+  <p class="intro">Les aides au logement et à la rénovation dépendent beaucoup de votre statut.</p>
+  <div class="q"><span class="titre">Vous êtes…</span>
+    <div class="choix" data-nom="logement">
+      <label><input type="radio" name="logement" value="loc_prive">Locataire (privé)</label>
+      <label><input type="radio" name="logement" value="loc_hlm">Locataire HLM</label>
+      <label><input type="radio" name="logement" value="proprio">Propriétaire</label>
+      <label><input type="radio" name="logement" value="accedant">Propriétaire avec crédit en cours</label>
+      <label><input type="radio" name="logement" value="heberge">Hébergé(e) gratuitement</label>
+      <label><input type="radio" name="logement" value="mobile">Mobil-home / habitat léger</label>
+    </div>
+  </div>
+  <div class="q"><div class="coches">
+    <label><input type="checkbox" id="logementAncien"><span>Mon logement a plus de 15 ans et j'envisage des travaux (isolation, chauffage…)</span></label>
+    <label><input type="checkbox" id="adapter"><span>J'aimerais adapter mon logement à l'âge ou au handicap (douche, monte-escalier…)</span></label>
+    <label><input type="checkbox" id="difficulte"><span>J'ai des difficultés à payer mon loyer, mes charges ou mes factures d'énergie</span></label>
+    <label><input type="checkbox" id="cherche"><span>Je cherche un logement (location ou logement social)</span></label>
+  </div></div>
+</section>
+
+<!-- 6. Santé & autonomie -->
+<section class="panneau" id="p-sante" data-titre="Santé & autonomie">
+  <h2>Santé, handicap et autonomie</h2>
+  <p class="intro">Ces réponses ouvrent souvent des droits importants et méconnus.</p>
+  <div class="q"><span class="titre">Handicap reconnu par la MDPH</span>
+    <div class="choix" data-nom="handicap">
+      <label><input type="radio" name="handicap" value="non">Non</label>
+      <label><input type="radio" name="handicap" value="encours">Demande en cours / à faire</label>
+      <label><input type="radio" name="handicap" value="m50">Oui, taux inférieur à 50 %</label>
+      <label><input type="radio" name="handicap" value="50">Oui, taux de 50 à 79 %</label>
+      <label><input type="radio" name="handicap" value="80">Oui, taux de 80 % ou plus</label>
+    </div>
+  </div>
+  <div class="q"><div class="coches">
+    <label><input type="checkbox" id="ald"><span>J'ai une maladie chronique ou de longue durée</span></label>
+    <label><input type="checkbox" id="autonomie"><span>J'ai besoin d'aide pour les gestes du quotidien (toilette, repas, déplacements)</span></label>
+    <label><input type="checkbox" id="aidant"><span>J'aide régulièrement un proche malade, âgé ou handicapé</span></label>
+    <label><input type="checkbox" id="aideDomicile"><span>J'emploie ou j'aimerais employer une aide à domicile (ménage, jardinage, garde…)</span></label>
+  </div></div>
+</section>
+
+<!-- 7. Résultats -->
+<section class="panneau" id="p-resultats" data-titre="Mes droits">
+  <h2>Ce à quoi vous pourriez avoir droit</h2>
+  <p class="intro" id="resume-profil"></p>
+  <div class="bilan">
+    <div><b id="n-probable">0</b><span>droits probables</span></div>
+    <div><b id="n-possible">0</b><span>droits possibles, à vérifier</span></div>
+    <div><b id="n-info">0</b><span>démarches utiles</span></div>
+  </div>
+  <div class="filtres" id="filtres"></div>
+  <div id="liste"></div>
+  <div class="avert"><b>Important :</b> ce repérage est indicatif. Les montants et plafonds changent régulièrement ; seul l'organisme concerné peut confirmer un droit. En cas de doute, un conseiller <b>France Services</b> peut vous aider gratuitement dans vos démarches.</div>
+  <div class="outils">
+    <button class="btn prim" onclick="window.print()">🖨 Imprimer / enregistrer en PDF</button>
+    <button class="btn sec" onclick="ouvrir('https://www.mesdroitssociaux.gouv.fr')">Simulateur officiel mesdroitssociaux.gouv.fr</button>
+    <button class="btn sec" onclick="ouvrir('https://www.france-services.gouv.fr')">Trouver un France Services</button>
+  </div>
+</section>
+
+<div class="panneau actif" style="max-width:820px;margin:0 auto" id="navbar-hote"></div>
+</main>
+
+<script>
+// ===================== Navigation =====================
+const panneaux=[...document.querySelectorAll('section.panneau')];
+let cour=0;
+const nav=document.getElementById('etapes');
+panneaux.forEach((p,i)=>{
+  const b=document.createElement('button');
+  b.className='etape';b.innerHTML=`<span class="n">${i+1}</span><span>${p.dataset.titre}</span>`;
+  b.onclick=()=>aller(i);nav.appendChild(b);
+  if(i<panneaux.length-1){
+    const n=document.createElement('div');n.className='nav';
+    n.innerHTML=(i>0?`<button class="btn sec" data-a="${i-1}">← Retour</button>`:'<span></span>')+
+      `<span><button class="btn lien" data-a="${panneaux.length-1}">Voir les résultats maintenant</button>
+      <button class="btn prim" data-a="${i+1}">${i===panneaux.length-2?'Voir mes droits →':'Continuer →'}</button></span>`;
+    p.appendChild(n);
+  }else{
+    const n=document.createElement('div');n.className='nav';
+    n.innerHTML=`<button class="btn sec" data-a="0">← Modifier mes réponses</button><button class="btn lien" id="raz">Effacer toutes mes réponses</button>`;
+    p.appendChild(n);
+  }
+});
+document.getElementById('navbar-hote').remove();
+document.addEventListener('click',e=>{const a=e.target.closest('[data-a]');if(a)aller(+a.dataset.a)});
+document.getElementById('raz').onclick=()=>{if(confirm('Effacer toutes vos réponses ?')){try{localStorage.removeItem('aqdroit')}catch(e){};document.querySelectorAll('input').forEach(i=>{if(i.type==='checkbox'||i.type==='radio')i.checked=false;else i.value=''});aller(0)}};
+function aller(i){
+  cour=i;
+  panneaux.forEach((p,k)=>p.classList.toggle('actif',k===i));
+  [...nav.children].forEach((b,k)=>{b.classList.toggle('actif',k===i);b.classList.toggle('fait',k<i)});
+  if(panneaux[i].id==='p-resultats')calculer();
+  document.querySelector('main').scrollTo(0,0);
+  sauver();
+}
+function ouvrir(u){ if(window.ouvrirLien) window.ouvrirLien(u); else window.open(u,'_blank','noopener'); }
+
+// ===================== Sauvegarde locale =====================
+function lireFormulaire(){
+  const d={};
+  document.querySelectorAll('input').forEach(i=>{
+    if(i.type==='radio'){ if(i.checked) d[i.name]=i.value; }
+    else if(i.type==='checkbox') d[i.id]=i.checked;
+    else if(i.id) d[i.id]=i.value;
+  });return d;
+}
+function sauver(){try{localStorage.setItem('aqdroit',JSON.stringify(lireFormulaire()))}catch(e){}}
+function restaurer(){
+  let d=null;try{d=JSON.parse(localStorage.getItem('aqdroit')||'null')}catch(e){}
+  if(!d)return;
+  document.querySelectorAll('input').forEach(i=>{
+    if(i.type==='radio') i.checked=(d[i.name]===i.value);
+    else if(i.type==='checkbox') i.checked=!!d[i.id];
+    else if(i.id && d[i.id]!=null) i.value=d[i.id];
+  });
+}
+document.addEventListener('change',sauver);
+
+// ===================== Profil =====================
+function profil(){
+  const f=lireFormulaire(), n=k=>Math.max(0,parseInt(f[k])||0);
+  const p={
+    age:parseInt(f.age)||null, sit:f.situation||'', act:f.activite||'', log:f.logement||'', hand:f.handicap||'',
+    e0:n('e0'),e3:n('e3'),e6:n('e6'),e11:n('e11'),e18:n('e18'),e20:n('e20'),eTotal:n('eTotal'),
+    revenu:f.revenu===''||f.revenu==null?null:+f.revenu, revenuPerso:f.revenuPerso===''||f.revenuPerso==null?null:+f.revenuPerso
+  };
+  ['grossesse','enfantHandicap','pasPension','tempsPartiel','carriereLongue','servicesActifs','independant2','procedure',
+   'logementAncien','adapter','difficulte','cherche','ald','autonomie','aidant','aideDomicile'].forEach(k=>p[k]=!!f[k]);
+  p.couple=['couple','concubin'].includes(p.sit);
+  p.enf20=p.e0+p.e3+p.e6+p.e11+p.e18;           // enfants de moins de 20 ans
+  p.enf=p.enf20+p.e20;
+  p.enf18=p.e0+p.e3+p.e6+p.e11;
+  p.isole=!p.couple && p.enf>0;
+  p.fonct=['fonct_t','fonct_e','fonct_h'].includes(p.act);
+  p.travaille=['salarie','fonct_t','fonct_e','fonct_h','contractuel','independant'].includes(p.act);
+  p.actif=p.travaille||['chomeur','chomeur_fin','invalidite'].includes(p.act);
+  p.locataire=['loc_prive','loc_hlm'].includes(p.log);
+  p.proprio=['proprio','accedant'].includes(p.log);
+  p.taux=p.hand==='80'?80:p.hand==='50'?50:p.hand==='m50'?20:0;
+  p.eTotalEff=Math.max(p.eTotal,p.enf);
+  // unités de consommation (échelle OCDE simplifiée)
+  p.uc=1+(p.couple?0.5:0)+(p.e0+p.e3+p.e6)*0.3+(p.e11+p.e18+p.e20)*0.5;
+  p.ruc=p.revenu==null?null:p.revenu/p.uc;
+  // niveau de ressources : 1 très modeste … 4 aisé ; null = inconnu
+  const sn=(REGLES&&REGLES.seuils&&REGLES.seuils.niveaux_ruc)||[950,1400,2100];
+  p.niv=p.ruc==null?null:p.ruc<sn[0]?1:p.ruc<sn[1]?2:p.ruc<sn[2]?3:4;
+  p.e05=p.e0+p.e3; p.e618=p.e6+p.e11;
+  p.handDeclare=!!p.hand&&p.hand!=='non';
+  p.handOui=['m50','50','80'].includes(p.hand);
+  p.tauxTxt=p.taux>=80?'80 % ou plus':p.taux>=50?'50 à 79 %':'moins de 50 %';
+  return p;
+}
+// helpers : ressources inconnues → on reste prudent ("possible")
+const sousNiv=(p,max)=>p.niv==null||p.niv<=max;
+
+// ===================== Règles (mises à jour sans recompiler) =====================
+// Les règles viennent de droits.json, injecté par le logiciel ; une version plus
+// récente peut être téléchargée à tout moment (voir verifierMaj).
+let REGLES = /*REGLES*/null;
+
+function remplacer(txt,p){
+  // {CAF}, {SP}… → liens ; {age}, {enf20}… → valeurs du profil
+  return String(txt).replace(/\{(\w+)\}/g,(m,k)=>REGLES.liens&&REGLES.liens[k]!=null?REGLES.liens[k]:(p&&p[k]!=null?p[k]:m));
+}
+// Évalue une condition : "champ" (vrai), "!champ", {et:[…]}, {ou:[…]}, {non:…},
+// {c:"champ", ">=":65} … ; un opérateur suivi de « ? » accepte aussi une valeur inconnue.
+function cond(c,p){
+  if(c===true||c==null)return true;
+  if(typeof c==='string')return c[0]==='!'?!p[c.slice(1)]:!!p[c];
+  if(c.et)return c.et.every(x=>cond(x,p));
+  if(c.ou)return c.ou.some(x=>cond(x,p));
+  if(c.non!==undefined)return !cond(c.non,p);
+  const v=p[c.c];
+  for(const k in c){
+    if(k==='c')continue;
+    const tol=k.endsWith('?'), op=tol?k.slice(0,-1):k, x=c[k];
+    if(v==null||v===''){ if(tol)continue; if(op==='!='||op==='hors')continue; return false; }
+    let ok;
+    switch(op){
+      case '=':ok=v===x;break; case '!=':ok=v!==x;break;
+      case '>':ok=v>x;break; case '>=':ok=v>=x;break; case '<':ok=v<x;break; case '<=':ok=v<=x;break;
+      case 'dans':ok=x.includes(v);break; case 'hors':ok=!x.includes(v);break;
+      default:ok=false;
+    }
+    if(!ok)return false;
+  }
+  return true;
+}
+function choisir(val,p,cle){ // valeur simple ou liste [{si:…, n:…}, {n:…}]
+  if(!Array.isArray(val))return val;
+  for(const o of val) if(!('si' in o)||cond(o.si,p)) return o[cle];
+  return null;
+}
+function evaluer(regle,p){
+  if(!cond(regle.si,p))return null;
+  return {n:choisir(regle.n,p,'n')||'possible', w:remplacer(choisir(regle.w,p,'w')||'',p), l:remplacer(regle.l,p)};
+}
+
+// ===================== Calcul & affichage =====================
+let filtre='Tous';
+function calculer(){
+  const p=profil();
+  const res=[];
+  (REGLES.droits||[]).forEach(x=>{let r=null;try{r=evaluer(x,p)}catch(e){};if(r)res.push({...x,...r})});
+  const c={probable:0,possible:0,info:0};res.forEach(r=>c[r.n]++);
+  document.getElementById('n-probable').textContent=c.probable;
+  document.getElementById('n-possible').textContent=c.possible;
+  document.getElementById('n-info').textContent=c.info;
+  // résumé du profil
+  const bouts=[];
+  if(p.age)bouts.push(p.age+' ans');
+  const sitTxt={seul:'célibataire',couple:'en couple',concubin:'en couple',separe:'séparé(e)',veuf:'veuf / veuve'}[p.sit];if(sitTxt)bouts.push(sitTxt);
+  if(p.enf)bouts.push(p.enf+' enfant'+(p.enf>1?'s':'')+' à charge');
+  const actTxt=document.querySelector(`input[name=activite][value="${p.act}"]`);if(actTxt)bouts.push(actTxt.parentElement.textContent.trim().toLowerCase());
+  if(p.ruc!=null)bouts.push('ressources '+['','très modestes','modestes','intermédiaires','confortables'][p.niv]);
+  document.getElementById('resume-profil').textContent=bouts.length?'Votre profil : '+bouts.join(' · ')+'.':'Répondez à quelques questions pour obtenir un repérage personnalisé.';
+  // filtres
+  const doms=['Tous',...new Set(res.map(r=>r.d))];
+  if(!doms.includes(filtre))filtre='Tous';
+  const fz=document.getElementById('filtres');fz.innerHTML='';
+  doms.forEach(d=>{const b=document.createElement('button');b.textContent=d+(d==='Tous'?` (${res.length})`:` (${res.filter(r=>r.d===d).length})`);if(d===filtre)b.className='on';b.onclick=()=>{filtre=d;calculer()};fz.appendChild(b)});
+  // liste
+  const L=document.getElementById('liste');L.innerHTML='';
+  if(!res.length){L.innerHTML='<p class="vide">Aucun droit repéré avec ces réponses. Essayez de compléter les étapes précédentes, ou utilisez le simulateur officiel ci-dessous.</p>';return}
+  const ordre={probable:0,possible:1,info:2};
+  const lib={probable:'Probable',possible:'Possible — à vérifier',info:'Démarche utile'};
+  doms.filter(d=>d!=='Tous'&&(filtre==='Tous'||filtre===d)).forEach(d=>{
+    const h=document.createElement('div');h.className='domaine';h.textContent=d;L.appendChild(h);
+    res.filter(r=>r.d===d).sort((a,b)=>ordre[a.n]-ordre[b.n]).forEach(r=>{
+      const el=document.createElement('article');el.className='droit '+r.n;
+      el.innerHTML=`<h3><span>${r.t}</span><span class="badge">${lib[r.n]}</span></h3>
+        <p class="pourquoi">Pourquoi : ${r.w} · ${r.o}</p>
+        <p>${r.r}</p>
+        <p class="demarche"><b>Démarche :</b> ${r.a}</p>
+        <button class="ouvrir">En savoir plus / faire la demande ↗</button><span class="url">${r.l}</span>`;
+      el.querySelector('.ouvrir').onclick=()=>ouvrir(r.l);
+      L.appendChild(el);
+    });
+  });
+}
+
+// masquer l'option catégorie active si non fonctionnaire
+document.addEventListener('change',()=>{
+  const a=(document.querySelector('input[name=activite]:checked')||{}).value||'';
+  document.querySelector('.si-fonct').classList.toggle('cache',!['fonct_t','fonct_e','fonct_h','retraite'].includes(a)&&a!=='');
+});
+
+// ===================== Mises à jour =====================
+const APP_VERSION='{{VERSION}}';
+const dateFr=d=>{const m=/^(\d{4})-(\d\d)-(\d\d)/.exec(d||'');return m?`${m[3]}/${m[2]}/${m[1]}`:(d||'?')};
+function afficherVersion(){
+  document.getElementById('majInfo').innerHTML=
+    `Règles à jour au <b>${dateFr(REGLES.mise_a_jour)}</b> · ${REGLES.droits.length} droits<br>Logiciel version ${APP_VERSION}`;
+}
+function echapper(t){return String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function appelMaj(){
+  if(typeof window.lancerVerifMaj==='function')
+    return new Promise((ok)=>{window.__majResultat=s=>{try{ok(JSON.parse(s))}catch(e){ok({statut:'invalide'})}};window.lancerVerifMaj()});
+  return fetch('/api/verifierMaj').then(r=>r.json());
+}
+async function verifierMaj(silencieux){
+  const btn=document.getElementById('btnMaj'), etat=document.getElementById('majEtat');
+  btn.disabled=true; if(!silencieux)etat.textContent='Recherche en cours…';
+  let r; try{ r=await appelMaj() }catch(e){ r={statut:'hors_ligne'} }
+  btn.disabled=false;
+  const ancienne=REGLES.version;
+  if(r.statut==='maj'&&r.regles){
+    const nouv=typeof r.regles==='string'?JSON.parse(r.regles):r.regles;
+    REGLES=nouv; afficherVersion();
+    const news=(nouv.nouveautes||[]).filter(n=>(n.date||'')>(dateIso(ancienne))).slice(0,6);
+    document.getElementById('bandeauReglesTxt').innerHTML=`<b>Les règles ont été mises à jour</b> (version du ${dateFr(nouv.mise_a_jour)}).`+
+      (news.length?'<ul>'+news.map(n=>`<li>${dateFr(n.date)} — ${echapper(n.texte)}</li>`).join('')+'</ul>':'');
+    document.getElementById('bandeauRegles').classList.add('on');
+    etat.textContent='✓ Nouvelles règles installées.';
+    if(panneaux[cour].id==='p-resultats')calculer();
+  }else if(r.statut==='a_jour'){ etat.textContent=silencieux?'':'✓ Vous avez les règles les plus récentes.'; }
+  else if(r.statut==='hors_ligne'){ etat.textContent=silencieux?'':'Pas de connexion : les règles actuelles restent utilisées.'; }
+  else if(r.message){ etat.textContent=r.message; }
+  if(r.app&&r.app.version){
+    document.getElementById('bandeauAppTxt').innerHTML=`<b>Une nouvelle version du logiciel est disponible : ${echapper(r.app.version)}</b><br>Téléchargez-la, puis remplacez simplement l'ancien fichier .exe. Vos réponses sont conservées.<br><button class="btn prim" style="margin-top:10px" onclick="ouvrir('${echapper(r.app.url)}')">Télécharger la version ${echapper(r.app.version)}</button>`;
+    document.getElementById('bandeauApp').classList.add('on');
+  }
+}
+const dateIso=v=>{const m=/^(\d{4})\.(\d+)\.(\d+)/.exec(v||'');return m?`${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`:''};
+afficherVersion();
+
+restaurer();
+document.dispatchEvent(new Event('change'));
+aller(0);
+setTimeout(()=>verifierMaj(true),800);
+</script>
+</body>
+</html>

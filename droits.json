@@ -1,0 +1,321 @@
+{
+  "schema": 1,
+  "version": "2026.10.13",
+  "mise_a_jour": "2026-10-13",
+  "app_min": "1.1.0",
+  "nouveautes": [
+    {"date": "2026-10-13", "texte": "Première version des règles : 55 droits répartis en 8 domaines."}
+  ],
+  "seuils": {
+    "_aide": "Limites mensuelles de revenu par unité de consommation (€) séparant les niveaux 1 (très modeste), 2 (modeste), 3 (intermédiaire) et 4 (confortable).",
+    "niveaux_ruc": [950, 1400, 2100]
+  },
+  "liens": {
+    "SP": "https://www.service-public.fr/particuliers/recherche?keyword=",
+    "CAF": "https://www.caf.fr/allocataires/mes-services-en-ligne/estimer-vos-droits",
+    "MDPH": "https://monparcourshandicap.gouv.fr",
+    "RETRAITE": "https://www.info-retraite.fr",
+    "CNRACL": "https://www.cnracl.retraites.fr",
+    "IMPOTS": "https://www.impots.gouv.fr",
+    "AGEES": "https://www.pour-les-personnes-agees.gouv.fr",
+    "RENOV": "https://france-renov.gouv.fr"
+  },
+  "droits": [
+    {"id":"af","d":"Famille","t":"Allocations familiales","o":"CAF / MSA","l":"{CAF}",
+     "r":"Versées à partir de 2 enfants de moins de 20 ans, sans condition de ressources (le montant, lui, varie selon les revenus).",
+     "a":"Généralement automatique si vous êtes allocataire. Sinon, demande en ligne sur caf.fr.",
+     "si":{"c":"enf20",">=":2},"n":"probable","w":"{enf20} enfants de moins de 20 ans"},
+
+    {"id":"cf","d":"Famille","t":"Complément familial","o":"CAF / MSA","l":"{CAF}",
+     "r":"Pour les familles d'au moins 3 enfants tous âgés de 3 ans ou plus, sous conditions de ressources.",
+     "a":"Demande auprès de la CAF.",
+     "si":{"et":[{"c":"enf20",">=":3},{"c":"e0","=":0},{"c":"niv","<=?":3}]},"n":"possible","w":"3 enfants ou plus, tous âgés de 3 ans ou plus"},
+
+    {"id":"paje","d":"Famille","t":"Prestation d'accueil du jeune enfant (PAJE)","o":"CAF / MSA","l":"{CAF}",
+     "r":"Prime à la naissance ou à l'adoption et allocation de base pour un enfant de moins de 3 ans, sous conditions de ressources.",
+     "a":"Déclarer la grossesse à la CPAM et à la CAF avant la fin du 4e mois.",
+     "si":{"et":[{"ou":[{"c":"e0",">":0},"grossesse"]},{"c":"niv","<=?":3}]},
+     "n":[{"si":{"c":"niv","<=":2},"n":"probable"},{"n":"possible"}],
+     "w":[{"si":"grossesse","w":"naissance ou adoption attendue"},{"w":"enfant de moins de 3 ans"}]},
+
+    {"id":"cmg","d":"Famille","t":"Aide pour la garde d'enfant (CMG)","o":"CAF / MSA","l":"{CAF}",
+     "r":"Prise en charge d'une partie du coût d'une assistante maternelle ou d'une garde à domicile pour un enfant de moins de 6 ans.",
+     "a":"Demande à la CAF, puis déclaration via Pajemploi.",
+     "si":{"et":[{"c":"e05",">":0},{"ou":["travaille",{"c":"act","=":"etudiant"}]}]},"n":"possible","w":"enfant de moins de 6 ans et activité professionnelle"},
+
+    {"id":"prepare","d":"Famille","t":"Congé parental et PreParE","o":"Employeur + CAF","l":"{SP}PreParE",
+     "r":"Arrêt ou réduction d'activité pour élever un enfant de moins de 3 ans, avec une indemnité versée par la CAF.",
+     "a":"Informer l'employeur, puis demande à la CAF.",
+     "si":{"et":[{"c":"e0",">":0},"travaille"]},"n":"possible","w":"enfant de moins de 3 ans et vous travaillez"},
+
+    {"id":"ars","d":"Famille","t":"Allocation de rentrée scolaire (ARS)","o":"CAF / MSA","l":"{CAF}",
+     "r":"Versée fin août pour chaque enfant scolarisé de 6 à 18 ans, sous conditions de ressources.",
+     "a":"Automatique pour les 6-15 ans si vous êtes allocataire ; déclaration de scolarité pour les 16-18 ans.",
+     "si":{"et":[{"c":"e618",">":0},{"c":"niv","<=?":2}]},
+     "n":[{"si":{"c":"niv","=":1},"n":"probable"},{"n":"possible"}],"w":"enfant de 6 à 18 ans scolarisé"},
+
+    {"id":"bourses","d":"Famille","t":"Bourses de collège et de lycée","o":"Établissement scolaire","l":"{SP}bourse%20coll%C3%A8ge%20lyc%C3%A9e",
+     "r":"Aide annuelle pour les collégiens et lycéens, selon les revenus de la famille.",
+     "a":"Demande en ligne via EduConnect à chaque rentrée (date limite en octobre pour le collège).",
+     "si":{"et":[{"c":"e618",">":0},{"c":"niv","<=?":2}]},"n":"possible","w":"enfant au collège ou au lycée et ressources modestes"},
+
+    {"id":"asf","d":"Famille","t":"Allocation de soutien familial (ASF)","o":"CAF / MSA","l":"{CAF}",
+     "r":"Pour le parent qui élève seul un enfant lorsque l'autre parent ne verse pas ou peu de pension alimentaire. La CAF peut aussi recouvrer la pension impayée (ARIPA).",
+     "a":"Demande auprès de la CAF ; voir aussi pension-alimentaire.caf.fr.",
+     "si":{"et":["isole",{"c":"enf20",">":0}]},
+     "n":[{"si":"pasPension","n":"probable"},{"n":"possible"}],
+     "w":[{"si":"pasPension","w":"parent seul avec enfant et pension non versée"},{"w":"parent seul avec enfant"}]},
+
+    {"id":"aeeh","d":"Famille","t":"Allocation d'éducation de l'enfant handicapé (AEEH)","o":"MDPH puis CAF","l":"{MDPH}",
+     "r":"Pour un enfant de moins de 20 ans en situation de handicap, avec des compléments selon les frais engagés.",
+     "a":"Dossier à déposer à la MDPH de votre département.",
+     "si":"enfantHandicap","n":"probable","w":"enfant en situation de handicap"},
+
+    {"id":"cfn","d":"Famille","t":"Carte famille nombreuse SNCF","o":"SNCF","l":"{SP}carte%20famille%20nombreuse",
+     "r":"Réductions sur les trains et chez de nombreux partenaires pour les familles d'au moins 3 enfants.",
+     "a":"Demande en ligne sur le site SNCF Connect.",
+     "si":{"c":"enf18",">=":3},"n":"probable","w":"3 enfants de moins de 18 ans"},
+
+    {"id":"rsa","d":"Ressources","t":"Revenu de solidarité active (RSA)","o":"CAF / MSA","l":"{CAF}",
+     "r":"Revenu minimum pour les personnes de 25 ans ou plus (ou plus jeunes avec enfant) dont les ressources sont très faibles.",
+     "a":"Simulation et demande sur caf.fr, ou auprès du département.",
+     "si":{"et":[{"c":"niv","=":1},{"ou":[{"c":"age",">=":25},{"c":"enf",">":0},"grossesse"]},{"c":"act","hors":["etudiant","retraite"]}]},
+     "n":"possible","w":"ressources très modestes"},
+
+    {"id":"pa","d":"Ressources","t":"Prime d'activité","o":"CAF / MSA","l":"{CAF}",
+     "r":"Complément de revenu pour les travailleurs aux revenus modestes, y compris les fonctionnaires et les indépendants.",
+     "a":"Simulation et demande en ligne sur caf.fr ; déclaration trimestrielle.",
+     "si":{"et":[{"ou":["travaille","independant2"]},{"c":"age",">=?":18},{"c":"niv","<=?":2}]},
+     "n":[{"si":{"c":"niv","<=":2},"n":"probable"},{"n":"possible"}],
+     "w":[{"si":{"c":"niv","<=":2},"w":"vous travaillez avec des revenus modestes"},{"w":"vous travaillez"}]},
+
+    {"id":"aspa","d":"Ressources","t":"Allocation de solidarité aux personnes âgées (ASPA)","o":"Caisse de retraite","l":"{SP}ASPA",
+     "r":"Minimum vieillesse versé à partir de 65 ans (ou dès l'âge légal de départ en cas d'inaptitude ou de handicap) si les ressources sont faibles.",
+     "a":"Demande auprès de votre caisse de retraite. Attention : peut être récupérée sur la succession au-delà d'un certain patrimoine.",
+     "si":{"et":[{"ou":[{"c":"age",">=":65},{"et":[{"c":"age",">=":62},{"c":"taux",">=":50}]}]},{"c":"niv","<=?":2}]},
+     "n":[{"si":{"c":"niv","=":1},"n":"probable"},{"n":"possible"}],"w":"{age} ans et ressources modestes"},
+
+    {"id":"asi","d":"Ressources","t":"Allocation supplémentaire d'invalidité (ASI)","o":"CPAM / caisse","l":"{SP}allocation%20suppl%C3%A9mentaire%20invalidit%C3%A9",
+     "r":"Complète une pension d'invalidité faible avant l'âge légal de la retraite.",
+     "a":"Demande auprès de la caisse qui verse votre pension d'invalidité.",
+     "si":{"et":[{"c":"act","=":"invalidite"},{"c":"niv","<=?":2}]},"n":"possible","w":"en invalidité et ressources modestes"},
+
+    {"id":"ass","d":"Ressources","t":"Allocation de solidarité spécifique (ASS)","o":"France Travail","l":"https://www.francetravail.fr",
+     "r":"Peut prendre le relais des allocations chômage arrivées à leur terme, sous conditions d'activité passée et de ressources.",
+     "a":"France Travail vous adresse normalement le formulaire avant la fin de vos droits.",
+     "si":{"c":"act","=":"chomeur_fin"},"n":"possible","w":"fin de droits au chômage"},
+
+    {"id":"aj","d":"Ressources","t":"Aide juridictionnelle","o":"Tribunal / France Services","l":"{SP}aide%20juridictionnelle",
+     "r":"Prise en charge totale ou partielle des frais d'avocat et de justice selon vos revenus.",
+     "a":"Demande en ligne ou au tribunal, avant ou pendant la procédure.",
+     "si":{"et":["procedure",{"c":"niv","<=?":3}]},
+     "n":[{"si":{"c":"niv","<=":2},"n":"probable"},{"n":"possible"}],"w":"procédure en justice"},
+
+    {"id":"css","d":"Santé","t":"Complémentaire santé solidaire (CSS)","o":"Assurance maladie","l":"https://www.ameli.fr/assure/droits-demarches/difficultes-acces-droits-soins/complementaire-sante",
+     "r":"Mutuelle gratuite ou à moins de 1 € par jour par personne selon vos revenus. Elle est attribuée automatiquement aux bénéficiaires du RSA et facilitée pour ceux de l'ASPA.",
+     "a":"Simulateur et demande en ligne sur ameli.fr.",
+     "si":{"c":"niv","<=":2},"n":[{"si":{"c":"niv","=":1},"n":"probable"},{"n":"possible"}],"w":"ressources modestes"},
+
+    {"id":"ald","d":"Santé","t":"Prise en charge à 100 % (ALD)","o":"Médecin traitant + CPAM","l":"{SP}affection%20longue%20dur%C3%A9e",
+     "r":"Les soins liés à une affection de longue durée reconnue sont remboursés à 100 % du tarif de la Sécurité sociale.",
+     "a":"C'est votre médecin traitant qui fait la demande (protocole de soins).",
+     "si":"ald","n":"probable","w":"maladie chronique ou de longue durée"},
+
+    {"id":"psc","d":"Santé","t":"Participation de l'employeur public à la mutuelle et à la prévoyance","o":"Votre employeur","l":"{SP}protection%20sociale%20compl%C3%A9mentaire%20fonction%20publique",
+     "r":"Les employeurs publics doivent désormais participer au financement de la complémentaire santé et/ou de la prévoyance de leurs agents, selon un calendrier propre à chaque fonction publique.",
+     "a":"Renseignez-vous auprès du service RH sur le contrat ou la labellisation retenus.",
+     "si":{"ou":["fonct",{"c":"act","=":"contractuel"}]},"n":"info","w":"agent public"},
+
+    {"id":"apl","d":"Logement","t":"Aide personnalisée au logement (APL / ALS / ALF)","o":"CAF / MSA","l":"{CAF}",
+     "r":"Aide au paiement du loyer selon vos ressources, votre loyer et votre lieu de résidence. Le locataire en mobil-home peut aussi y avoir droit dans certains cas.",
+     "a":"Simulation et demande en ligne sur caf.fr.",
+     "si":{"et":[{"ou":["locataire",{"c":"log","=":"mobile"}]},{"c":"niv","<=?":3}]},
+     "n":[{"si":{"c":"niv","<=":2},"n":"probable"},{"n":"possible"}],
+     "w":[{"si":{"c":"log","=":"loc_hlm"},"w":"locataire HLM"},{"si":{"c":"log","=":"mobile"},"w":"habitat en mobil-home"},{"w":"locataire"}]},
+
+    {"id":"cheque","d":"Logement","t":"Chèque énergie","o":"État","l":"https://chequeenergie.gouv.fr",
+     "r":"Aide annuelle pour payer les factures d'énergie ou des travaux, selon le revenu fiscal du foyer.",
+     "a":"Envoyé automatiquement au printemps d'après votre déclaration de revenus — pensez à toujours déclarer vos revenus, même faibles.",
+     "si":{"c":"niv","=":1},"n":"probable","w":"ressources très modestes"},
+
+    {"id":"fsl","d":"Logement","t":"Fonds de solidarité pour le logement (FSL)","o":"Département","l":"{SP}fonds%20de%20solidarit%C3%A9%20pour%20le%20logement",
+     "r":"Aide ponctuelle (prêt ou subvention) pour payer un dépôt de garantie, des impayés de loyer ou des factures d'énergie et d'eau.",
+     "a":"Demande via un travailleur social (CCAS de votre mairie, centre médico-social).",
+     "si":"difficulte","n":"possible","w":"difficultés à payer loyer ou factures"},
+
+    {"id":"hlm","d":"Logement","t":"Logement social","o":"Bailleurs sociaux","l":"https://www.demande-logement-social.gouv.fr",
+     "r":"Une grande partie de la population reste sous les plafonds de ressources du logement social.",
+     "a":"Une seule demande en ligne, valable dans tout le département ; à renouveler chaque année.",
+     "si":{"et":["cherche",{"c":"niv","<=?":3},{"c":"log","!=":"loc_hlm"}]},"n":"possible","w":"vous cherchez un logement"},
+
+    {"id":"visale","d":"Logement","t":"Garantie Visale","o":"Action Logement","l":"https://www.visale.fr",
+     "r":"Caution locative gratuite pour les moins de 31 ans et pour de nombreux salariés, qui rassure le propriétaire.",
+     "a":"Demande en ligne sur visale.fr avant la signature du bail.",
+     "si":{"et":["cherche",{"ou":[{"c":"age","<=":30},{"c":"act","=":"salarie"}]}]},"n":"possible",
+     "w":[{"si":{"c":"age","<=":30},"w":"moins de 31 ans"},{"w":"salarié en recherche de logement"}]},
+
+    {"id":"al","d":"Logement","t":"Aides Action Logement","o":"Action Logement","l":"https://www.actionlogement.fr",
+     "r":"Aides à la mobilité, au déménagement, prêts travaux ou accession pour les salariés du secteur privé.",
+     "a":"Voir les conditions sur actionlogement.fr.",
+     "si":{"et":[{"c":"act","=":"salarie"},{"ou":["cherche","logementAncien","difficulte"]}]},"n":"possible","w":"salarié du privé"},
+
+    {"id":"mpr","d":"Logement","t":"MaPrimeRénov'","o":"France Rénov' / Anah","l":"{RENOV}",
+     "r":"Aide aux travaux de rénovation énergétique pour les propriétaires, majorée pour les revenus modestes.",
+     "a":"Contactez d'abord un conseiller France Rénov' (gratuit) avant de signer un devis.",
+     "si":{"et":["proprio","logementAncien"]},"n":[{"si":{"c":"niv","<=":2},"n":"probable"},{"n":"possible"}],"w":"propriétaire d'un logement de plus de 15 ans"},
+
+    {"id":"ecoptz","d":"Logement","t":"Éco-prêt à taux zéro","o":"Banques partenaires","l":"{SP}%C3%A9co-pr%C3%AAt%20%C3%A0%20taux%20z%C3%A9ro",
+     "r":"Prêt sans intérêts pour financer des travaux de rénovation énergétique, sans condition de ressources.",
+     "a":"Demande auprès d'une banque ayant signé une convention avec l'État.",
+     "si":{"et":["proprio","logementAncien"]},"n":"possible","w":"propriétaire avec projet de travaux"},
+
+    {"id":"mpa","d":"Logement","t":"MaPrimeAdapt'","o":"France Rénov' / Anah","l":"{RENOV}",
+     "r":"Aide pour adapter le logement à la perte d'autonomie (salle de bain, accès…), pour les 70 ans et plus, les 60-69 ans en perte d'autonomie et les personnes handicapées (taux de 50 % ou plus), sous conditions de ressources.",
+     "a":"Demande via France Rénov', avec l'accompagnement obligatoire d'un assistant à maîtrise d'ouvrage.",
+     "si":{"et":[{"ou":["adapter","autonomie"]},{"ou":["proprio","locataire"]},{"ou":[{"c":"age",">=":70},{"et":[{"c":"age",">=":60},"autonomie"]},{"c":"taux",">=":50}]},{"c":"niv","<=?":2}]},
+     "n":"possible","w":"projet d'adaptation et âge ou handicap"},
+
+    {"id":"tf","d":"Logement","t":"Allègement de taxe foncière","o":"Impôts","l":"{IMPOTS}",
+     "r":"Exonération à partir de 75 ans, ou dégrèvement à partir de 65 ans, sous conditions de revenus ; exonération pour les bénéficiaires de l'ASPA ou de l'AAH.",
+     "a":"Souvent automatique ; sinon, réclamation à votre centre des impôts.",
+     "si":{"et":["proprio",{"ou":[{"et":[{"c":"age",">=":65},{"c":"niv","<=?":2}]},{"c":"taux",">=":80}]}]},"n":"possible",
+     "w":[{"si":{"c":"taux",">=":80},"w":"propriétaire avec un handicap"},{"w":"propriétaire de 65 ans ou plus"}]},
+
+    {"id":"rqth","d":"Handicap","t":"Reconnaissance de la qualité de travailleur handicapé (RQTH)","o":"MDPH","l":"{MDPH}",
+     "r":"Ouvre l'accès à l'aménagement de poste, à des formations, à l'emploi réservé dans la fonction publique et à des dispositifs de maintien dans l'emploi.",
+     "a":"Dossier MDPH avec certificat médical (moins d'un an).",
+     "si":{"et":[{"ou":["handDeclare","ald"]},{"c":"age",">=?":16},{"c":"age","<?":67},{"c":"act","!=":"retraite"}]},
+     "n":[{"si":"handOui","n":"probable"},{"n":"possible"}],
+     "w":[{"si":{"et":["ald",{"non":"handDeclare"}]},"w":"maladie chronique pouvant gêner le travail"},{"w":"handicap"}]},
+
+    {"id":"aah","d":"Handicap","t":"Allocation aux adultes handicapés (AAH)","o":"MDPH puis CAF","l":"{MDPH}",
+     "r":"Pour les personnes avec un taux de 80 % ou plus, ou de 50 à 79 % avec une restriction durable d'accès à l'emploi. Les revenus du conjoint ne sont plus pris en compte.",
+     "a":"Demande à la MDPH (le même dossier peut couvrir RQTH, carte et AAH).",
+     "si":{"et":[{"c":"taux",">=":50},{"c":"age",">=?":20},{"c":"revenuPerso","<?":1400}]},
+     "n":[{"si":{"c":"taux",">=":80},"n":"probable"},{"n":"possible"}],"w":"taux d'incapacité de {tauxTxt}"},
+
+    {"id":"pch","d":"Handicap","t":"Prestation de compensation du handicap (PCH)","o":"MDPH / Département","l":"{MDPH}",
+     "r":"Finance l'aide humaine, les aides techniques, l'aménagement du logement ou du véhicule. À demander avant 60 ans (ou après si le handicap existait avant).",
+     "a":"Dossier MDPH en précisant vos besoins concrets.",
+     "si":{"et":[{"ou":[{"c":"taux",">=":50},{"c":"hand","=":"encours"}]},{"ou":["autonomie","adapter"]}]},"n":"possible","w":"handicap et besoins d'aide"},
+
+    {"id":"cmi","d":"Handicap","t":"Carte mobilité inclusion (CMI)","o":"MDPH","l":"{MDPH}",
+     "r":"Mention « invalidité » (taux de 80 % et plus), « priorité » ou « stationnement » selon votre situation : places réservées, priorité, avantages fiscaux.",
+     "a":"Demande dans le dossier MDPH.",
+     "si":{"ou":[{"c":"taux",">=":50},"autonomie"]},
+     "n":[{"si":{"c":"taux",">=":80},"n":"probable"},{"n":"possible"}],
+     "w":[{"si":{"c":"taux",">=":80},"w":"taux de 80 % ou plus"},{"w":"gêne dans les déplacements possible"}]},
+
+    {"id":"demipart_h","d":"Handicap","t":"Demi-part fiscale supplémentaire","o":"Impôts","l":"{IMPOTS}",
+     "r":"Pour les titulaires de la carte mobilité inclusion « invalidité » ou d'une pension d'invalidité d'au moins 40 %.",
+     "a":"Cocher la case correspondante sur la déclaration de revenus.",
+     "si":{"ou":[{"c":"taux",">=":80},{"c":"act","=":"invalidite"}]},
+     "n":[{"si":{"c":"taux",">=":80},"n":"probable"},{"n":"possible"}],"w":"handicap ou invalidité"},
+
+    {"id":"rath","d":"Handicap","t":"Retraite anticipée des travailleurs handicapés","o":"Caisse de retraite","l":"{RETRAITE}",
+     "r":"Départ possible dès 55 ans si vous avez cotisé un certain nombre de trimestres en ayant un taux d'incapacité d'au moins 50 %.",
+     "a":"Demandez une attestation de droits à votre caisse ; les périodes doivent être justifiées.",
+     "si":{"et":[{"c":"taux",">=":50},{"c":"age",">=?":50},{"c":"age","<?":64},"actif"]},"n":"possible","w":"handicap reconnu à 50 % ou plus"},
+
+    {"id":"apa","d":"Autonomie","t":"Allocation personnalisée d'autonomie (APA)","o":"Département","l":"{AGEES}",
+     "r":"À partir de 60 ans en perte d'autonomie : finance l'aide à domicile, la téléassistance, le portage de repas… Sans condition de ressources (une participation peut être demandée).",
+     "a":"Dossier auprès du département ou du CCAS ; une équipe évalue le besoin à domicile.",
+     "si":{"et":[{"c":"age",">=":60},"autonomie"]},"n":"probable","w":"60 ans ou plus et besoin d'aide au quotidien"},
+
+    {"id":"aidecaisse","d":"Autonomie","t":"Aide à domicile des caisses de retraite","o":"Caisse de retraite (CARSAT, CNRACL…)","l":"{AGEES}",
+     "r":"Pour les retraités encore autonomes mais fragilisés : aide ménagère, petits travaux, aide au retour d'hospitalisation. La CNRACL dispose aussi d'un fonds d'action sociale pour ses retraités.",
+     "a":"Demande auprès de votre caisse de retraite principale.",
+     "si":{"et":[{"c":"act","=":"retraite"},{"c":"age",">=":60},{"non":"autonomie"}]},"n":"possible","w":"retraité(e)"},
+
+    {"id":"ci_dom","d":"Autonomie","t":"Crédit d'impôt pour l'emploi à domicile","o":"Impôts / CESU","l":"{IMPOTS}",
+     "r":"50 % des dépenses d'aide à domicile (ménage, jardinage, garde d'enfants, assistance) remboursés, même si vous n'êtes pas imposable. Avec l'avance immédiate, vous ne payez que la moitié dès le départ.",
+     "a":"Déclarer les sommes sur la déclaration de revenus ; activer l'avance immédiate via le CESU ou l'organisme.",
+     "si":"aideDomicile","n":"probable","w":"emploi d'une aide à domicile"},
+
+    {"id":"ajpa","d":"Autonomie","t":"Congé de proche aidant et allocation journalière (AJPA)","o":"Employeur + CAF","l":"{SP}cong%C3%A9%20de%20proche%20aidant",
+     "r":"Congé pour accompagner un proche en perte d'autonomie ou handicapé, indemnisé par une allocation journalière versée par la CAF. Ouvert aussi aux agents publics.",
+     "a":"Informer l'employeur, puis demande à la CAF.",
+     "si":{"et":["aidant","travaille"]},"n":"possible","w":"vous aidez un proche et travaillez"},
+
+    {"id":"repit","d":"Autonomie","t":"Droit au répit et accompagnement des aidants","o":"Département / plateformes de répit","l":"{AGEES}",
+     "r":"Accueil de jour, hébergement temporaire ou relais à domicile pour vous permettre de souffler ; trimestres de retraite possibles pour les aidants.",
+     "a":"Renseignez-vous auprès du CCAS ou d'une plateforme d'accompagnement et de répit.",
+     "si":"aidant","n":"possible","w":"vous aidez un proche"},
+
+    {"id":"bilan_ret","d":"Retraite","t":"Faire le point sur votre retraite","o":"Tous régimes","l":"{RETRAITE}",
+     "r":"Relevé de carrière tous régimes, estimation de l'âge de départ et du montant, correction des trimestres manquants.",
+     "a":"Créez votre compte sur info-retraite.fr et vérifiez chaque année de votre carrière.",
+     "si":{"et":[{"c":"age",">=":45},{"c":"act","!=":"retraite"}]},"n":"info","w":"à partir de 45 ans, c'est le bon moment"},
+
+    {"id":"carlongue","d":"Retraite","t":"Départ anticipé pour carrière longue","o":"Caisse de retraite","l":"{RETRAITE}",
+     "r":"Si vous avez commencé à travailler jeune et réuni assez de trimestres, vous pouvez partir avant l'âge légal.",
+     "a":"Demandez une attestation de carrière longue à votre caisse (CNRACL pour les fonctionnaires territoriaux et hospitaliers).",
+     "si":{"et":["carriereLongue",{"c":"act","!=":"retraite"},{"c":"age",">=?":55},{"c":"age","<?":64}]},"n":"possible","w":"début de carrière avant 21 ans"},
+
+    {"id":"catactive","d":"Retraite","t":"Départ anticipé au titre de la catégorie active","o":"CNRACL / SRE","l":"{CNRACL}",
+     "r":"Les fonctionnaires ayant accompli une durée suffisante de services en catégorie active peuvent partir plus tôt.",
+     "a":"Vérifiez vos services actifs sur votre compte CNRACL ou auprès de la RH.",
+     "si":{"et":["fonct","servicesActifs"]},"n":"possible","w":"services en catégorie active"},
+
+    {"id":"ret_inval","d":"Retraite","t":"Retraite pour invalidité (fonctionnaires)","o":"CNRACL / SRE","l":"{CNRACL}",
+     "r":"Si une maladie ou un handicap vous rend définitivement inapte à vos fonctions, une retraite peut être versée sans condition d'âge. Elle est cumulable sans limite avec une activité dans le privé ou comme contractuel.",
+     "a":"Procédure engagée par l'employeur après avis du conseil médical.",
+     "si":{"et":["fonct",{"ou":["ald","handDeclare"]}]},"n":"possible","w":"fonctionnaire avec un problème de santé durable"},
+
+    {"id":"surcot","d":"Retraite","t":"Surcotisation pendant le temps partiel","o":"Employeur / CNRACL","l":"{CNRACL}",
+     "r":"Permet que les périodes à temps partiel comptent comme du temps plein dans le calcul de la pension (dans une limite de trimestres).",
+     "a":"Demande à faire en même temps que la demande de temps partiel.",
+     "si":{"et":["fonct","tempsPartiel"]},"n":"possible","w":"fonctionnaire à temps partiel"},
+
+    {"id":"maj_enf","d":"Retraite","t":"Majoration de pension pour 3 enfants","o":"Caisse de retraite","l":"{RETRAITE}",
+     "r":"Pension majorée de 10 % pour avoir élevé au moins 3 enfants (conditions de durée d'éducation), puis 5 % par enfant supplémentaire dans la fonction publique.",
+     "a":"À signaler lors de la demande de retraite, avec les justificatifs.",
+     "si":{"c":"eTotalEff",">=":3},"n":"probable","w":"{eTotalEff} enfants élevés"},
+
+    {"id":"ret_prog","d":"Retraite","t":"Retraite progressive","o":"Caisse de retraite","l":"{SP}retraite%20progressive",
+     "r":"Travailler à temps partiel tout en percevant une partie de sa retraite, désormais ouvert aussi aux fonctionnaires, à partir d'un âge fixé par la loi.",
+     "a":"Accord de l'employeur pour le temps partiel, puis demande à la caisse.",
+     "si":{"et":["travaille",{"c":"age",">=":58}]},"n":"possible","w":"vous approchez de la retraite et travaillez"},
+
+    {"id":"rachat","d":"Retraite","t":"Rachat de trimestres (études, années incomplètes)","o":"Caisse de retraite","l":"{RETRAITE}",
+     "r":"Possibilité de racheter des années d'études supérieures ou des années incomplètes. Coûteux mais déductible des impôts : à étudier au cas par cas.",
+     "a":"Demander une simulation chiffrée à votre caisse.",
+     "si":{"et":["actif",{"c":"age",">=":40},{"c":"act","!=":"retraite"}]},"n":"info","w":"pour améliorer votre retraite"},
+
+    {"id":"cumul","d":"Retraite","t":"Cumul emploi-retraite","o":"Caisse de retraite","l":"{SP}cumul%20emploi%20retraite",
+     "r":"Vous pouvez reprendre une activité tout en percevant votre pension ; le cumul est libre sous conditions (taux plein, liquidation de toutes les pensions).",
+     "a":"Déclarer la reprise d'activité à votre caisse.",
+     "si":{"c":"act","=":"retraite"},"n":"info","w":"retraité(e)"},
+
+    {"id":"reversion","d":"Retraite","t":"Pension de réversion","o":"Caisses de retraite du conjoint décédé","l":"{RETRAITE}",
+     "r":"Une partie de la retraite de votre conjoint décédé (ou ex-conjoint, si vous étiez marié) peut vous être versée. Conditions différentes selon les régimes (âge, ressources).",
+     "a":"Une demande unique en ligne sur info-retraite.fr couvre tous les régimes.",
+     "si":{"c":"sit","=":"veuf"},"n":"probable","w":"veuf / veuve"},
+
+    {"id":"cpf","d":"Emploi & formation","t":"Compte personnel de formation (CPF)","o":"Caisse des dépôts","l":"https://www.moncompteformation.gouv.fr",
+     "r":"Des droits à formation s'accumulent chaque année (en euros pour le privé, en heures pour le public) : permis, langues, reconversion, certifications.",
+     "a":"Consultez votre solde sur moncompteformation.gouv.fr (connexion France Connect+). Pour les agents publics, la demande passe par l'employeur.",
+     "si":"actif","n":"probable","w":"vous avez travaillé"},
+
+    {"id":"are","d":"Emploi & formation","t":"Allocation chômage (ARE)","o":"France Travail","l":"https://www.francetravail.fr",
+     "r":"Après une perte involontaire d'emploi (ou une rupture conventionnelle). Dans la fonction publique, c'est en général l'employeur public qui indemnise.",
+     "a":"Inscription sur francetravail.fr dans les 12 mois suivant la fin du contrat.",
+     "si":{"c":"act","=":"chomeur"},"n":"info","w":"demandeur d'emploi"},
+
+    {"id":"cnas","d":"Emploi & formation","t":"Action sociale de l'employeur public (CNAS…)","o":"Votre collectivité","l":"https://www.cnas.fr",
+     "r":"Selon l'adhésion de votre collectivité : aides naissance, rentrée, vacances, prêts, chèques-réduction, aide en cas de coup dur.",
+     "a":"Demandez au service RH si votre collectivité adhère au CNAS ou à un organisme équivalent.",
+     "si":{"c":"act","dans":["fonct_t","contractuel"]},"n":"info",
+     "w":[{"si":{"c":"act","=":"fonct_t"},"w":"agent territorial"},{"w":"agent public contractuel"}]},
+
+    {"id":"demipart_iso","d":"Impôts","t":"Demi-part de parent isolé","o":"Impôts","l":"{IMPOTS}",
+     "r":"Si vous vivez seul(e) avec vos enfants à charge, vous bénéficiez d'une demi-part supplémentaire (case T).",
+     "a":"Cocher la case T sur la déclaration de revenus.",
+     "si":"isole","n":"probable","w":"parent seul"},
+
+    {"id":"declarer","d":"Impôts","t":"Toujours déclarer ses revenus","o":"Impôts","l":"{IMPOTS}",
+     "r":"Même non imposable, l'avis d'impôt sert à ouvrir le chèque énergie, la CSS, les bourses, l'allègement de taxe foncière…",
+     "a":"Déclaration chaque printemps sur impots.gouv.fr.",
+     "si":{"c":"niv","<=":2},"n":"info","w":"indispensable pour vos aides"}
+  ]
+}
