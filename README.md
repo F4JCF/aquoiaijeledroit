@@ -100,7 +100,7 @@ Un **nouveau champ** (nouvelle question) demande une nouvelle version du logicie
 
 1. Modifier le code, puis changer `var version = "…"` dans `maj.go`.
 2. Créer une étiquette : sur GitHub, **Releases → Draft a new release → Choose a tag** `v1.2.0` → **Publish**.
-3. GitHub Actions compile `AQuoiAiJeLeDroit.exe` et l'attache à la release. Les utilisateurs voient alors le bandeau de mise à jour.
+3. GitHub Actions compile `AQuoiAiJeLeDroit.exe` et l'attache à la release en quelques minutes. Les utilisateurs voient alors le bandeau de mise à jour.
 
 ## Développement
 
