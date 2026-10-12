@@ -99,6 +99,7 @@ input[type=number]:focus{outline:none;border-color:var(--mer)}
 .pourquoi{font-size:15px;color:var(--doux)}
 .demarche{font-size:15px}
 .droit .ouvrir{margin-top:10px;background:none;border:0;padding:0;color:var(--mer);font-weight:600;cursor:pointer;text-decoration:underline;font-size:15px}
+.avert.urgence{margin:0 0 16px;background:#fbe9e7;border:1px solid #efc6c0}
 .avert{background:var(--ambre-clair);border-radius:var(--rayon);padding:14px 18px;font-size:15px;margin:24px 0}
 .outils{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
 .vide{color:var(--doux);font-style:italic}
@@ -121,7 +122,7 @@ input[type=number]:focus{outline:none;border-color:var(--mer)}
 <aside>
   <img class="logo" src="{{ICONE}}" alt="">
   <h1 class="marque">À quoi ai-je <em>le droit&nbsp;?</em></h1>
-  <p class="sous">Aides, allocations, retraite, handicap, logement, droit du travail — un premier repérage en 5 minutes.</p>
+  <p class="sous">Aides, allocations, retraite, handicap, logement, droit du travail, justice — un premier repérage en 5 minutes.</p>
   <nav id="etapes"></nav>
   <div class="majbloc">
     <div id="majInfo"></div>
@@ -303,6 +304,29 @@ input[type=number]:focus{outline:none;border-color:var(--mer)}
   </div></div>
 </section>
 
+<!-- 6 bis. Justice -->
+<section class="panneau" id="p-justice" data-titre="Justice">
+  <h2>Justice et droit pénal</h2>
+  <p class="intro">Que vous soyez victime, témoin ou mis(e) en cause, vous avez des droits. Cochez ce qui vous concerne, ou passez cette étape.</p>
+  <div class="avert urgence"><b>En danger immédiat ?</b> Appelez le <b>17</b> (police, gendarmerie) ou le <b>112</b>. Si vous ne pouvez pas parler, envoyez un SMS au <b>114</b>.<br>
+  🔒 Les réponses de cette page ne sont <b>jamais enregistrées</b> sur l'ordinateur : elles s'effacent à la fermeture du logiciel.</div>
+  <div class="q"><span class="titre">Vous êtes ou avez été victime…</span><div class="coches">
+    <label><input type="checkbox" id="victime" data-prive><span>D'une infraction : vol, cambriolage, agression, dégradation, escroquerie…</span></label>
+    <label><input type="checkbox" id="violencesFamille" data-prive><span>De violences dans le couple ou la famille</span></label>
+    <label><input type="checkbox" id="arnaque" data-prive><span>D'une arnaque sur Internet, par téléphone, ou d'une fraude à la carte bancaire</span></label>
+    <label><input type="checkbox" id="harcelementLigne" data-prive><span>De harcèlement, de menaces ou de diffusion d'images sur Internet</span></label>
+    <label><input type="checkbox" id="accidentRoute" data-prive><span>D'un accident de la route causé par un tiers</span></label>
+  </div></div>
+  <div class="q"><span class="titre">Vous êtes…</span><div class="coches">
+    <label><input type="checkbox" id="convoque" data-prive><span>Convoqué(e) par la police ou la gendarmerie (audition, garde à vue)</span></label>
+    <label><input type="checkbox" id="poursuivi" data-prive><span>Convoqué(e) devant un tribunal ou poursuivi(e)</span></label>
+    <label><input type="checkbox" id="temoin" data-prive><span>Témoin d'une infraction ou cité(e) comme témoin</span></label>
+    <label><input type="checkbox" id="amende" data-prive><span>Concerné(e) par une amende, un excès de vitesse ou une perte de points</span></label>
+    <label><input type="checkbox" id="casier" data-prive><span>Concerné(e) par votre casier judiciaire (consultation, effacement)</span></label>
+    <label><input type="checkbox" id="procheDetenu" data-prive><span>Proche d'une personne incarcérée</span></label>
+  </div></div>
+</section>
+
 <!-- 7. Résultats -->
 <section class="panneau" id="p-resultats" data-titre="Mes droits">
   <h2>Ce à quoi vous pourriez avoir droit</h2>
@@ -368,7 +392,11 @@ function lireFormulaire(){
     else if(i.id) d[i.id]=i.value;
   });return d;
 }
-function sauver(){try{localStorage.setItem('aqdroit',JSON.stringify(lireFormulaire()))}catch(e){}}
+function sauver(){
+  const d=lireFormulaire();
+  document.querySelectorAll('input[data-prive]').forEach(i=>delete d[i.id]); // jamais enregistrées
+  try{localStorage.setItem('aqdroit',JSON.stringify(d))}catch(e){}
+}
 function restaurer(){
   let d=null;try{d=JSON.parse(localStorage.getItem('aqdroit')||'null')}catch(e){}
   if(!d)return;
@@ -391,7 +419,8 @@ function profil(){
   ['grossesse','enfantHandicap','pasPension','tempsPartiel','carriereLongue','servicesActifs','independant2','procedure',
    'logementAncien','adapter','difficulte','cherche','ald','autonomie','aidant','aideDomicile',
    'licenciement','depart','finContrat','heuresSup','salaireImpaye','harcelement','arretMaladie','accidentTravail',
-   'inaptitude','conges','naissance','reconversion','teletravail','horairesAtypiques','entrepriseDifficulte','mobilite'].forEach(k=>p[k]=!!f[k]);
+   'inaptitude','conges','naissance','reconversion','teletravail','horairesAtypiques','entrepriseDifficulte','mobilite',
+   'victime','violencesFamille','arnaque','harcelementLigne','accidentRoute','convoque','poursuivi','temoin','amende','casier','procheDetenu'].forEach(k=>p[k]=!!f[k]);
   p.couple=['couple','concubin'].includes(p.sit);
   p.enf20=p.e0+p.e3+p.e6+p.e11+p.e18;           // enfants de moins de 20 ans
   p.enf=p.enf20+p.e20;
@@ -399,6 +428,8 @@ function profil(){
   p.isole=!p.couple && p.enf>0;
   p.fonct=['fonct_t','fonct_e','fonct_h'].includes(p.act);
   p.travaille=['salarie','fonct_t','fonct_e','fonct_h','contractuel','independant'].includes(p.act);
+  p.victimeQ=p.victime||p.violencesFamille||p.arnaque||p.harcelementLigne||p.accidentRoute;
+  p.misEnCause=p.convoque||p.poursuivi;
   p.prive=p.act==='salarie';
   p.public=p.fonct||p.act==='contractuel';
   p.exSalarie=['chomeur','chomeur_fin'].includes(p.act);

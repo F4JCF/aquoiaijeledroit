@@ -1,9 +1,9 @@
 # À quoi ai-je le droit ?
 
-Logiciel Windows qui repère, en quelques questions, les aides et droits auxquels une personne peut prétendre : famille, minima sociaux, santé, logement, handicap, autonomie et aidants, retraite (dont CNRACL), emploi, **droit du travail** (privé et fonction publique) et impôts.
+Logiciel Windows qui repère, en quelques questions, les aides et droits auxquels une personne peut prétendre : famille, minima sociaux, santé, logement, handicap, autonomie et aidants, retraite (dont CNRACL), emploi, **droit du travail** (privé et fonction publique), **droit pénal** (victimes, mis en cause, amendes, casier) et impôts.
 
 - **Aucune installation** : un seul fichier `AQuoiAiJeLeDroit.exe`, à lancer par double-clic.
-- **Confidentiel** : les réponses restent sur l'ordinateur. Rien n'est envoyé sur Internet.
+- **Confidentiel** : les réponses restent sur l'ordinateur. Rien n'est envoyé sur Internet. Les réponses de l'étape « Justice » ne sont même jamais enregistrées.
 - **Toujours à jour** : les règles se mettent à jour automatiquement à chaque lancement.
 
 > Repérage indicatif : seul l'organisme concerné peut confirmer un droit.
@@ -62,7 +62,7 @@ Le contrôle automatique (onglet **Actions**) vérifie le fichier. Une croix rou
 | Clé | Rôle |
 |---|---|
 | `id` | identifiant unique (sans espace) |
-| `d` | domaine affiché : Famille, Ressources, Santé, Logement, Handicap, Autonomie, Retraite, Emploi & formation, Droit du travail, Impôts (un nouveau nom crée un nouveau domaine) |
+| `d` | domaine affiché : Famille, Ressources, Santé, Logement, Handicap, Autonomie, Retraite, Emploi & formation, Droit du travail, Droit pénal, Impôts (un nouveau nom crée un nouveau domaine) |
 | `t`, `o` | titre et organisme |
 | `l` | lien ; `{SP}`, `{CAF}`, `{MDPH}`, `{RETRAITE}`, `{CNRACL}`, `{IMPOTS}`, `{AGEES}`, `{RENOV}` sont remplacés par les adresses de la section `liens` |
 | `r`, `a` | résumé et démarche |
@@ -91,7 +91,8 @@ Le contrôle automatique (onglet **Actions**) vérifie le fichier. Une croix rou
 | `niv` | niveau de ressources 1 à 4 (seuils dans `seuils.niveaux_ruc`) |
 | cases à cocher | `grossesse`, `enfantHandicap`, `pasPension`, `tempsPartiel`, `carriereLongue`, `servicesActifs`, `independant2`, `procedure`, `logementAncien`, `adapter`, `difficulte`, `cherche`, `ald`, `autonomie`, `aidant`, `aideDomicile` |
 | travail | `contrat` (`cdi`, `cdd`, `interim`, `apprenti`, `saisonnier`), `effectif` (`petite`, `moyenne`, `grande`), `anciennete` (années) ; cases `licenciement`, `depart`, `finContrat`, `heuresSup`, `salaireImpaye`, `harcelement`, `arretMaladie`, `accidentTravail`, `inaptitude`, `conges`, `naissance`, `reconversion`, `teletravail`, `horairesAtypiques`, `entrepriseDifficulte`, `mobilite` |
-| déduits | `couple`, `isole` (parent seul), `fonct`, `travaille`, `actif`, `locataire`, `proprio`, `handDeclare`, `handOui`, `prive` (salarié du privé), `public` (fonctionnaire ou contractuel), `exSalarie` (demandeur d'emploi), `cdi`, `precaire` |
+| justice | `victime`, `violencesFamille`, `arnaque`, `harcelementLigne`, `accidentRoute`, `convoque`, `poursuivi`, `temoin`, `amende`, `casier`, `procheDetenu` — **jamais enregistrés** sur l'ordinateur |
+| déduits | `couple`, `isole` (parent seul), `fonct`, `travaille`, `actif`, `locataire`, `proprio`, `handDeclare`, `handOui`, `prive` (salarié du privé), `public` (fonctionnaire ou contractuel), `exSalarie` (demandeur d'emploi), `cdi`, `precaire`, `victimeQ` (victime, quelle que soit l'infraction), `misEnCause` (convoqué ou poursuivi) |
 
 Un **nouveau champ** (nouvelle question) demande une nouvelle version du logiciel. Dans ce cas, mettre `app_min` dans `droits.json` à cette version : les anciennes versions garderont leurs règles et proposeront la mise à jour du logiciel.
 

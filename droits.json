@@ -1,9 +1,14 @@
 {
  "schema": 1,
- "version": "2026.10.13.1",
+ "version": "2026.10.13.2",
  "mise_a_jour": "2026-10-13",
- "app_min": "1.2.0",
+ "app_min": "1.3.0",
  "nouveautes": [
+  {
+   "date": "2026-10-13",
+   "v": "2026.10.13.2",
+   "texte": "Nouvel onglet « Droit pénal » : porter plainte, aide et indemnisation des victimes, violences conjugales, arnaques en ligne, garde à vue, tribunal, amendes et points, casier judiciaire, proches détenus."
+  },
   {
    "date": "2026-10-13",
    "v": "2026.10.13.1",
@@ -31,7 +36,8 @@
   "IMPOTS": "https://www.impots.gouv.fr",
   "AGEES": "https://www.pour-les-personnes-agees.gouv.fr",
   "RENOV": "https://france-renov.gouv.fr",
-  "CDT": "https://code.travail.gouv.fr"
+  "CDT": "https://code.travail.gouv.fr",
+  "JUSTICE": "https://www.justice.fr"
  },
  "droits": [
   {
@@ -2189,6 +2195,251 @@
    "n": "info",
    "w": "litige avec l'employeur",
    "d": "Droit du travail"
+  },
+  {
+   "id": "plainte",
+   "t": "Porter plainte",
+   "o": "Police, gendarmerie ou procureur",
+   "l": "{SP}porter%20plainte",
+   "r": "La plainte peut être déposée dans n'importe quel commissariat ou brigade de gendarmerie, qui ne peut pas la refuser, ou par courrier au procureur de la République. Une pré-plainte en ligne permet de prendre rendez-vous. Délais pour agir : 1 an pour une contravention, 6 ans pour un délit, 20 ans pour un crime (plus long pour certaines violences sur mineurs).",
+   "a": "Apportez une pièce d'identité, les preuves (photos, messages, certificats médicaux, factures) et les coordonnées des témoins ; demandez un récépissé.",
+   "si": "victime",
+   "n": "probable",
+   "w": "vous êtes victime d'une infraction",
+   "d": "Droit pénal"
+  },
+  {
+   "id": "aide_victimes",
+   "t": "Aide gratuite aux victimes (116 006)",
+   "o": "France Victimes",
+   "l": "https://www.france-victimes.fr",
+   "r": "Le 116 006, numéro national d'aide aux victimes, est gratuit et ouvert 7 jours sur 7 : écoute, information sur vos droits, soutien psychologique et accompagnement dans les démarches par une association près de chez vous.",
+   "a": "Appelez le 116 006 ou contactez l'association d'aide aux victimes de votre département, même sans avoir porté plainte.",
+   "si": "victimeQ",
+   "n": "probable",
+   "w": "vous êtes victime",
+   "d": "Droit pénal"
+  },
+  {
+   "id": "partie_civile",
+   "t": "Se constituer partie civile et être indemnisé(e)",
+   "o": "Tribunal",
+   "l": "{SP}partie%20civile",
+   "r": "En vous constituant partie civile, vous demandez réparation de vos préjudices (matériels, physiques, moraux) lors du procès. L'aide juridictionnelle peut prendre en charge l'avocat ; pour les crimes les plus graves contre les personnes, elle est accordée sans condition de ressources.",
+   "a": "Déclarez-vous partie civile dès la plainte, ou au plus tard à l'audience ; conservez tous les justificatifs de vos frais.",
+   "si": {
+    "ou": [
+     "victime",
+     "violencesFamille"
+    ]
+   },
+   "n": "possible",
+   "w": "victime souhaitant être indemnisée",
+   "d": "Droit pénal"
+  },
+  {
+   "id": "civi",
+   "t": "Indemnisation par la CIVI ou le SARVI",
+   "o": "Tribunal judiciaire / Fonds de garantie",
+   "l": "{SP}CIVI%20indemnisation",
+   "r": "La commission d'indemnisation des victimes d'infractions (CIVI) indemnise les dommages corporels graves et certains vols ou escroqueries, même si l'auteur est inconnu ou insolvable. Si l'auteur condamné ne paie pas, le SARVI peut verser tout ou partie des sommes.",
+   "a": "Saisine de la CIVI en principe dans les 3 ans suivant l'infraction ; le SARVI se saisit après le jugement.",
+   "si": {
+    "ou": [
+     "victime",
+     "violencesFamille"
+    ]
+   },
+   "n": "possible",
+   "w": "victime d'une infraction",
+   "d": "Droit pénal"
+  },
+  {
+   "id": "violences",
+   "t": "Violences dans le couple ou la famille : protection",
+   "o": "3919 / justice / police",
+   "l": "https://arretonslesviolences.gouv.fr",
+   "r": "Le 3919 est gratuit, anonyme et ouvert 24 h/24. Le juge aux affaires familiales peut délivrer une ordonnance de protection en quelques jours, même sans plainte : éviction du conjoint violent, interdiction de contact, garde des enfants. D'autres mesures existent : téléphone grave danger, bracelet anti-rapprochement, hébergement d'urgence (115). Un signalement est possible en ligne sur arretonslesviolences.gouv.fr.",
+   "a": "En danger : 17 ou SMS au 114. Faites constater vos blessures par un médecin et conservez les preuves en lieu sûr (chez un proche, par courriel).",
+   "si": "violencesFamille",
+   "n": "probable",
+   "w": "violences dans le couple ou la famille",
+   "d": "Droit pénal"
+  },
+  {
+   "id": "arnaque",
+   "t": "Arnaque en ligne ou fraude bancaire",
+   "o": "17Cyber / banque",
+   "l": "https://17cyber.gouv.fr",
+   "r": "17Cyber, service gratuit 24 h/24 de la police, de la gendarmerie et de Cybermalveillance.gouv.fr, établit un diagnostic et oriente vers la plainte en ligne pour escroquerie (THESEE) ou le signalement de fraude à la carte (Perceval). Pour une opération non autorisée, la banque doit en principe rembourser rapidement, sauf négligence grave.",
+   "a": "Faites opposition immédiatement, contestez l'opération auprès de la banque par écrit (dans les 13 mois), changez vos mots de passe et conservez les preuves.",
+   "si": "arnaque",
+   "n": "probable",
+   "w": "arnaque ou fraude",
+   "d": "Droit pénal"
+  },
+  {
+   "id": "cyberharcelement",
+   "t": "Harcèlement et contenus illicites sur Internet",
+   "o": "3018 / PHAROS",
+   "l": "https://www.internet-signalement.gouv.fr",
+   "r": "Le cyberharcèlement, les menaces et la diffusion d'images intimes sans accord sont des délits. Le 3018 (gratuit) aide à faire supprimer des contenus et accompagne les victimes ; la plateforme PHAROS reçoit les signalements de contenus illicites.",
+   "a": "Faites des captures d'écran (date, adresse de la page, pseudo), signalez le contenu à la plateforme, puis portez plainte.",
+   "si": "harcelementLigne",
+   "n": "probable",
+   "w": "harcèlement en ligne",
+   "d": "Droit pénal"
+  },
+  {
+   "id": "badinter",
+   "t": "Indemnisation des victimes d'accident de la route",
+   "o": "Assureur / Fonds de garantie (FGAO)",
+   "l": "{SP}indemnisation%20accident%20de%20la%20route",
+   "r": "Les piétons, cyclistes et passagers sont indemnisés de leurs dommages corporels sauf faute inexcusable. L'assureur du véhicule impliqué doit présenter une offre d'indemnisation dans un délai fixé par la loi. Si le responsable n'est pas assuré ou a pris la fuite, le Fonds de garantie (FGAO) intervient.",
+   "a": "Faites établir un constat ou un procès-verbal, consultez un médecin, et ne signez pas d'offre sans la comparer (avocat, association de victimes).",
+   "si": "accidentRoute",
+   "n": "probable",
+   "w": "accident de la route causé par un tiers",
+   "d": "Droit pénal"
+  },
+  {
+   "id": "gav",
+   "t": "Vos droits en audition ou en garde à vue",
+   "o": "Police / gendarmerie",
+   "l": "{SP}garde%20%C3%A0%20vue%20droits",
+   "r": "En garde à vue : être informé(e) des faits et de la durée, garder le silence, être assisté(e) par un avocat dès le début (avocat commis d'office gratuit si besoin), voir un médecin, faire prévenir un proche et votre employeur, avoir un interprète. En audition libre, vous pouvez partir à tout moment et être assisté(e) par un avocat.",
+   "a": "Demandez un avocat dès le début ; relisez attentivement le procès-verbal avant de le signer.",
+   "si": "convoque",
+   "n": "probable",
+   "w": "convocation par la police ou la gendarmerie",
+   "d": "Droit pénal"
+  },
+  {
+   "id": "defense",
+   "t": "Se défendre devant le tribunal",
+   "o": "Tribunal / barreau",
+   "l": "{JUSTICE}",
+   "r": "Droit à un avocat (commis d'office si vous n'en avez pas), à l'aide juridictionnelle selon vos ressources, et à consulter le dossier. Un jugement du tribunal correctionnel peut faire l'objet d'un appel, en principe dans les 10 jours ; un jugement rendu en votre absence peut faire l'objet d'une opposition.",
+   "a": "Contactez un avocat dès réception de la convocation ; demandez l'aide juridictionnelle au bureau du tribunal ou en ligne.",
+   "si": "poursuivi",
+   "n": "probable",
+   "w": "poursuites devant un tribunal",
+   "d": "Droit pénal"
+  },
+  {
+   "id": "aj_penal",
+   "t": "Aide juridictionnelle (avocat pris en charge)",
+   "o": "Tribunal",
+   "l": "{SP}aide%20juridictionnelle",
+   "r": "Prise en charge totale ou partielle des frais d'avocat selon vos ressources, pour une victime comme pour une personne poursuivie. En garde à vue, l'avocat commis d'office est gratuit dans tous les cas.",
+   "a": "Demande en ligne ou au tribunal, avec vos justificatifs de ressources.",
+   "si": {
+    "et": [
+     {
+      "ou": [
+       "victimeQ",
+       "misEnCause"
+      ]
+     },
+     {
+      "c": "niv",
+      "<=?": 3
+     }
+    ]
+   },
+   "n": [
+    {
+     "si": {
+      "c": "niv",
+      "<=": 2
+     },
+     "n": "probable"
+    },
+    {
+     "n": "possible"
+    }
+   ],
+   "w": "procédure pénale",
+   "d": "Droit pénal"
+  },
+  {
+   "id": "temoin",
+   "t": "Droits et obligations du témoin",
+   "o": "Justice",
+   "l": "{SP}t%C3%A9moin%20proc%C3%A8s%20p%C3%A9nal",
+   "r": "Un témoin cité doit se présenter, mais il peut être indemnisé de ses frais de déplacement et de sa perte de revenus. Pour certains faits graves, s'il est en danger, son identité peut être protégée.",
+   "a": "Répondez à la convocation ; signalez au greffe toute menace ou empêchement.",
+   "si": "temoin",
+   "n": "info",
+   "w": "témoin",
+   "d": "Droit pénal"
+  },
+  {
+   "id": "amende",
+   "t": "Payer ou contester une amende",
+   "o": "ANTAI",
+   "l": "https://www.antai.gouv.fr",
+   "r": "L'avis de contravention se conteste en ligne en principe dans les 45 jours, sans payer l'amende (mais en consignant la somme pour certains radars). Payer vite ouvre droit au tarif minoré ; en cas de retard, l'amende est majorée. Si vous n'étiez pas au volant, vous pouvez désigner le conducteur.",
+   "a": "Gérez l'avis sur antai.gouv.fr avec le numéro qui y figure ; ne payez pas si vous contestez, car payer vaut reconnaissance.",
+   "si": "amende",
+   "n": "probable",
+   "w": "amende ou contravention",
+   "d": "Droit pénal"
+  },
+  {
+   "id": "points",
+   "t": "Points du permis de conduire",
+   "o": "Ministère de l'Intérieur",
+   "l": "{SP}solde%20de%20points%20permis",
+   "r": "Le solde de points se consulte gratuitement en ligne. Un stage de sensibilisation à la sécurité routière permet de récupérer jusqu'à 4 points, une fois par an ; les points reviennent aussi automatiquement après un délai sans nouvelle infraction.",
+   "a": "Consultez votre solde avec FranceConnect ; choisissez un stage agréé par la préfecture.",
+   "si": "amende",
+   "n": "possible",
+   "w": "perte de points possible",
+   "d": "Droit pénal"
+  },
+  {
+   "id": "casier",
+   "t": "Consulter ou faire effacer une mention du casier",
+   "o": "Casier judiciaire national",
+   "l": "https://casier-judiciaire.justice.gouv.fr",
+   "r": "Le bulletin n° 3 (celui demandé par les employeurs) s'obtient gratuitement en ligne. Il est possible de demander au tribunal l'exclusion d'une condamnation des bulletins n° 2 ou n° 3 pour faciliter une embauche ; la réhabilitation efface les condamnations après un certain délai.",
+   "a": "Demandez le bulletin en ligne ; pour une exclusion de mention, adressez une requête au tribunal qui a prononcé la condamnation (avocat conseillé).",
+   "si": "casier",
+   "n": "info",
+   "w": "casier judiciaire",
+   "d": "Droit pénal"
+  },
+  {
+   "id": "detenu",
+   "t": "Garder le lien avec un proche détenu",
+   "o": "Administration pénitentiaire",
+   "l": "{SP}permis%20de%20visite%20d%C3%A9tenu",
+   "r": "Permis de visite à demander à l'établissement (ou au juge si la personne n'est pas encore jugée), parloirs, unités de vie familiale, envoi d'argent par virement ou mandat, courrier et téléphone. Des associations accueillent les familles près des prisons.",
+   "a": "Adressez la demande de permis de visite avec une pièce d'identité et une photo ; renseignez-vous sur la maison d'accueil des familles de l'établissement.",
+   "si": "procheDetenu",
+   "n": "info",
+   "w": "proche incarcéré",
+   "d": "Droit pénal"
+  },
+  {
+   "id": "pointjustice",
+   "t": "Avocat et conseils gratuits : Point-justice",
+   "o": "Conseil départemental de l'accès au droit",
+   "l": "{SP}point-justice",
+   "r": "Les Point-justice (dans les tribunaux, mairies, maisons France Services) offrent des consultations gratuites avec des avocats, des juristes et des associations d'aide aux victimes. Votre assurance habitation ou votre carte bancaire inclut souvent une protection juridique.",
+   "a": "Trouvez le Point-justice le plus proche et prenez rendez-vous.",
+   "si": {
+    "ou": [
+     "victimeQ",
+     "misEnCause",
+     "casier",
+     "procheDetenu"
+    ]
+   },
+   "n": "info",
+   "w": "démarche judiciaire",
+   "d": "Droit pénal"
   },
   {
    "id": "demipart_iso",
