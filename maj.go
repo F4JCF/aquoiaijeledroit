@@ -23,7 +23,7 @@ import (
 )
 
 // Renseignée à la compilation : -ldflags "-X main.version=1.2.0"
-var version = "1.7.0"
+var version = "1.8.0"
 
 const (
 	depot          = "F4JCF/aquoiaijeledroit"
@@ -139,6 +139,15 @@ func reglesCourantes() ([]byte, entete) {
 		}
 	}
 	return meilleur, e
+}
+
+// construirePageWeb produit la version site web (téléphone) : règles intégrées,
+// stockage dans le navigateur, mises à jour lues directement sur GitHub.
+func construirePageWeb() string {
+	p := strings.Replace(pageModele, "/*REGLES*/null", string(reglesIntegrees), 1)
+	p = strings.ReplaceAll(p, "{{ICONE}}", "data:image/png;base64,"+base64.StdEncoding.EncodeToString(icone))
+	p = strings.ReplaceAll(p, "{{VERSION}}", version)
+	return strings.Replace(p, "/*WEB*/false", "true", 1)
 }
 
 // construirePage injecte les règles, l'icône et la version dans l'interface.

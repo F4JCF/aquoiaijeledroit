@@ -3,7 +3,8 @@
 Logiciel Windows qui repère, en quelques questions, les aides et droits auxquels une personne peut prétendre : famille, minima sociaux, santé, logement, handicap, autonomie et aidants, retraite (dont CNRACL), emploi, **droit du travail** (privé et fonction publique), **droit pénal** (victimes, mis en cause, casier), **code de la route** (permis, amendes, points, accident, véhicule) et impôts.
 
 - **Aucune installation** : un seul fichier `AQuoiAiJeLeDroit.exe`, à lancer par double-clic.
-- **Pratique** : lettres types pré-remplies, échéances avec rappels, numéros utiles, plusieurs profils, grands caractères et lecture à voix haute.
+- **Pratique** : lettres types pré-remplies, suivi des démarches avec relances, simulateur de retraite, recherche directe, échéances avec rappels, numéros utiles, plusieurs profils, sauvegarde, grands caractères et lecture à voix haute.
+- **Sur téléphone** : version web sur https://f4jcf.github.io/aquoiaijeledroit/.
 - **Confidentiel** : les réponses restent sur l'ordinateur. Rien n'est envoyé sur Internet. Les réponses de l'étape « Justice » ne sont même jamais enregistrées.
 - **Toujours à jour** : les règles se mettent à jour automatiquement à chaque lancement.
 
@@ -61,6 +62,19 @@ Source conseillée : le comparateur du Médiateur national de l'énergie (compar
 - `echeances` : dates nationales `{date: "AAAA-MM-JJ", titre, info, si, lien, approx}`, affichées si la condition `si` correspond au profil. Les rappels personnels sont saisis dans le logiciel.
 - `annuaire` : numéros utiles `{cat, nom, num, info, url}`.
 
+- `retraite` : simulateur de retraite. `generations` : `{du, au, age_a, age_m, trim, cl}` (âge légal en années et mois, trimestres requis, carrière longue en texte) ; `taux_plein_auto` ; `progressive_min` ; `source`.
+- Dans `lettres`, `relance` (en jours) fixe la date de relance proposée quand l'utilisateur indique avoir envoyé la lettre.
+
+## Version téléphone (site web)
+
+À chaque modification de `main`, GitHub Actions génère une version site web (`go run . -site public`) et la publie sur GitHub Pages : https://f4jcf.github.io/aquoiaijeledroit/. Elle lit les règles à jour directement sur GitHub et enregistre les réponses dans le navigateur du téléphone.
+
+Réglage unique à faire dans le dépôt : **Settings → Pages → Build and deployment → Source : « GitHub Actions »**.
+
+## Signature du logiciel (à activer si un certificat est acheté)
+
+Sans signature, Windows affiche « Windows a protégé votre ordinateur » au premier lancement. Pour la supprimer, il faut un certificat de signature de code, par exemple le service *Trusted Signing* de Microsoft Azure (abonnement mensuel), puis ajouter une étape de signature dans `.github/workflows/compiler.yml`, avec les identifiants enregistrés comme secrets du dépôt.
+
 ## Données de l'utilisateur
 
 Les réponses, les profils, les coordonnées des lettres et les rappels sont enregistrés uniquement sur l'ordinateur, dans `%APPDATA%\AQuoiAiJeLeDroit\donnees.json`. Les réponses de l'étape « Justice » ne sont jamais enregistrées.
@@ -92,7 +106,7 @@ Le contrôle automatique (onglet **Actions**) vérifie le fichier. Une croix rou
 | Clé | Rôle |
 |---|---|
 | `id` | identifiant unique (sans espace) |
-| `d` | domaine affiché : Famille, Ressources, Santé, Logement, Handicap, Autonomie, Retraite, Emploi & formation, Énergie, Eau, Télécoms, Assurances, Consommation & banque, Jeunes, Seniors, Décès & succession, Droit du travail, Droit pénal, Code de la route, Impôts (un nouveau nom crée un nouveau domaine) |
+| `d` | domaine affiché : Famille, Ressources, Santé, Logement, Handicap, Autonomie, Retraite, Emploi & formation, Énergie, Eau, Télécoms, Assurances, Consommation & banque, Jeunes, Seniors, Décès & succession, Séparation, Bénévolat & dons, Micro-entreprise, Santé, Outre-mer, Droit du travail, Droit pénal, Code de la route, Impôts (un nouveau nom crée un nouveau domaine) |
 | `t`, `o` | titre et organisme |
 | `l` | lien ; `{SP}`, `{CAF}`, `{MDPH}`, `{RETRAITE}`, `{CNRACL}`, `{IMPOTS}`, `{AGEES}`, `{RENOV}` sont remplacés par les adresses de la section `liens` |
 | `r`, `a` | résumé et démarche |
@@ -126,6 +140,7 @@ Le contrôle automatique (onglet **Actions**) vérifie le fichier. Une croix rou
 | logement (locataire / propriétaire) | cases `depotGarantie`, `preavis`, `chargesLoc`, `indecent`, `bailleur`, `copro` |
 | consommation & banque | cases `achatPanne`, `achatDistance`, `litigeConso`, `abonnementPiege`, `fraisBancaires`, `fraudeBancaire`, `refusCompte`, `changerBanque`, `credit`, `surendettement`, `fichage` |
 | étapes de vie | jeunes : `etudiantSup`, `logementEtudiant`, `jeuneSansEmploi`, `jeuneCulture` ; seniors : `ehpad`, `domicile`, `transportSenior`, `maltraitance` ; décès : `decesProche`, `decesConjoint`, `succession`, `comptesDefunt`, `donation` |
+| nouveaux (v1.8) | `territoire` (`metropole`, `corse`, `guadeloupe`, `martinique`, `guyane`, `reunion`, `mayotte`) ; cases `microProjet`, `microActif`, `activiteCote`, `sansMedecin`, `depassements`, `renoncement`, `transportSanitaire`, `cure`, `dossierMedical`, `separation`, `pensionAlim`, `gardeEnfants`, `logementFamilial`, `benevole`, `dirigeantAsso`, `dons` ; déduits `outremer`, `zni` (Corse ou outre-mer), `micro` |
 | route | `permis` (`aucun`, `probatoire`, `confirme`, `suspendu`) ; cases `amende`, `points`, `suspension`, `alcoolStup`, `accidentAuto`, `stationnement`, `fourriere`, `carteGrise`, `assuranceAuto`, `zfe`, `plaqueUsurpee`, `passerPermis`, `deuxRoues`, `santeConduite` |
 | justice | `victime`, `violencesFamille`, `arnaque`, `harcelementLigne`, `accidentRoute`, `convoque`, `poursuivi`, `temoin`, `casier`, `procheDetenu` — **jamais enregistrés** sur l'ordinateur |
 | déduits | `couple`, `isole` (parent seul), `fonct`, `travaille`, `actif`, `locataire`, `proprio`, `handDeclare`, `handOui`, `prive` (salarié du privé), `public` (fonctionnaire ou contractuel), `exSalarie` (demandeur d'emploi), `cdi`, `precaire`, `victimeQ` (victime, quelle que soit l'infraction), `misEnCause` (convoqué ou poursuivi) |

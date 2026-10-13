@@ -1,9 +1,14 @@
 {
  "schema": 1,
- "version": "2026.10.13.6",
+ "version": "2026.10.13.7",
  "mise_a_jour": "2026-10-13",
- "app_min": "1.7.0",
+ "app_min": "1.8.0",
  "nouveautes": [
+  {
+   "date": "2026-10-13",
+   "v": "2026.10.13.7",
+   "texte": "Nouveau : simulateur de retraite (règles après la suspension de la réforme au 1er septembre 2026), suivi des démarches avec relances, recherche directe, sauvegarde, version téléphone. Nouveaux domaines : micro-entreprise et cumul d'activités, bénévolat et dons, séparation, santé au quotidien, outre-mer."
+  },
   {
    "date": "2026-10-13",
    "v": "2026.10.13.6",
@@ -633,6 +638,83 @@
    },
    "n": "info",
    "w": "agent public"
+  },
+  {
+   "id": "medecin_traitant",
+   "t": "Trouver un médecin traitant",
+   "o": "Assurance maladie",
+   "l": "https://www.ameli.fr",
+   "r": "Sans médecin traitant déclaré, vos consultations sont moins bien remboursées. Si vous n'en trouvez pas, la caisse d'assurance maladie peut vous aider (service dédié aux patients sans médecin traitant, notamment en cas de maladie chronique), et les centres de santé ou les maisons de santé pluriprofessionnelles prennent souvent de nouveaux patients.",
+   "a": "Contactez votre CPAM (3646) ou le conciliateur de l'Assurance maladie ; déclarez le médecin traitant en ligne dès qu'il accepte.",
+   "si": "sansMedecin",
+   "n": "probable",
+   "w": "pas de médecin traitant",
+   "d": "Santé"
+  },
+  {
+   "id": "reste_charge",
+   "t": "Restes à charge : franchises, dépassements, 100 % Santé",
+   "o": "Assurance maladie / mutuelle",
+   "l": "https://www.ameli.fr",
+   "r": "Depuis le 1er octobre 2026, le plafond annuel cumulé des franchises médicales et participations forfaitaires est porté à 140 € par personne. Les médecins de secteur 2 peuvent pratiquer des dépassements d'honoraires : demandez un devis pour un acte coûteux, et privilégiez les médecins adhérant à l'option de pratique tarifaire maîtrisée (OPTAM), mieux remboursés. Le panier 100 % Santé couvre intégralement certaines lunettes, prothèses dentaires et aides auditives.",
+   "a": "Consultez l'annuaire santé d'ameli.fr pour connaître le secteur et les tarifs d'un médecin ; vérifiez vos garanties de mutuelle.",
+   "si": {
+    "ou": [
+     "depassements",
+     "renoncement"
+    ]
+   },
+   "n": "probable",
+   "w": "restes à charge élevés",
+   "d": "Santé"
+  },
+  {
+   "id": "renoncement_soins",
+   "t": "Renoncer aux soins : des aides existent",
+   "o": "Assurance maladie / CCAS",
+   "l": "https://www.ameli.fr",
+   "r": "L'Assurance maladie dispose d'un accompagnement pour les personnes qui renoncent à des soins (mission d'accompagnement santé) : aide pour trouver un professionnel, obtenir des devis, mobiliser la Complémentaire santé solidaire ou une aide financière exceptionnelle de la caisse.",
+   "a": "Parlez-en à votre CPAM (3646), à un travailleur social ou à France Services ; vérifiez votre éligibilité à la Complémentaire santé solidaire.",
+   "si": "renoncement",
+   "n": "probable",
+   "w": "renoncement aux soins",
+   "d": "Santé"
+  },
+  {
+   "id": "transport_sanitaire",
+   "t": "Transports pour se soigner",
+   "o": "Assurance maladie",
+   "l": "{SP}transport%20sanitaire%20remboursement",
+   "r": "Les transports prescrits par un médecin (ambulance, taxi conventionné, VSL, véhicule personnel) peuvent être remboursés, notamment en cas d'affection de longue durée, d'hospitalisation ou de soins en série. Certains trajets nécessitent un accord préalable. Une franchise de 4 € par trajet s'applique, dans la limite du plafond annuel.",
+   "a": "Demandez la prescription de transport avant le trajet ; utilisez un taxi conventionné par l'Assurance maladie.",
+   "si": "transportSanitaire",
+   "n": "probable",
+   "w": "trajets pour des soins",
+   "d": "Santé"
+  },
+  {
+   "id": "cure",
+   "t": "Cure thermale",
+   "o": "Assurance maladie",
+   "l": "{SP}cure%20thermale",
+   "r": "Une cure thermale prescrite par un médecin est prise en charge en partie (forfait de surveillance médicale et forfait thermal) ; les frais de transport et d'hébergement peuvent être remboursés sous conditions de ressources.",
+   "a": "Envoyez la demande de prise en charge à votre caisse avant la cure.",
+   "si": "cure",
+   "n": "probable",
+   "w": "cure thermale",
+   "d": "Santé"
+  },
+  {
+   "id": "mon_espace_sante",
+   "t": "Mon espace santé",
+   "o": "Assurance maladie",
+   "l": "https://www.monespacesante.fr",
+   "r": "Mon espace santé est un service public gratuit qui rassemble vos documents médicaux (ordonnances, comptes rendus, résultats d'examens, vaccinations) et permet d'échanger de façon sécurisée avec vos soignants. Vous choisissez qui peut y accéder.",
+   "a": "Activez-le sur monespacesante.fr avec votre carte Vitale.",
+   "si": "dossierMedical",
+   "n": "info",
+   "w": "dossier médical en ligne",
+   "d": "Santé"
   },
   {
    "id": "apl",
@@ -2417,6 +2499,186 @@
    "d": "Décès & succession"
   },
   {
+   "id": "dons_impot",
+   "t": "Dons aux associations : réduction d'impôt",
+   "o": "Impôts",
+   "l": "{IMPOTS}",
+   "r": "Les dons à une association d'intérêt général donnent droit à une réduction d'impôt de 66 % de leur montant, dans la limite de 20 % du revenu imposable. Pour les associations d'aide aux personnes en difficulté (repas, logement, soins), le taux est de 75 % jusqu'à 2 000 € de dons par an depuis la loi de finances pour 2026, puis 66 % au-delà.",
+   "a": "Conservez les reçus fiscaux et reportez les montants sur votre déclaration de revenus.",
+   "si": "dons",
+   "n": "probable",
+   "w": "dons à des associations",
+   "pj": [
+    "Reçus fiscaux des associations"
+   ],
+   "d": "Bénévolat & dons"
+  },
+  {
+   "id": "frais_benevole",
+   "t": "Frais de bénévole : les transformer en don",
+   "o": "Votre association / impôts",
+   "l": "{SP}frais%20b%C3%A9n%C3%A9vole%20r%C3%A9duction%20d%27imp%C3%B4t",
+   "r": "Les frais engagés pour l'association (déplacements avec votre véhicule, achats de matériel) peuvent vous être remboursés, ou bien, si vous renoncez au remboursement, être considérés comme un don ouvrant droit à la réduction d'impôt, avec un reçu fiscal de l'association. Les kilomètres sont évalués selon un barème spécifique aux bénévoles.",
+   "a": "Tenez un relevé daté de vos frais et déplacements ; demandez à l'association un reçu fiscal pour les frais abandonnés.",
+   "si": {
+    "ou": [
+     "benevole",
+     "dirigeantAsso"
+    ]
+   },
+   "n": "possible",
+   "w": "bénévole",
+   "d": "Bénévolat & dons"
+  },
+  {
+   "id": "cec",
+   "t": "Compte d'engagement citoyen : de la formation pour les bénévoles",
+   "o": "Caisse des dépôts",
+   "l": "https://www.moncompteformation.gouv.fr",
+   "r": "Les bénévoles qui siègent dans l'organe d'administration ou de direction d'une association, ou qui encadrent d'autres bénévoles, acquièrent des droits à formation sur leur compte personnel de formation au titre du compte d'engagement citoyen, sous conditions de durée d'engagement. L'activité doit être déclarée chaque année.",
+   "a": "Déclarez vos heures de bénévolat sur le Compte Bénévole (associations.gouv.fr) avant la date limite annuelle ; l'association valide ensuite la déclaration.",
+   "si": {
+    "ou": [
+     "dirigeantAsso",
+     "benevole"
+    ]
+   },
+   "n": [
+    {
+     "si": "dirigeantAsso",
+     "n": "probable"
+    },
+    {
+     "n": "possible"
+    }
+   ],
+   "w": "engagement associatif",
+   "d": "Bénévolat & dons"
+  },
+  {
+   "id": "conge_asso",
+   "t": "Congé d'engagement associatif",
+   "o": "Votre employeur",
+   "l": "{SP}cong%C3%A9%20d%27engagement%20associatif",
+   "r": "Les salariés et agents publics qui exercent des responsabilités bénévoles dans une association (membre du bureau, encadrement de bénévoles) peuvent demander un congé, non rémunéré en principe sauf accord, pour leurs activités associatives, dans la limite de quelques jours par an.",
+   "a": "Faites la demande à votre employeur dans les délais prévus (en général au moins 30 jours avant).",
+   "si": {
+    "et": [
+     "dirigeantAsso",
+     {
+      "ou": [
+       "travaille"
+      ]
+     }
+    ]
+   },
+   "n": "possible",
+   "w": "dirigeant associatif salarié",
+   "d": "Bénévolat & dons"
+  },
+  {
+   "id": "asso_resp",
+   "t": "Dirigeant bénévole : responsabilités et assurance",
+   "o": "Association",
+   "l": "https://www.associations.gouv.fr",
+   "r": "L'association doit être assurée en responsabilité civile pour ses activités et ses bénévoles. Le dirigeant bénévole peut voir sa responsabilité engagée en cas de faute de gestion, appréciée avec indulgence pour un bénévole. Le site associations.gouv.fr et le guichet « Le Compte Asso » permettent de gérer les démarches (déclarations, subventions).",
+   "a": "Vérifiez que le contrat d'assurance de l'association couvre bien les bénévoles et les dirigeants.",
+   "si": "dirigeantAsso",
+   "n": "info",
+   "w": "dirigeant associatif",
+   "d": "Bénévolat & dons"
+  },
+  {
+   "id": "divorce",
+   "t": "Séparation ou divorce : les grandes étapes",
+   "o": "Notaire / juge aux affaires familiales",
+   "l": "{SP}divorce",
+   "r": "Le divorce par consentement mutuel se fait sans juge, par une convention signée par les deux époux, chacun assisté de son avocat, puis déposée chez un notaire. En cas de désaccord, le juge aux affaires familiales tranche. Pour un PACS, une simple déclaration conjointe ou unilatérale suffit ; pour un concubinage, aucune formalité, mais les questions d'enfants et de biens restent à régler. L'aide juridictionnelle peut prendre en charge les frais d'avocat.",
+   "a": "Prenez conseil auprès d'un avocat ou d'un Point-justice ; le médiateur familial (financé en partie par la CAF) aide à trouver des accords.",
+   "si": {
+    "ou": [
+     "separation",
+     {
+      "c": "sit",
+      "=": "separe"
+     }
+    ]
+   },
+   "n": [
+    {
+     "si": "separation",
+     "n": "probable"
+    },
+    {
+     "n": "info"
+    }
+   ],
+   "w": "séparation",
+   "d": "Séparation"
+  },
+  {
+   "id": "pension_alim",
+   "t": "Pension alimentaire et intermédiation de la CAF",
+   "o": "CAF / ARIPA",
+   "l": "https://www.pension-alimentaire.caf.fr",
+   "r": "La pension alimentaire pour les enfants est fixée par accord ou par le juge, selon les ressources de chacun et le mode de résidence (un barème indicatif existe). Elle est en principe versée par l'intermédiaire de la CAF (ARIPA), ce qui évite les retards ; en cas d'impayé, la CAF peut verser l'allocation de soutien familial et recouvrer les sommes dues.",
+   "a": "Demandez l'intermédiation financière sur pension-alimentaire.caf.fr ; signalez tout impayé à la CAF.",
+   "si": {
+    "ou": [
+     "pensionAlim",
+     {
+      "et": [
+       "separation",
+       {
+        "c": "enf",
+        ">": 0
+       }
+      ]
+     }
+    ]
+   },
+   "n": "probable",
+   "w": "pension alimentaire",
+   "d": "Séparation"
+  },
+  {
+   "id": "garde",
+   "t": "Résidence des enfants et autorité parentale",
+   "o": "Juge aux affaires familiales / médiation familiale",
+   "l": "{SP}r%C3%A9sidence%20de%20l%27enfant",
+   "r": "Après une séparation, les deux parents gardent en principe l'autorité parentale. La résidence des enfants (alternée ou chez l'un des parents, avec droit de visite) se fixe par accord, éventuellement homologué par le juge, ou par décision du juge. En résidence alternée, les allocations familiales peuvent être partagées.",
+   "a": "La médiation familiale aide à construire un accord ; faites homologuer la convention par le juge pour qu'elle soit applicable.",
+   "si": {
+    "ou": [
+     "gardeEnfants",
+     {
+      "et": [
+       "separation",
+       {
+        "c": "enf18",
+        ">": 0
+       }
+      ]
+     }
+    ]
+   },
+   "n": "probable",
+   "w": "enfants et séparation",
+   "d": "Séparation"
+  },
+  {
+   "id": "logement_fam",
+   "t": "Logement familial après une séparation",
+   "o": "Bailleur / banque / notaire",
+   "l": "{SP}logement%20s%C3%A9paration",
+   "r": "Pour un couple marié locataire, le bail appartient aux deux époux jusqu'au divorce ; en cas de violences, l'époux victime peut obtenir l'attribution du logement. Pour un bien acheté ensemble, il faut décider de la vente, du rachat de la part de l'autre ou de l'indivision ; le prêt reste dû par les deux co-emprunteurs tant que la banque n'a pas accepté de modification.",
+   "a": "Prévenez le bailleur ou la banque par écrit ; signalez le changement de situation à la CAF (aides au logement, prime d'activité).",
+   "si": "logementFamilial",
+   "n": "info",
+   "w": "logement familial",
+   "d": "Séparation"
+  },
+  {
    "id": "bilan_ret",
    "d": "Retraite",
    "t": "Faire le point sur votre retraite",
@@ -3432,6 +3694,82 @@
    "d": "Droit du travail"
   },
   {
+   "id": "micro_creer",
+   "t": "Créer une micro-entreprise",
+   "o": "URSSAF / guichet unique",
+   "l": "https://formalites.entreprises.gouv.fr",
+   "r": "La création est gratuite et se fait en ligne sur le guichet unique des formalités d'entreprises. Le régime micro-entrepreneur s'applique tant que le chiffre d'affaires annuel ne dépasse pas 203 100 € pour la vente de marchandises et l'hébergement, ou 83 600 € pour les prestations de services et professions libérales (plafonds 2026). Les cotisations sociales sont calculées en pourcentage du chiffre d'affaires encaissé : pas de chiffre d'affaires, pas de cotisations.",
+   "a": "Déclarez l'activité sur formalites.entreprises.gouv.fr ; renseignez-vous sur l'aide à la création (ACRE) auprès de l'URSSAF ; ouvrez un compte bancaire dédié si votre chiffre d'affaires dépasse 10 000 € deux années de suite.",
+   "si": "microProjet",
+   "n": "probable",
+   "w": "projet de micro-entreprise",
+   "pj": [
+    "Pièce d'identité",
+    "Justificatif de domicile",
+    "Attestation sur l'honneur de non-condamnation"
+   ],
+   "d": "Micro-entreprise"
+  },
+  {
+   "id": "micro_obligations",
+   "t": "Micro-entrepreneur : vos obligations",
+   "o": "URSSAF / impôts",
+   "l": "https://www.autoentrepreneur.urssaf.fr",
+   "r": "Déclarer le chiffre d'affaires à l'URSSAF chaque mois ou chaque trimestre (même s'il est nul), tenir un livre des recettes, et reporter le chiffre d'affaires sur la déclaration de revenus. La franchise de TVA s'applique en 2026 jusqu'à 85 000 € de ventes ou 37 500 € de services (avec une tolérance jusqu'à 93 500 € et 41 250 €) ; au-delà, la TVA est due. Un abattement forfaitaire de 71 %, 50 % ou 34 % selon l'activité est appliqué pour l'impôt.",
+   "a": "Déclarez en ligne sur autoentrepreneur.urssaf.fr ; activez les rappels de déclaration. Le versement libératoire de l'impôt est possible sous condition de revenu fiscal.",
+   "si": "microActif",
+   "n": "info",
+   "w": "micro-entreprise en activité",
+   "d": "Micro-entreprise"
+  },
+  {
+   "id": "cumul_public",
+   "t": "Agent public : autorisation de cumul d'activités",
+   "o": "Votre autorité hiérarchique",
+   "l": "https://www.justice.fr/fiche/cumuler-statuts-agent-public-micro-entrepreneur",
+   "r": "Un fonctionnaire ou un contractuel public peut exercer une activité accessoire (par exemple sous le statut de micro-entrepreneur) seulement avec une autorisation écrite préalable de son employeur, sauf pour quelques activités libres (œuvres de l'esprit, bénévolat…). La demande précise la nature, la durée, la périodicité et la rémunération de l'activité ; sans réponse écrite dans un délai d'un mois, la demande est considérée comme rejetée. L'autorisation est valable 3 ans, puis renouvelable. L'activité doit s'exercer en dehors des heures de service et ne pas nuire au fonctionnement du service.",
+   "a": "Adressez une demande écrite à votre autorité territoriale avant de commencer, et renouvelez-la un mois avant l'échéance. Ne démarrez pas sans réponse écrite favorable.",
+   "si": {
+    "et": [
+     "public",
+     {
+      "ou": [
+       "microProjet",
+       "microActif",
+       "activiteCote",
+       "independant2"
+      ]
+     }
+    ]
+   },
+   "n": "probable",
+   "w": "agent public avec une activité à côté",
+   "d": "Micro-entreprise"
+  },
+  {
+   "id": "cumul_prive",
+   "t": "Salarié : exercer une activité à côté",
+   "o": "Votre employeur",
+   "l": "https://www.service-public.gouv.fr",
+   "r": "Un salarié du privé peut en principe exercer une autre activité, à condition de respecter son obligation de loyauté (ne pas concurrencer son employeur ni utiliser ses moyens), une éventuelle clause d'exclusivité de son contrat et les durées maximales de travail.",
+   "a": "Relisez votre contrat de travail (clause d'exclusivité, de non-concurrence) ; informez votre employeur si le contrat l'exige.",
+   "si": {
+    "et": [
+     "prive",
+     {
+      "ou": [
+       "microProjet",
+       "microActif",
+       "activiteCote"
+      ]
+     }
+    ]
+   },
+   "n": "info",
+   "w": "salarié avec une activité à côté",
+   "d": "Micro-entreprise"
+  },
+  {
    "id": "plainte",
    "t": "Porter plainte",
    "o": "Police, gendarmerie ou procureur",
@@ -3962,6 +4300,33 @@
    },
    "n": "info",
    "w": "indispensable pour vos aides"
+  },
+  {
+   "id": "outremer",
+   "t": "Outre-mer : des règles et montants spécifiques",
+   "o": "CAF, CGSS, collectivités",
+   "l": "https://www.service-public.gouv.fr",
+   "r": "Dans les départements d'outre-mer, la caisse générale de sécurité sociale (CGSS) remplace la CPAM et la CARSAT. Certains montants et conditions diffèrent de la métropole, en particulier à Mayotte (RSA, allocations, retraite). L'électricité y est fournie par EDF au tarif réglementé, sans offre concurrente, et les opérateurs de téléphonie sont propres à chaque territoire. Des aides spécifiques existent aussi (continuité territoriale pour les billets d'avion, aides au logement social).",
+   "a": "Vérifiez les montants auprès de la CAF ou de la CGSS de votre territoire ; LADOM gère les aides à la mobilité (passeport pour la mobilité, aide à la continuité territoriale).",
+   "si": "outremer",
+   "n": "info",
+   "w": "vous habitez en outre-mer",
+   "d": "Outre-mer"
+  },
+  {
+   "id": "corse",
+   "t": "Corse : énergie et transports",
+   "o": "EDF / Collectivité de Corse",
+   "l": "https://www.isula.corsica",
+   "r": "En Corse, l'électricité est fournie par EDF au tarif réglementé (sans offre concurrente) et il n'y a pas de réseau de gaz naturel. Des tarifs résidents existent sur les liaisons aériennes et maritimes avec le continent.",
+   "a": "Renseignez-vous auprès des compagnies sur les tarifs résidents.",
+   "si": {
+    "c": "territoire",
+    "=": "corse"
+   },
+   "n": "info",
+   "w": "vous habitez en Corse",
+   "d": "Outre-mer"
   }
  ],
  "energie": {
@@ -4380,7 +4745,8 @@
    "objet": "Résiliation de mon contrat {contrat}",
    "ref": "Référence : {ref}",
    "corps": "Madame, Monsieur,\n\nPar la présente, je vous informe de ma volonté de résilier mon contrat {contrat} (référence {ref}).\n\n{motif}\n\nJe vous remercie de m'adresser une confirmation écrite de cette résiliation, ainsi que, le cas échéant, le remboursement de la part de cotisation ou d'abonnement correspondant à la période non couverte.\n\nVeuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
-   "conseil": "Pour une assurance auto ou habitation, le nouvel assureur peut faire la résiliation à votre place. Pour le téléphone et internet, la portabilité du numéro résilie automatiquement l'ancien contrat."
+   "conseil": "Pour une assurance auto ou habitation, le nouvel assureur peut faire la résiliation à votre place. Pour le téléphone et internet, la portabilité du numéro résilie automatiquement l'ancien contrat.",
+   "relance": 30
   },
   {
    "id": "reclamation",
@@ -4431,7 +4797,8 @@
    "objet": "Contestation de la facture {facture}",
    "ref": "Référence client : {ref}",
    "corps": "Madame, Monsieur,\n\nJe conteste la facture {facture}, pour un montant de {montant} €, pour les raisons suivantes :\n\n{explication}\n\nJe vous demande de bien vouloir procéder à une vérification et de m'adresser une facture rectifiée, ainsi que le remboursement des sommes indûment prélevées le cas échéant.\n\nÀ défaut de réponse satisfaisante dans un délai de deux mois, je saisirai le médiateur compétent.\n\nVeuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
-   "conseil": "Gardez une copie de ce courrier : elle sera demandée par le médiateur si le litige persiste."
+   "conseil": "Gardez une copie de ce courrier : elle sera demandée par le médiateur si le litige persiste.",
+   "relance": 60
   },
   {
    "id": "echeancier",
@@ -4482,7 +4849,8 @@
    "objet": "Demande d'échéancier de paiement",
    "ref": "Référence : {ref}",
    "corps": "Madame, Monsieur,\n\nJe vous informe que je rencontre actuellement des difficultés financières qui ne me permettent pas de régler en une seule fois la somme de {montant} € dont je vous suis redevable.\n\n{explication}\n\nAfin de m'acquitter de cette dette, je vous propose un échéancier de {mensualite} € par mois, à compter du mois prochain. Je vous remercie de bien vouloir suspendre toute procédure de recouvrement pendant la durée de cet échéancier.\n\nDans l'attente de votre accord, je vous prie d'agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
-   "conseil": "Proposez une mensualité que vous pourrez vraiment tenir. Le CCAS de votre mairie peut aussi vous aider à monter un dossier d'aide (FSL)."
+   "conseil": "Proposez une mensualité que vous pourrez vraiment tenir. Le CCAS de votre mairie peut aussi vous aider à monter un dossier d'aide (FSL).",
+   "relance": 15
   },
   {
    "id": "retractation",
@@ -4531,7 +4899,8 @@
    "objet": "Exercice de mon droit de rétractation",
    "ref": "Commande n° {commande}",
    "corps": "Madame, Monsieur,\n\nConformément aux articles L. 221-18 et suivants du Code de la consommation, je vous notifie par la présente ma rétractation du contrat portant sur : {produit}, commandé le {date_cmd} et reçu le {date_recep}.\n\nJe vous demande de me rembourser la totalité des sommes versées, y compris les frais de livraison initiaux, au plus tard dans les 14 jours suivant la réception de ce courrier.\n\nVeuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
-   "conseil": "Le délai est de 14 jours à partir de la réception du produit (ou de la signature pour un service). Renvoyez le produit en gardant la preuve du dépôt."
+   "conseil": "Le délai est de 14 jours à partir de la réception du produit (ou de la signature pour un service). Renvoyez le produit en gardant la preuve du dépôt.",
+   "relance": 20
   },
   {
    "id": "garantie",
@@ -4586,7 +4955,8 @@
    "dest": "{dest}\n{dest_adr}",
    "objet": "Mise en œuvre de la garantie légale de conformité",
    "corps": "Madame, Monsieur,\n\nLe {date_achat}, j'ai acheté dans votre établissement le produit suivant : {produit}.\n\nCe produit présente le défaut suivant : {defaut}\n\nEn application des articles L. 217-3 et suivants du Code de la consommation, je vous demande {demande}, sans frais, dans un délai raisonnable. Je vous rappelle que pendant deux ans à compter de la délivrance, le défaut est présumé exister au moment de l'achat.\n\nVeuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
-   "conseil": "Adressez-vous au vendeur, pas au fabricant. Joignez une copie de la facture (gardez l'original)."
+   "conseil": "Adressez-vous au vendeur, pas au fabricant. Joignez une copie de la facture (gardez l'original).",
+   "relance": 30
   },
   {
    "id": "frais_bancaires",
@@ -4630,7 +5000,8 @@
    "objet": "Demande de remboursement de frais bancaires",
    "ref": "Compte n° {compte}",
    "corps": "Madame, Monsieur,\n\nJ'ai constaté sur mon compte des frais bancaires d'un montant total de {montant} € au titre de la période {periode}.\n\n{explication}\n\nCompte tenu de ma situation, je vous demande le remboursement de ces frais à titre commercial. Je vous demande également de vérifier le respect des plafonds légaux de frais d'incidents et, le cas échéant, de me proposer l'offre spécifique destinée aux clients en situation de fragilité financière.\n\nVeuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
-   "conseil": "Sans réponse satisfaisante, le service réclamations puis le médiateur bancaire (gratuit) peuvent être saisis."
+   "conseil": "Sans réponse satisfaisante, le service réclamations puis le médiateur bancaire (gratuit) peuvent être saisis.",
+   "relance": 30
   },
   {
    "id": "depot_garantie",
@@ -4685,7 +5056,8 @@
    "dest": "{dest}\n{dest_adr}",
    "objet": "Mise en demeure de restituer le dépôt de garantie",
    "corps": "Madame, Monsieur,\n\nJ'ai quitté le logement situé {logement}, et l'état des lieux de sortie a été établi le {date_sortie}.\n\nÀ ce jour, le dépôt de garantie d'un montant de {montant} € ne m'a pas été restitué. {etat}\n\nConformément à l'article 22 de la loi n° 89-462 du 6 juillet 1989, je vous mets en demeure de me restituer cette somme dans les plus brefs délais. Je vous rappelle que tout retard donne lieu à une majoration égale à 10 % du loyer mensuel pour chaque mois de retard commencé.\n\nÀ défaut, je saisirai la commission départementale de conciliation, puis le tribunal compétent.\n\nVeuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
-   "conseil": "Joignez une copie des états des lieux d'entrée et de sortie. L'ADIL de votre département vous conseille gratuitement."
+   "conseil": "Joignez une copie des états des lieux d'entrée et de sortie. L'ADIL de votre département vous conseille gratuitement.",
+   "relance": 30
   },
   {
    "id": "preavis",
@@ -4740,7 +5112,8 @@
    "dest": "{dest}\n{dest_adr}",
    "objet": "Congé du logement situé {logement}",
    "corps": "Madame, Monsieur,\n\nPar la présente, je vous informe de ma décision de quitter le logement que je loue, situé {logement}.\n\nLe préavis applicable est {duree}. Il court à compter de la réception de ce courrier.\n\nJe vous propose de convenir d'une date pour l'état des lieux de sortie et la remise des clés, et vous remercie de me restituer le dépôt de garantie dans les délais légaux.\n\nVeuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
-   "conseil": "En cas de préavis réduit, joignez le justificatif (attestation de l'employeur, de France Travail, de la CAF, certificat médical…)."
+   "conseil": "En cas de préavis réduit, joignez le justificatif (attestation de l'employeur, de France Travail, de la CAF, certificat médical…).",
+   "relance": 30
   },
   {
    "id": "travaux",
@@ -4778,7 +5151,8 @@
    "dest": "{dest}\n{dest_adr}",
    "objet": "Mise en demeure de réaliser des travaux",
    "corps": "Madame, Monsieur,\n\nJe vous signale que le logement que je loue, situé {logement}, présente depuis {depuis} les désordres suivants :\n\n{probleme}\n\nConformément à l'article 6 de la loi n° 89-462 du 6 juillet 1989 et au décret n° 2002-120 du 30 janvier 2002 relatif au logement décent, il vous appartient de me délivrer un logement décent et d'effectuer les réparations autres que locatives.\n\nJe vous mets donc en demeure de réaliser les travaux nécessaires dans un délai d'un mois. À défaut, je me réserve le droit de saisir la commission départementale de conciliation, la CAF et le tribunal compétent.\n\nVeuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
-   "conseil": "Ne cessez pas de payer votre loyer sans décision d'un juge. Joignez des photos datées."
+   "conseil": "Ne cessez pas de payer votre loyer sans décision d'un juge. Joignez des photos datées.",
+   "relance": 30
   },
   {
    "id": "emprunteur",
@@ -4817,7 +5191,8 @@
    "objet": "Demande de substitution d'assurance emprunteur",
    "ref": "Prêt n° {pret}",
    "corps": "Madame, Monsieur,\n\nTitulaire du prêt immobilier n° {pret}, je vous informe de ma décision de changer d'assurance emprunteur, comme la loi m'y autorise à tout moment.\n\nVous trouverez ci-joint le nouveau contrat souscrit auprès de {assureur}, qui présente un niveau de garanties équivalent à celui exigé par votre établissement. Je vous demande d'accepter cette substitution à compter du {date_effet} et de m'adresser votre décision dans un délai de dix jours ouvrés, ainsi que l'avenant à mon offre de prêt.\n\nVeuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
-   "conseil": "La banque ne peut pas modifier le taux du prêt ni facturer de frais pour ce changement. Tout refus doit être motivé."
+   "conseil": "La banque ne peut pas modifier le taux du prêt ni facturer de frais pour ce changement. Tout refus doit être motivé.",
+   "relance": 15
   },
   {
    "id": "amende",
@@ -4893,7 +5268,8 @@
    "dest": "{dest}\n{dest_adr}",
    "objet": "Requête en exonération — avis de contravention n° {avis}",
    "corps": "Madame, Monsieur l'Officier du ministère public,\n\nJe conteste l'avis de contravention n° {avis} concernant une infraction relevée le {date_inf} pour le véhicule immatriculé {immat}.\n\n{motif}\n\nJe vous demande en conséquence de bien vouloir classer cette contravention sans suite.\n\nVeuillez agréer, Madame, Monsieur l'Officier du ministère public, l'expression de ma considération distinguée.",
-   "conseil": "La contestation se fait en principe dans les 45 jours, de préférence en ligne sur antai.gouv.fr. Ne payez pas l'amende si vous contestez (une consignation peut être demandée selon le motif)."
+   "conseil": "La contestation se fait en principe dans les 45 jours, de préférence en ligne sur antai.gouv.fr. Ne payez pas l'amende si vous contestez (une consignation peut être demandée selon le motif).",
+   "relance": 45
   },
   {
    "id": "deces",
@@ -4942,7 +5318,8 @@
    "objet": "Décès de {defunt}",
    "ref": "Références : {ref}",
    "corps": "Madame, Monsieur,\n\nJ'ai le regret de vous informer du décès de {defunt}, survenu le {date_deces}, dont je suis {lien}.\n\nJe vous remercie de bien vouloir procéder à la clôture ou à la résiliation des contrats et comptes référencés ci-dessus, sans frais, à compter de la date du décès, et de m'indiquer les éventuelles sommes restant dues ou à rembourser. Je vous prie de m'adresser toute correspondance à l'adresse indiquée ci-dessus.\n\nVous trouverez ci-joint une copie de l'acte de décès.\n\nVeuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
-   "conseil": "Le service en ligne « Déclarer un décès » de service-public.fr permet d'informer plusieurs organismes publics en une fois."
+   "conseil": "Le service en ligne « Déclarer un décès » de service-public.fr permet d'informer plusieurs organismes publics en une fois.",
+   "relance": 30
   },
   {
    "id": "relance_mediateur",
@@ -4989,7 +5366,8 @@
    "objet": "Relance — réclamation du {date_recl}",
    "ref": "Référence : {ref}",
    "corps": "Madame, Monsieur,\n\nLe {date_recl}, je vous ai adressé une réclamation concernant : {objet_litige}.\n\nÀ ce jour, je n'ai pas reçu de réponse satisfaisante. Je vous demande de traiter ma demande dans les meilleurs délais et de m'indiquer les coordonnées de votre service réclamations ou de votre service consommateurs.\n\nÀ défaut de solution, je saisirai le médiateur compétent, dont vous voudrez bien me communiquer les coordonnées conformément à vos obligations légales.\n\nVeuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
-   "conseil": "Le médiateur peut en général être saisi deux mois après la première réclamation écrite (un mois pour certains secteurs)."
+   "conseil": "Le médiateur peut en général être saisi deux mois après la première réclamation écrite (un mois pour certains secteurs).",
+   "relance": 60
   }
  ],
  "echeances": [
@@ -5100,6 +5478,12 @@
    "titre": "Ouverture de la déclaration de revenus",
    "info": "Date limite en mai ou juin selon votre département. Déclarez même avec de faibles revenus : l'avis sert pour de nombreuses aides.",
    "approx": true
+  },
+  {
+   "date": "2027-01-31",
+   "titre": "Déclaration trimestrielle URSSAF du 4e trimestre (micro-entreprise)",
+   "info": "Si vous déclarez au trimestre : chiffre d'affaires d'octobre à décembre.",
+   "si": "microActif"
   }
  ],
  "annuaire": [
@@ -5309,6 +5693,146 @@
    "nom": "La Médiation de l'Assurance",
    "num": "En ligne",
    "url": "https://www.mediation-assurance.org"
+  },
+  {
+   "cat": "Démarches et aides",
+   "nom": "LADOM (mobilité outre-mer)",
+   "num": "En ligne",
+   "info": "Continuité territoriale, passeport pour la mobilité.",
+   "url": "https://www.ladom.fr"
+  },
+  {
+   "cat": "Emploi et retraite",
+   "nom": "URSSAF auto-entrepreneur",
+   "num": "En ligne",
+   "url": "https://www.autoentrepreneur.urssaf.fr"
   }
- ]
+ ],
+ "retraite": {
+  "source": "Règles en vigueur après la suspension de la réforme des retraites au 1er septembre 2026.",
+  "taux_plein_auto": 67,
+  "progressive_min": 60,
+  "generations": [
+   {
+    "du": "1955-01-01",
+    "au": "1957-12-31",
+    "age_a": 62,
+    "age_m": 0,
+    "trim": 166,
+    "cl": "départ possible dès 58 ou 60 ans selon l'âge de début de carrière"
+   },
+   {
+    "du": "1958-01-01",
+    "au": "1960-12-31",
+    "age_a": 62,
+    "age_m": 0,
+    "trim": 167,
+    "cl": "départ possible dès 58 ou 60 ans selon l'âge de début de carrière"
+   },
+   {
+    "du": "1961-01-01",
+    "au": "1961-08-31",
+    "age_a": 62,
+    "age_m": 0,
+    "trim": 168,
+    "cl": "départ possible dès 58 ou 60 ans selon l'âge de début de carrière"
+   },
+   {
+    "du": "1961-09-01",
+    "au": "1961-12-31",
+    "age_a": 62,
+    "age_m": 3,
+    "trim": 169,
+    "cl": "58 ou 60 ans, avec 169 trimestres cotisés"
+   },
+   {
+    "du": "1962-01-01",
+    "au": "1962-12-31",
+    "age_a": 62,
+    "age_m": 6,
+    "trim": 169,
+    "cl": "58 ou 60 ans, avec 169 trimestres cotisés"
+   },
+   {
+    "du": "1963-01-01",
+    "au": "1963-08-31",
+    "age_a": 62,
+    "age_m": 9,
+    "trim": 170,
+    "cl": "58 ou 60 ans, avec 170 trimestres cotisés"
+   },
+   {
+    "du": "1963-09-01",
+    "au": "1963-12-31",
+    "age_a": 62,
+    "age_m": 9,
+    "trim": 170,
+    "cl": "58 ans, 60 ans ou 60 ans et 3 mois, avec 170 trimestres cotisés"
+   },
+   {
+    "du": "1964-01-01",
+    "au": "1964-12-31",
+    "age_a": 62,
+    "age_m": 9,
+    "trim": 170,
+    "cl": "58 ans, 60 ans ou 60 ans et 6 mois, avec 171 trimestres cotisés"
+   },
+   {
+    "du": "1965-01-01",
+    "au": "1965-03-31",
+    "age_a": 62,
+    "age_m": 9,
+    "trim": 170,
+    "cl": "58 ans, 60 ans, 60 ans et 9 mois ou 63 ans, avec 172 trimestres cotisés"
+   },
+   {
+    "du": "1965-04-01",
+    "au": "1965-12-31",
+    "age_a": 63,
+    "age_m": 0,
+    "trim": 171,
+    "cl": "58 ans, 60 ans, 60 ans et 9 mois ou 63 ans, avec 172 trimestres cotisés"
+   },
+   {
+    "du": "1966-01-01",
+    "au": "1966-12-31",
+    "age_a": 63,
+    "age_m": 3,
+    "trim": 172,
+    "cl": "58, 60, 61 ou 63 ans, avec 172 trimestres cotisés"
+   },
+   {
+    "du": "1967-01-01",
+    "au": "1967-12-31",
+    "age_a": 63,
+    "age_m": 6,
+    "trim": 172,
+    "cl": "58 ans, 60 ans, 61 ans et 3 mois ou 63 ans, avec 172 trimestres cotisés"
+   },
+   {
+    "du": "1968-01-01",
+    "au": "1968-12-31",
+    "age_a": 63,
+    "age_m": 9,
+    "trim": 172,
+    "cl": "58 ans, 60 ans, 61 ans et 6 mois ou 63 ans, avec 172 trimestres cotisés"
+   },
+   {
+    "du": "1969-01-01",
+    "au": "1969-12-31",
+    "age_a": 64,
+    "age_m": 0,
+    "trim": 172,
+    "cl": "58 ans, 60 ans, 61 ans et 9 mois ou 63 ans, avec 172 trimestres cotisés"
+   },
+   {
+    "du": "1970-01-01",
+    "au": "2015-12-31",
+    "age_a": 64,
+    "age_m": 0,
+    "trim": 172,
+    "cl": "58, 60, 62 ou 63 ans, avec 172 trimestres cotisés"
+   }
+  ]
+ }
 }

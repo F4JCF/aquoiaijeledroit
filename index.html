@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>À quoi ai-je le droit ?</title>
+<link rel="icon" href="{{ICONE}}">
+<meta name="theme-color" content="#14524f">
 <style>
 :root{
   --papier:#f6f3ec; --carte:#fffdf8; --encre:#1d2a2f; --doux:#5a666b; --ligne:#e2dccf;
@@ -151,6 +153,19 @@ body.contraste aside{background:#06302e}
 body.contraste .etape{color:#fff}
 body.contraste .sous,body.contraste .confidentiel,body.contraste .majbloc{color:#e6f2f0}
 
+.cherchebloc input{width:100%;padding:8px 10px;border-radius:8px;border:1px solid #3d847e;background:#1c625e;color:#fff;font-size:15px;margin-bottom:6px}
+.cherchebloc input::placeholder{color:#b9d3cf}
+.dem{background:var(--carte);border:1px solid var(--ligne);border-left:5px solid var(--mer);border-radius:12px;padding:12px 16px;margin-bottom:8px;display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
+.dem.close{opacity:.6;border-left-color:var(--ligne)}
+.dem.retard{border-left-color:var(--rouge)}
+.dem .t{flex:1;min-width:200px}.dem .t small{display:block;color:var(--doux);font-size:13px}
+.dem select,.dem input{padding:6px 8px;border:1.5px solid var(--ligne);border-radius:8px;font-size:14px}
+.dem button{background:none;border:0;cursor:pointer;color:var(--doux);font-size:18px}
+.retr{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 16px}
+.retr div{background:var(--carte);border:1px solid var(--ligne);border-radius:var(--rayon);padding:14px 18px}
+.retr b{display:block;font-family:Georgia,serif;font-size:24px;font-weight:normal;line-height:1.2}
+.retr span{font-size:14px;color:var(--doux)}
+
 .cache{display:none!important}
 .nav{display:flex;justify-content:space-between;margin-top:26px;gap:12px}
 .btn{border:0;border-radius:10px;padding:12px 22px;cursor:pointer;font-weight:600}
@@ -204,12 +219,38 @@ body.contraste .sous,body.contraste .confidentiel,body.contraste .majbloc{color:
   .droit .url{display:block!important;font-size:12px;color:#444}
 }
 .url{display:none}
+.menu-mobile{display:none}
+@media (max-width:760px){
+  body{flex-direction:column;height:auto;min-height:100%}
+  aside{width:100%;padding:12px 16px;gap:4px;position:sticky;top:0;z-index:5;max-height:100vh}
+  aside .logo{width:44px;height:44px;margin:0;float:left;margin-right:10px}
+  .marque{font-size:20px;margin:4px 0 0}
+  .sous{display:none}
+  .menu-mobile{display:block;position:absolute;right:14px;top:14px;background:#1c625e;color:#fff;border:1px solid #3d847e;border-radius:8px;padding:8px 12px;font-size:16px;cursor:pointer}
+  aside:not(.ouvert) .profilbloc,aside:not(.ouvert) #etapes,aside:not(.ouvert) .outilsnav,aside:not(.ouvert) .access,aside:not(.ouvert) .majbloc,aside:not(.ouvert) .confidentiel{display:none}
+  aside.ouvert{overflow:auto}
+  main{padding:18px 16px 50px;overflow:visible}
+  h2{font-size:26px}
+  .grille,.bilan,.retr,.lettres-grille{grid-template-columns:1fr}
+  .comp{padding:14px}
+  table.offres{font-size:13px}
+  .offres td,.offres th{padding:6px 4px}
+  .lettre{padding:20px}
+  .lettre .dest{margin-left:0}
+  .nav{flex-wrap:wrap}
+  html,body{overflow-x:hidden}
+  .ssonglets{flex-wrap:nowrap;overflow-x:auto}
+  .sso{white-space:nowrap;padding:8px 10px}
+  table.offres{display:block;overflow-x:auto}
+  .comp-reglages input[type=number]{width:100px}
+  .annu{flex-direction:column;gap:2px}
+}
 </style>
 </head>
 <body>
 
 <aside>
-  <img class="logo" src="{{ICONE}}" alt="">
+  <img class="logo" src="{{ICONE}}" alt=""><button class="menu-mobile" id="menuMobile" aria-label="Menu">☰ Menu</button>
   <h1 class="marque">À quoi ai-je <em>le droit&nbsp;?</em></h1>
   <p class="sous">Aides, allocations, retraite, handicap, logement, factures, consommation, travail, route, justice — un premier repérage en 5 minutes.</p>
   <div class="profilbloc">
@@ -218,7 +259,10 @@ body.contraste .sous,body.contraste .confidentiel,body.contraste .majbloc{color:
   </div>
   <nav id="etapes"></nav>
   <div class="outilsnav">
+    <div class="cherchebloc"><input type="search" id="rechercheRapide" placeholder="🔍 Chercher un droit…"></div>
     <button class="etape" data-outil="o-lettres"><span class="n">📝</span><span>Lettres types</span></button>
+    <button class="etape" data-outil="o-demarches"><span class="n">📂</span><span>Mes démarches <b id="nbDem"></b></span></button>
+    <button class="etape" data-outil="o-retraite"><span class="n">🧮</span><span>Simulateur retraite</span></button>
     <button class="etape" data-outil="o-echeances"><span class="n">📅</span><span>Mes échéances <b id="nbEch"></b></span></button>
     <button class="etape" data-outil="o-annuaire"><span class="n">☎</span><span>Numéros utiles</span></button>
   </div>
@@ -226,12 +270,17 @@ body.contraste .sous,body.contraste .confidentiel,body.contraste .majbloc{color:
     <button id="btnTaille" title="Agrandir le texte">A+ Taille</button>
     <button id="btnContraste" title="Contraste renforcé">◐ Contraste</button>
   </div>
+  <div class="access">
+    <button id="btnExport" title="Enregistrer une copie de vos profils et rappels dans un fichier">💾 Sauvegarder</button>
+    <button id="btnImport" title="Récupérer une sauvegarde">📥 Restaurer</button>
+    <input type="file" id="fichierImport" accept=".json,application/json" class="cache">
+  </div>
   <div class="majbloc">
     <div id="majInfo"></div>
     <button id="btnMaj" onclick="verifierMaj(false)">⟳ Rechercher les mises à jour</button>
     <div id="majEtat"></div>
   </div>
-  <div class="confidentiel">🔒 Tout reste sur cet ordinateur : aucune réponse n'est envoyée sur Internet.</div>
+  <div class="confidentiel">🔒 Tout reste sur cet appareil : aucune réponse n'est envoyée sur Internet.</div>
 </aside>
 
 <main>
@@ -252,6 +301,18 @@ body.contraste .sous,body.contraste .confidentiel,body.contraste .majbloc{color:
       <label><input type="radio" name="situation" value="separe">Divorcé(e) ou séparé(e)</label>
       <label><input type="radio" name="situation" value="veuf">Veuf / veuve</label>
     </div>
+  </div>
+  <div class="q"><span class="titre">Où habitez-vous ?</span>
+    <div class="choix" data-nom="territoire">
+      <label><input type="radio" name="territoire" value="metropole">France métropolitaine</label>
+      <label><input type="radio" name="territoire" value="corse">Corse</label>
+      <label><input type="radio" name="territoire" value="guadeloupe">Guadeloupe</label>
+      <label><input type="radio" name="territoire" value="martinique">Martinique</label>
+      <label><input type="radio" name="territoire" value="guyane">Guyane</label>
+      <label><input type="radio" name="territoire" value="reunion">La Réunion</label>
+      <label><input type="radio" name="territoire" value="mayotte">Mayotte</label>
+    </div>
+    <div class="aide">Certaines règles, certains montants et les offres d'énergie ou de téléphone diffèrent en Corse et en outre-mer.</div>
   </div>
 </section>
 
@@ -346,6 +407,11 @@ body.contraste .sous,body.contraste .confidentiel,body.contraste .majbloc{color:
     <label><input type="checkbox" id="horairesAtypiques"><span>Le travail de nuit, le dimanche ou les jours fériés</span></label>
     <label class="pour-prive"><input type="checkbox" id="entrepriseDifficulte"><span>Mon employeur est en difficulté (redressement, liquidation)</span></label>
     <label class="pour-public"><input type="checkbox" id="mobilite"><span>Une mutation, une disponibilité ou un détachement</span></label>
+  </div></div>
+  <div class="q"><span class="titre">Micro-entreprise et activité à côté</span><div class="coches">
+    <label><input type="checkbox" id="microProjet"><span>Je veux créer une micro-entreprise (auto-entrepreneur)</span></label>
+    <label><input type="checkbox" id="microActif"><span>J'ai déjà une micro-entreprise</span></label>
+    <label><input type="checkbox" id="activiteCote"><span>J'ai (ou je veux) une activité rémunérée en plus de mon emploi principal</span></label>
   </div></div>
 </section>
 
@@ -578,6 +644,8 @@ body.contraste .sous,body.contraste .confidentiel,body.contraste .majbloc{color:
     <button class="sso on" data-g="vie" data-p="jeunes">🎓 Jeunes & études</button>
     <button class="sso" data-g="vie" data-p="seniors">🧓 Seniors</button>
     <button class="sso" data-g="vie" data-p="deces">🕊 Décès & succession</button>
+    <button class="sso" data-g="vie" data-p="separation">💔 Séparation</button>
+    <button class="sso" data-g="vie" data-p="benevolat">🤝 Bénévolat & dons</button>
   </div>
   <div class="ssp on" data-g="vie" id="ssp-jeunes">
     <div class="q"><span class="titre">Vous êtes (ou votre enfant est)…</span><div class="coches">
@@ -604,6 +672,21 @@ body.contraste .sous,body.contraste .confidentiel,body.contraste .majbloc{color:
       <label><input type="checkbox" id="donation"><span>Un projet de donation à un enfant ou petit-enfant</span></label>
     </div></div>
   </div>
+  <div class="ssp" data-g="vie" id="ssp-separation">
+    <div class="q"><span class="titre">Vous êtes concerné(e) par…</span><div class="coches">
+      <label><input type="checkbox" id="separation"><span>Une séparation ou un divorce (en cours ou envisagé)</span></label>
+      <label><input type="checkbox" id="pensionAlim"><span>Une pension alimentaire à fixer, à payer ou à recevoir</span></label>
+      <label><input type="checkbox" id="gardeEnfants"><span>La résidence des enfants (garde alternée, droit de visite)</span></label>
+      <label><input type="checkbox" id="logementFamilial"><span>Le logement familial (qui reste, qui part, prêt en cours)</span></label>
+    </div></div>
+  </div>
+  <div class="ssp" data-g="vie" id="ssp-benevolat">
+    <div class="q"><span class="titre">Vous êtes concerné(e) par…</span><div class="coches">
+      <label><input type="checkbox" id="benevole"><span>Je suis bénévole dans une association</span></label>
+      <label><input type="checkbox" id="dirigeantAsso"><span>Je suis dirigeant(e) bénévole (président, trésorier, secrétaire…)</span></label>
+      <label><input type="checkbox" id="dons"><span>Je fais des dons à des associations</span></label>
+    </div></div>
+  </div>
 </section>
 
 <!-- 6. Santé & autonomie -->
@@ -624,6 +707,14 @@ body.contraste .sous,body.contraste .confidentiel,body.contraste .majbloc{color:
     <label><input type="checkbox" id="autonomie"><span>J'ai besoin d'aide pour les gestes du quotidien (toilette, repas, déplacements)</span></label>
     <label><input type="checkbox" id="aidant"><span>J'aide régulièrement un proche malade, âgé ou handicapé</span></label>
     <label><input type="checkbox" id="aideDomicile"><span>J'emploie ou j'aimerais employer une aide à domicile (ménage, jardinage, garde…)</span></label>
+  </div></div>
+  <div class="q"><span class="titre">Santé au quotidien</span><div class="coches">
+    <label><input type="checkbox" id="sansMedecin"><span>Je n'ai pas de médecin traitant</span></label>
+    <label><input type="checkbox" id="depassements"><span>Des dépassements d'honoraires ou des restes à charge élevés</span></label>
+    <label><input type="checkbox" id="renoncement"><span>Je renonce à des soins pour des raisons d'argent</span></label>
+    <label><input type="checkbox" id="transportSanitaire"><span>Des trajets réguliers pour des soins (taxi, ambulance, VSL)</span></label>
+    <label><input type="checkbox" id="cure"><span>Une cure thermale prescrite</span></label>
+    <label><input type="checkbox" id="dossierMedical"><span>Mon dossier médical en ligne (Mon espace santé)</span></label>
   </div></div>
 </section>
 
@@ -723,6 +814,7 @@ body.contraste .sous,body.contraste .confidentiel,body.contraste .majbloc{color:
       <button class="btn prim" onclick="imprimerLettre()">🖨 Imprimer / PDF</button>
       <button class="btn sec" onclick="copierLettre()">📋 Copier le texte</button>
       <button class="btn sec" onclick="parler(document.getElementById('lettreApercu').innerText)">🔊 Écouter</button>
+      <button class="btn sec" onclick="lettreEnvoyee()">📂 J'ai envoyé cette lettre</button>
       <span id="copieOk" class="aide"></span>
     </div>
     <div class="lettre" id="lettreApercu"></div>
@@ -747,6 +839,50 @@ body.contraste .sous,body.contraste .confidentiel,body.contraste .majbloc{color:
     <input type="hidden" id="mesEcheances" value="[]"><input type="hidden" id="lettresVals" value="{}">
   </div>
   <div id="listeEcheances"></div>
+</section>
+
+
+<section class="panneau outil" id="o-recherche" data-titre="Recherche">
+  <h2>🔍 Chercher un droit</h2>
+  <p class="intro">Tapez un mot (par exemple « dépôt de garantie », « APL », « retraite », « amende ») : tous les droits du logiciel qui en parlent s'affichent, sans remplir le questionnaire.</p>
+  <input type="search" id="rechercheGrande" placeholder="Votre recherche…" style="width:100%;padding:12px 14px;border:1.5px solid var(--ligne);border-radius:10px;font-size:17px;margin-bottom:14px">
+  <div id="resRecherche"></div>
+</section>
+
+<section class="panneau outil" id="o-demarches" data-titre="Mes démarches">
+  <h2>📂 Mes démarches</h2>
+  <p class="intro">Gardez la trace de vos courriers et dossiers : date d'envoi, réponse attendue, relance. Les relances apparaissent dans vos échéances et au lancement du logiciel.</p>
+  <div class="comp">
+    <h3>Nouvelle démarche</h3>
+    <div class="comp-reglages">
+      <label>Objet<input type="text" id="demTitre" style="width:240px" placeholder="ex. Demande APL"></label>
+      <label>Organisme<input type="text" id="demOrg" style="width:180px" placeholder="ex. CAF"></label>
+      <label>Envoyée le<input type="date" id="demDate"></label>
+      <label>Relancer dans<select id="demDelai"><option value="15">15 jours</option><option value="30" selected>1 mois</option><option value="60">2 mois</option><option value="90">3 mois</option><option value="0">pas de relance</option></select></label>
+      <button class="btn prim" id="demAjout" style="align-self:flex-end">Ajouter</button>
+    </div>
+    <input type="hidden" id="mesDemarches" value="[]">
+  </div>
+  <div id="listeDemarches"></div>
+</section>
+
+<section class="panneau outil" id="o-retraite" data-titre="Simulateur retraite">
+  <h2>🧮 Simulateur de retraite</h2>
+  <p class="intro">Estimez votre âge de départ et la date à laquelle vous aurez tous vos trimestres. Le montant de la pension se calcule sur le simulateur officiel, à partir de votre relevé de carrière.</p>
+  <div class="comp">
+    <div class="comp-reglages">
+      <label>Date de naissance<input type="date" id="rNaissance"></label>
+      <label>Trimestres déjà validés<span><input type="number" id="rTrim" min="0" max="250" placeholder="ex. 150"></span></label>
+      <label>Âge au premier emploi<span><input type="number" id="rDebut" min="12" max="40" placeholder="ex. 18"> ans</span></label>
+      <label class="chk"><span><input type="checkbox" id="rContinue" checked> Je continue à travailler (4 trimestres par an)</span></label>
+    </div>
+    <p class="aide" style="margin-top:0">Le nombre de trimestres figure sur votre relevé de carrière (info-retraite.fr, rubrique « Mon relevé de carrière »).</p>
+  </div>
+  <div id="resRetraite"></div>
+  <div class="outils">
+    <button class="btn sec" onclick="ouvrir('https://www.info-retraite.fr')">Mon relevé de carrière et simulateur officiel (info-retraite.fr) ↗</button>
+    <button class="btn sec" onclick="ouvrir('https://www.cnracl.retraites.fr')">Fonctionnaires territoriaux et hospitaliers (CNRACL) ↗</button>
+  </div>
 </section>
 
 <section class="panneau outil" id="o-annuaire" data-titre="Numéros utiles">
@@ -805,7 +941,7 @@ panneaux.forEach((p,i)=>{
 });
 document.getElementById('navbar-hote').remove();
 document.addEventListener('click',e=>{const a=e.target.closest('[data-a]');if(a)aller(+a.dataset.a)});
-document.getElementById('raz').onclick=()=>{if(confirm('Effacer toutes les réponses de ce profil ?')){lsDel(cleProfil());viderFormulaire();try{majComparateur();majFournisseurs();majEcheances()}catch(e){};aller(0)}};
+document.getElementById('raz').onclick=()=>{if(confirm('Effacer toutes les réponses de ce profil ?')){lsDel(cleProfil());viderFormulaire();try{majComparateur();majFournisseurs();majDemarches();majEcheances();majRetraite()}catch(e){};aller(0)}};
 function aller(i){
   cour=i;
   outilsP.forEach(p=>p.classList.remove('actif'));
@@ -851,7 +987,7 @@ function profil(){
   const f=lireFormulaire(), n=k=>Math.max(0,parseInt(f[k])||0);
   const p={
     age:parseInt(f.age)||null, sit:f.situation||'', act:f.activite||'', log:f.logement||'', hand:f.handicap||'',
-    e0:n('e0'),anciennete:f.anciennete===''||f.anciennete==null?null:parseFloat(String(f.anciennete).replace(',','.')),contrat:f.contrat||'',permis:f.permis||'',chauffage:f.chauffage||'',consoElec:f.consoElec?+f.consoElec:null,consoGaz:f.consoGaz?+f.consoGaz:null,effectif:f.effectif||'',e3:n('e3'),e6:n('e6'),e11:n('e11'),e18:n('e18'),e20:n('e20'),eTotal:n('eTotal'),
+    e0:n('e0'),anciennete:f.anciennete===''||f.anciennete==null?null:parseFloat(String(f.anciennete).replace(',','.')),contrat:f.contrat||'',permis:f.permis||'',territoire:f.territoire||'',chauffage:f.chauffage||'',consoElec:f.consoElec?+f.consoElec:null,consoGaz:f.consoGaz?+f.consoGaz:null,effectif:f.effectif||'',e3:n('e3'),e6:n('e6'),e11:n('e11'),e18:n('e18'),e20:n('e20'),eTotal:n('eTotal'),
     revenu:f.revenu===''||f.revenu==null?null:+f.revenu, revenuPerso:f.revenuPerso===''||f.revenuPerso==null?null:+f.revenuPerso
   };
   ['grossesse','enfantHandicap','pasPension','tempsPartiel','carriereLongue','servicesActifs','independant2','procedure',
@@ -864,7 +1000,8 @@ function profil(){
    'eauFuite','eauImpaye','eauCoupure','eauLitige','mobileHausse','mobileResilier','mobileLitige','couverture','cuivre','boxHausse','boxResilier','boxPanne','boxLitige',
    'assurAuto','assurHabitation','assurSante','assurEmprunteur','assurObseques','assurHausse','assurResilier','assurSinistre','assurCatnat',
    'depotGarantie','preavis','chargesLoc','indecent','bailleur','copro','achatPanne','achatDistance','litigeConso','abonnementPiege','fraisBancaires','fraudeBancaire','refusCompte','changerBanque','credit','surendettement','fichage',
-   'etudiantSup','logementEtudiant','jeuneSansEmploi','jeuneCulture','ehpad','domicile','transportSenior','maltraitance','decesProche','decesConjoint','succession','comptesDefunt','donation'].forEach(k=>p[k]=!!f[k]);
+   'etudiantSup','logementEtudiant','jeuneSansEmploi','jeuneCulture','ehpad','domicile','transportSenior','maltraitance','decesProche','decesConjoint','succession','comptesDefunt','donation',
+   'microProjet','microActif','activiteCote','sansMedecin','depassements','renoncement','transportSanitaire','cure','dossierMedical','separation','pensionAlim','gardeEnfants','logementFamilial','benevole','dirigeantAsso','dons'].forEach(k=>p[k]=!!f[k]);
   p.couple=['couple','concubin'].includes(p.sit);
   p.enf20=p.e0+p.e3+p.e6+p.e11+p.e18;           // enfants de moins de 20 ans
   p.enf=p.enf20+p.e20;
@@ -872,6 +1009,9 @@ function profil(){
   p.isole=!p.couple && p.enf>0;
   p.fonct=['fonct_t','fonct_e','fonct_h'].includes(p.act);
   p.travaille=['salarie','fonct_t','fonct_e','fonct_h','contractuel','independant'].includes(p.act);
+  p.outremer=['guadeloupe','martinique','guyane','reunion','mayotte'].includes(p.territoire);
+  p.zni=p.outremer||p.territoire==='corse';
+  p.micro=p.microProjet||p.microActif;
   p.victimeQ=p.victime||p.violencesFamille||p.arnaque||p.harcelementLigne||p.accidentRoute;
   p.misEnCause=p.convoque||p.poursuivi;
   try{p.ecoElec=economieElec(p)}catch(e){p.ecoElec=0}
@@ -1007,13 +1147,21 @@ document.addEventListener('change',()=>{
 
 // ===================== Mises à jour =====================
 const APP_VERSION='{{VERSION}}';
+const MODE_WEB=/*WEB*/false; // version site web (téléphone)
 const dateFr=d=>{const m=/^(\d{4})-(\d\d)-(\d\d)/.exec(d||'');return m?`${m[3]}/${m[2]}/${m[1]}`:(d||'?')};
 function afficherVersion(){
   document.getElementById('majInfo').innerHTML=
-    `Règles à jour au <b>${dateFr(REGLES.mise_a_jour)}</b> · ${REGLES.droits.length} droits<br>Logiciel version ${APP_VERSION}`;
+    `Règles à jour au <b>${dateFr(REGLES.mise_a_jour)}</b> · ${REGLES.droits.length} droits<br>${MODE_WEB?'Version web':'Logiciel version'} ${APP_VERSION}`;
 }
 function echapper(t){return String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 function appelMaj(){
+  if(MODE_WEB) return fetch('https://raw.githubusercontent.com/F4JCF/aquoiaijeledroit/main/droits.json',{cache:'no-store'})
+    .then(r=>r.json()).then(j=>{
+      if(!j||!j.version||!Array.isArray(j.droits))return {statut:'invalide'};
+      if(cmpV(j.version,REGLES.version)<=0)return {statut:'a_jour'};
+      if(j.app_min&&cmpV(APP_VERSION,j.app_min)<0)return {statut:'a_jour'};
+      return {statut:'maj',regles:j};
+    }).catch(()=>({statut:'hors_ligne'}));
   if(typeof window.lancerVerifMaj==='function')
     return new Promise((ok)=>{window.__majResultat=s=>{try{ok(JSON.parse(s))}catch(e){ok({statut:'invalide'})}};window.lancerVerifMaj()});
   return fetch('/api/verifierMaj').then(r=>r.json());
@@ -1110,11 +1258,13 @@ function majComparateur(){
   const partHC=+document.getElementById('partHC').value||40;
   document.getElementById('estimElec').innerHTML=saisie?`Calcul pour <b>${(+saisie).toLocaleString('fr-FR')} kWh</b> par an.`:
     `Consommation non renseignée : calcul sur une <b>estimation de ${conso.toLocaleString('fr-FR')} kWh</b> par an pour votre foyer (${personnes(p)} personne${personnes(p)>1?'s':''}${p.chauffage?', chauffage '+({elec:'électrique',pac:'pompe à chaleur',gaz:'au gaz',fioul:'au fioul',bois:'au bois',collectif:'collectif'})[p.chauffage]:''}). Indiquez votre consommation réelle pour un résultat fiable.`;
-  const L=classementElec(kva,opt,conso,partHC);
-  zone.innerHTML=L.length?`<table class="offres"><thead><tr><th>Offre</th><th class="num">Prix du kWh</th><th class="num">Abonnement /an</th><th class="num">Total /an</th><th class="num">Écart / tarif réglementé</th></tr></thead><tbody>`+
-    L.map((x,i)=>ligne(x,i,opt==='hphc'?`HP ${prixK(x.c.hp)}<br>HC ${prixK(x.c.hc)}`:prixK(x.c.prix))).join('')+'</tbody></table>':'<p class="vide">Aucune offre pour ces réglages.</p>';
+  let L=classementElec(kva,opt,conso,partHC);
+  if(p.zni)L=L.filter(x=>x.o.type==='reg');
+  zone.innerHTML=(p.zni?'<div class="jauge haut" style="margin-bottom:10px">En Corse et en outre-mer, l\'électricité est fournie uniquement par EDF au tarif réglementé (même prix qu\'en métropole grâce à la péréquation) : il n\'y a pas d\'offre concurrente à comparer.</div>':'')+(L.length?`<table class="offres"><thead><tr><th>Offre</th><th class="num">Prix du kWh</th><th class="num">Abonnement /an</th><th class="num">Total /an</th><th class="num">Écart / tarif réglementé</th></tr></thead><tbody>`+
+    L.map((x,i)=>ligne(x,i,opt==='hphc'?`HP ${prixK(x.c.hp)}<br>HC ${prixK(x.c.hc)}`:prixK(x.c.prix))).join('')+'</tbody></table>':'<p class="vide">Aucune offre pour ces réglages.</p>');
   // gaz
   const g=document.getElementById('consoGaz').value, cg=+g||est.gaz, zg=document.getElementById('tabGaz');
+  if(p.zni){zg.innerHTML='<p class="vide">Il n\'y a pas de réseau de gaz naturel en Corse ni en outre-mer : le gaz y est livré en bouteilles ou en citerne (GPL), à des prix fixés par chaque distributeur.</p>';return}
   if(!cg){zg.innerHTML='<p class="vide">Indiquez votre consommation de gaz (sur votre facture) pour comparer.</p>';return}
   const G=classementGaz(cg);
   zg.innerHTML=(g?'':`<div class="estim">Calcul sur une <b>estimation de ${cg.toLocaleString('fr-FR')} kWh</b> par an. Indiquez votre consommation réelle pour un résultat fiable.</div>`)+
@@ -1202,8 +1352,9 @@ function majTelecom(){
   const T=REGLES&&REGLES.telecom, p=profil(); if(!T)return;
   document.getElementById('mobileSource').textContent=`Sélection d'offres sans engagement relevées le ${dateFr(T.date)} (${T.source}). Les prix changent souvent : vérifiez sur le site de l'opérateur.`;
   document.getElementById('boxSource').textContent=`Sélection d'offres fibre relevées le ${dateFr(T.date)} (${T.source}).`;
-  document.getElementById('tabMobile').innerHTML=tableTelecom(offresMobile(p).slice(0,8),val('prixMobile'),'Économie sur 12 mois');
-  document.getElementById('tabBox').innerHTML=tableTelecom(offresBox(p).slice(0,8),val('prixBox'),'Économie sur 12 mois');
+  const om=p.outremer?'<div class="jauge haut" style="margin-bottom:10px">Ces offres concernent la métropole. En outre-mer, les opérateurs et les prix sont différents : comparez localement.</div>':'';
+  document.getElementById('tabMobile').innerHTML=om+tableTelecom(offresMobile(p).slice(0,8),val('prixMobile'),'Économie sur 12 mois');
+  document.getElementById('tabBox').innerHTML=om+tableTelecom(offresBox(p).slice(0,8),val('prixBox'),'Économie sur 12 mois');
 }
 function majFournisseurs(){ try{majEau()}catch(e){} try{majTelecom()}catch(e){} }
 ['factureEau','consoEau','prixMobile','prixBox','besoinGo','veut5g','veutTV'].forEach(id=>document.getElementById(id).addEventListener('input',majFournisseurs));
@@ -1215,6 +1366,7 @@ function viderFormulaire(){
     if(i.type==='checkbox'||i.type==='radio')i.checked=false;
     else if(i.id==='mesEcheances')i.value='[]';
     else if(i.id==='lettresVals')i.value='{}';
+    else if(i.id==='mesDemarches')i.value='[]';
     else if(i.id==='partHC')i.value='40';
     else if(!i.id.startsWith('c_'))i.value='';
   });
@@ -1223,6 +1375,7 @@ function viderFormulaire(){
     const k=[...x.options].findIndex(o=>o.defaultSelected); x.selectedIndex=k<0?0:k;
   });
   const kva=document.getElementById('kva'); if(kva&&[...kva.options].some(o=>o.value==='6'))kva.value='6';
+  const rc=document.getElementById('rContinue'); if(rc)rc.checked=true;
 }
 function majProfils(){
   const sel=document.getElementById('profilSel');
@@ -1235,7 +1388,7 @@ function changerProfil(nom){
   PROFIL=nom; lsSet('aqdroit_profil',nom);
   viderFormulaire(); restaurer();
   document.dispatchEvent(new Event('change'));
-  try{majComparateur();majFournisseurs();majEcheances()}catch(e){}
+  try{majComparateur();majFournisseurs();majDemarches();majEcheances();majRetraite()}catch(e){}
   majProfils(); aller(0);
 }
 document.getElementById('profilSel').addEventListener('change',e=>changerProfil(e.target.value));
@@ -1246,7 +1399,7 @@ document.getElementById('profilAjout').onclick=()=>{
   PROFILS.push(n); lsSet('aqdroit_profils',JSON.stringify(PROFILS));
   sauver(); PROFIL=n; lsSet('aqdroit_profil',n);
   viderFormulaire(); document.dispatchEvent(new Event('change'));
-  try{majComparateur();majFournisseurs();majEcheances()}catch(e){}
+  try{majComparateur();majFournisseurs();majDemarches();majEcheances();majRetraite()}catch(e){}
   majProfils(); aller(0);
 };
 document.getElementById('profilSuppr').onclick=()=>{
@@ -1255,7 +1408,7 @@ document.getElementById('profilSuppr').onclick=()=>{
   lsDel(cleProfil()); PROFILS=PROFILS.filter(p=>p!==PROFIL); lsSet('aqdroit_profils',JSON.stringify(PROFILS));
   PROFIL='Moi'; lsSet('aqdroit_profil','Moi');
   viderFormulaire(); restaurer(); document.dispatchEvent(new Event('change'));
-  try{majComparateur();majFournisseurs();majEcheances()}catch(e){}
+  try{majComparateur();majFournisseurs();majDemarches();majEcheances();majRetraite()}catch(e){}
   majProfils(); aller(0);
 };
 
@@ -1268,6 +1421,9 @@ function afficherOutil(id){
   if(id==='o-echeances')majEcheances();
   if(id==='o-annuaire')majAnnuaire();
   if(id==='o-lettres')majLettres();
+  if(id==='o-demarches')majDemarches();
+  if(id==='o-retraite')majRetraite();
+  if(id==='o-recherche')setTimeout(()=>document.getElementById('rechercheGrande').focus(),50);
   document.querySelector('main').scrollTo(0,0);
 }
 document.querySelectorAll('.outilsnav .etape').forEach(b=>b.onclick=()=>afficherOutil(b.dataset.outil));
@@ -1347,6 +1503,7 @@ function toutesEcheances(){
   const p=profil(), res=[];
   ((REGLES&&REGLES.echeances)||[]).forEach(e=>{ if(!e.si||cond(e.si,p)) res.push({...e,nat:true}) });
   mesEch().forEach((e,i)=>res.push({titre:e.t,date:e.d,info:e.n,perso:i}));
+  try{mesDem().forEach(x=>{ if(x.r&&(x.s==='envoyee'||x.s==='relancee')) res.push({titre:'Relancer : '+x.t,date:x.r,info:x.o?'auprès de '+x.o:'',dem:true}) })}catch(e){}
   return res.map(e=>({...e,j:jours(e.date)})).sort((a,b)=>a.date.localeCompare(b.date));
 }
 function majEcheances(){
@@ -1358,7 +1515,7 @@ function majEcheances(){
   z.innerHTML=vis.length?vis.map(e=>{
     const quand=e.j===0?"aujourd'hui":e.j===1?'demain':e.j>0?`dans ${e.j} jours`:`il y a ${-e.j} jours`;
     return `<div class="ech ${e.j<0?'passe':e.j<=30?'proche':''}"><div class="d">${new Date(e.date+'T12:00').toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'})}</div>
-      <div class="t"><b>${echapper(e.titre)}</b>${e.approx?' <span class="cond">(date approximative)</span>':''}<small>${quand}${e.info?' — '+echapper(e.info):''}${e.nat?' · échéance nationale':''}</small>
+      <div class="t"><b>${echapper(e.titre)}</b>${e.approx?' <span class="cond">(date approximative)</span>':''}<small>${quand}${e.info?' — '+echapper(e.info):''}${e.nat?' · échéance nationale':''}${e.dem?' · démarche en cours':''}</small>
       ${e.lien?`<button class="ouvrir" style="font-size:13px" onclick="ouvrir('${echapper(e.lien)}')">en savoir plus ↗</button>`:''}</div>
       ${e.perso!=null?`<button title="Supprimer" onclick="supprimerEcheance(${e.perso})">✕</button>`:''}</div>`}).join(''):'<p class="vide">Aucune échéance pour le moment. Ajoutez vos dates (fin de forfait, assurance, contrôle technique…).</p>';
 }
@@ -1420,11 +1577,144 @@ function imprimerDossier(){
   window.print();
 }
 
+// ===================== Recherche directe =====================
+const normTxt=t=>String(t||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+function majRecherche(){
+  const q=normTxt(document.getElementById('rechercheGrande').value.trim()), z=document.getElementById('resRecherche');
+  if(q.length<2){z.innerHTML='<p class="vide">Tapez au moins deux lettres.</p>';return}
+  const mots=q.split(/\s+/).filter(Boolean), p=profil();
+  const R=(REGLES.droits||[]).map(x=>{const txt=normTxt([x.t,x.d,x.o,x.r,x.a].join(' '));
+      const ok=mots.every(m=>txt.includes(m)); const score=mots.reduce((s,m)=>s+(normTxt(x.t).includes(m)?3:0)+(normTxt(x.d).includes(m)?1:0),0); return {x,ok,score}})
+    .filter(r=>r.ok).sort((a,b)=>b.score-a.score).slice(0,40);
+  z.innerHTML=R.length?`<p class="aide">${R.length} résultat${R.length>1?'s':''}.</p>`+R.map(({x})=>{
+    let pour=''; try{const e=evaluer(x,p); if(e)pour=`<span class="badge" style="background:var(--mer-clair);color:var(--mer)">concerne votre profil</span>`}catch(e){}
+    return `<article class="droit info"><h3><span>${echapper(x.t)}</span>${pour}</h3><p class="pourquoi">${echapper(x.d)} · ${echapper(x.o||'')}</p><p>${remplacer(x.r,p).replace(/\{\w+\}/g,'…')}</p><p class="demarche"><b>Démarche :</b> ${echapper(x.a||'')}</p>${x.pj&&x.pj.length?`<div class="pj"><b>Pièces à préparer :</b> ${x.pj.map(echapper).join(' · ')}</div>`:''}<button class="ouvrir" data-url="${echapper(remplacer(x.l,p))}">En savoir plus ↗</button></article>`}).join('')
+    :'<p class="vide">Aucun droit ne correspond. Essayez un autre mot, ou consultez les numéros utiles.</p>';
+  z.querySelectorAll('[data-url]').forEach(b=>b.onclick=()=>ouvrir(b.dataset.url));
+}
+document.getElementById('rechercheGrande').addEventListener('input',majRecherche);
+document.getElementById('rechercheRapide').addEventListener('keydown',e=>{
+  if(e.key!=='Enter')return;
+  document.getElementById('rechercheGrande').value=e.target.value; afficherOutil('o-recherche'); majRecherche(); fermerMenu();
+});
+
+// ===================== Suivi des démarches =====================
+function mesDem(){try{return JSON.parse(document.getElementById('mesDemarches').value||'[]')}catch(e){return []}}
+function ecrireDem(l){document.getElementById('mesDemarches').value=JSON.stringify(l);sauver();majDemarches();majEcheances()}
+const isoJour=d=>new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10);
+function plusJours(iso,n){const d=new Date(iso+'T12:00');d.setDate(d.getDate()+n);return isoJour(d)}
+function ajouterDemarche(titre,org,date,delai){
+  const l=mesDem(); date=date||isoJour(new Date());
+  l.unshift({t:titre,o:org||'',d:date,s:'envoyee',r:+delai?plusJours(date,+delai):'',n:''});
+  ecrireDem(l);
+}
+document.getElementById('demAjout').onclick=()=>{
+  const t=document.getElementById('demTitre').value.trim(); if(!t){alert("Indiquez l'objet de la démarche.");return}
+  ajouterDemarche(t,document.getElementById('demOrg').value.trim(),document.getElementById('demDate').value,document.getElementById('demDelai').value);
+  ['demTitre','demOrg','demDate'].forEach(id=>document.getElementById(id).value='');
+};
+function lettreEnvoyee(){
+  if(!LETTRE)return;
+  const dest=(document.querySelector('#lettreChamps [data-c=dest]')||{}).value||'';
+  ajouterDemarche(LETTRE.titre,dest,'',LETTRE.relance||30);
+  const ok=document.getElementById('copieOk'); ok.textContent='✓ Ajoutée à « Mes démarches », avec un rappel de relance.'; setTimeout(()=>ok.textContent='',4000);
+}
+const STATUTS={envoyee:'Envoyée, en attente de réponse',relancee:'Relancée',reponse:'Réponse reçue',close:'Terminée'};
+function majDemarches(){
+  const l=mesDem(), z=document.getElementById('listeDemarches');
+  const enCours=l.filter(x=>x.s!=='close').length; document.getElementById('nbDem').textContent=enCours||'';
+  if(!z)return;
+  z.innerHTML=l.length?l.map((x,i)=>{
+    const retard=x.s!=='close'&&x.s!=='reponse'&&x.r&&jours(x.r)<0;
+    return `<div class="dem ${x.s==='close'?'close':''} ${retard?'retard':''}"><div class="t"><b>${echapper(x.t)}</b>${x.o?' — '+echapper(x.o):''}
+      <small>Envoyée le ${new Date(x.d+'T12:00').toLocaleDateString('fr-FR')}${x.r&&x.s!=='close'&&x.s!=='reponse'?` · relance prévue le ${new Date(x.r+'T12:00').toLocaleDateString('fr-FR')}${retard?' (dépassée)':''}`:''}</small>
+      <input type="text" data-i="${i}" data-k="n" value="${echapper(x.n||'')}" placeholder="Note (n° de dossier, réponse…)" style="width:100%;margin-top:6px"></div>
+      <select data-i="${i}" data-k="s">${Object.entries(STATUTS).map(([k,v])=>`<option value="${k}" ${k===x.s?'selected':''}>${v}</option>`).join('')}</select>
+      ${x.s==='envoyee'||x.s==='relancee'?`<button title="Relancer : nouvelle date dans 1 mois" data-rel="${i}">⟳</button>`:''}
+      <button title="Supprimer" data-del="${i}">✕</button></div>`}).join('')
+    :'<p class="vide">Aucune démarche suivie. Ajoutez-en une, ou cliquez sur « J\'ai envoyé cette lettre » depuis les lettres types.</p>';
+  z.querySelectorAll('[data-k]').forEach(el=>el.addEventListener('change',()=>{const L=mesDem();L[+el.dataset.i][el.dataset.k]=el.value;ecrireDem(L)}));
+  z.querySelectorAll('[data-rel]').forEach(b=>b.onclick=()=>{const L=mesDem(),x=L[+b.dataset.rel];x.s='relancee';x.r=plusJours(isoJour(new Date()),30);ecrireDem(L)});
+  z.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{if(!confirm('Supprimer cette démarche ?'))return;const L=mesDem();L.splice(+b.dataset.del,1);ecrireDem(L)});
+}
+
+// ===================== Simulateur de retraite =====================
+function generation(naiss){
+  const G=(REGLES.retraite&&REGLES.retraite.generations)||[];
+  return G.find(g=>naiss>=g.du&&naiss<=g.au)||null;
+}
+function ajouterAge(iso,a,m){const d=new Date(iso+'T12:00');d.setFullYear(d.getFullYear()+a);d.setMonth(d.getMonth()+m);return d}
+const fmtDate=d=>d.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+const fmtAge=(a,m)=>`${a} ans${m?' et '+m+' mois':''}`;
+function majRetraite(){
+  const z=document.getElementById('resRetraite'), R=REGLES.retraite; if(!R){z.innerHTML='';return}
+  const n=document.getElementById('rNaissance').value;
+  if(!n){z.innerHTML='<p class="vide">Indiquez votre date de naissance.</p>';return}
+  const g=generation(n);
+  if(!g){z.innerHTML=`<p class="vide">${n<R.generations[0].du?"Vous avez déjà dépassé l'âge légal de départ : rapprochez-vous de votre caisse de retraite.":"Génération non couverte par le simulateur."}</p>`;return}
+  const dLegal=ajouterAge(n,g.age_a,g.age_m), dAuto=ajouterAge(n,R.taux_plein_auto,0);
+  const trim=val('rTrim'), cont=document.getElementById('rContinue').checked, today=new Date();
+  let dTrim=null, manque=null;
+  if(trim!=null){ manque=Math.max(0,g.trim-trim);
+    if(manque===0)dTrim=today; else if(cont){dTrim=new Date(today);dTrim.setMonth(dTrim.getMonth()+Math.ceil(manque*3))} }
+  let dPlein=dTrim?new Date(Math.max(dLegal,dTrim)):null; if(dPlein&&dPlein>dAuto)dPlein=dAuto;
+  if(!dPlein&&trim!=null&&!cont)dPlein=dAuto;
+  const prog=ajouterAge(n,Math.max(R.progressive_min||60,g.age_a-2),g.age_a-2>=(R.progressive_min||60)?g.age_m:0);
+  const debut=val('rDebut');
+  z.innerHTML=`<div class="retr">
+    <div><b>${fmtAge(g.age_a,g.age_m)}</b><span>âge légal de départ, soit le <b style="display:inline;font-size:15px;font-family:inherit">${fmtDate(dLegal)}</b></span></div>
+    <div><b>${g.trim} trimestres</b><span>requis pour le taux plein${manque!=null?` · ${manque?'il vous en manque '+manque:'vous les avez tous'}`:''}</span></div>
+    <div><b>${dPlein?fmtDate(dPlein):'—'}</b><span>${dPlein?'date estimée du taux plein (sans décote)':'indiquez vos trimestres validés'}</span></div></div>
+    <div class="q" style="font-size:15px">
+    <p style="margin-top:0">• Partir avant d'avoir tous vos trimestres (mais après l'âge légal) entraîne une <b>décote</b> ; continuer au-delà du taux plein donne droit à une <b>surcote</b>. À ${R.taux_plein_auto} ans (le ${fmtDate(dAuto)}), le taux plein est automatique quel que soit le nombre de trimestres.</p>
+    <p>• <b>Retraite progressive</b> (travailler à temps partiel en touchant une partie de sa retraite) : possible à partir du ${fmtDate(prog)}, sous conditions.</p>
+    ${debut!=null&&debut<21?`<p>• <b>Carrière longue</b> : vous avez commencé avant 21 ans, un départ anticipé est peut-être possible. Pour votre génération : ${echapper(g.cl||'voir info-retraite.fr')}. Les trimestres doivent avoir été cotisés : demandez une attestation à votre caisse.</p>`:''}
+    <p>• Handicap reconnu (taux d'au moins 50 %) : départ possible dès 55 ans sous conditions. Fonctionnaires en catégorie active : départ anticipé selon la durée des services actifs (voir la CNRACL).</p>
+    <p class="aide" style="margin-bottom:0">${echapper(R.source||'')} Estimation indicative : seule votre caisse de retraite peut confirmer vos droits.</p></div>`;
+}
+['rNaissance','rTrim','rDebut','rContinue'].forEach(id=>{document.getElementById(id).addEventListener('input',()=>{sauver();majRetraite()});document.getElementById(id).addEventListener('change',()=>{sauver();majRetraite()})});
+
+// ===================== Sauvegarde / restauration =====================
+function toutesCles(){
+  const cles=['aqdroit_profils','aqdroit_profil'].concat(PROFILS.map(p=>p==='Moi'?'aqdroit':'aqdroit:'+p));
+  const d={}; cles.forEach(k=>{const v=lsGet(k,null); if(v!=null)d[k]=v}); return d;
+}
+document.getElementById('btnExport').onclick=()=>{
+  sauver();
+  const data=JSON.stringify({logiciel:'AQuoiAiJeLeDroit',version:APP_VERSION,date:new Date().toISOString(),donnees:toutesCles()},null,1);
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([data],{type:'application/json'}));
+  a.download=`sauvegarde-a-quoi-ai-je-le-droit-${isoJour(new Date())}.json`; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>alert('Sauvegarde enregistrée dans votre dossier « Téléchargements ». Gardez ce fichier en lieu sûr : il contient vos réponses (sauf celles de l\'étape Justice).'),300);
+};
+document.getElementById('btnImport').onclick=()=>document.getElementById('fichierImport').click();
+document.getElementById('fichierImport').addEventListener('change',e=>{
+  const f=e.target.files[0]; if(!f)return;
+  const r=new FileReader(); r.onload=()=>{
+    try{ const j=JSON.parse(r.result); if(j.logiciel!=='AQuoiAiJeLeDroit'||!j.donnees)throw 0;
+      if(!confirm('Restaurer cette sauvegarde ? Les profils du même nom seront remplacés.'))return;
+      const d=j.donnees; let profs=[]; try{profs=JSON.parse(d.aqdroit_profils||'[]')}catch(x){}
+      Object.entries(d).forEach(([k,v])=>{ if(/^aqdroit(:|$)/.test(k))lsSet(k,v) });
+      PROFILS=[...new Set(PROFILS.concat(profs))]; lsSet('aqdroit_profils',JSON.stringify(PROFILS));
+      PROFIL=PROFILS.includes(d.aqdroit_profil)?d.aqdroit_profil:PROFILS[0]; lsSet('aqdroit_profil',PROFIL);
+      viderFormulaire(); restaurer(); document.dispatchEvent(new Event('change'));
+      try{majComparateur();majFournisseurs();majEcheances();majDemarches();majRetraite()}catch(x){}
+      majProfils(); aller(0); alert('Sauvegarde restaurée.');
+    }catch(x){alert("Ce fichier n'est pas une sauvegarde valide du logiciel.")}
+    e.target.value='';
+  }; r.readAsText(f);
+});
+
+// ===================== Menu sur téléphone =====================
+function fermerMenu(){document.querySelector('aside').classList.remove('ouvert');document.getElementById('menuMobile').textContent='☰ Menu'}
+document.getElementById('menuMobile').onclick=()=>{const a=document.querySelector('aside');a.classList.toggle('ouvert');document.getElementById('menuMobile').textContent=a.classList.contains('ouvert')?'✕ Fermer':'☰ Menu'};
+document.addEventListener('click',e=>{ if(e.target.closest('#etapes .etape, .outilsnav .etape'))fermerMenu() });
+
 restaurer();
 majComparateur();
 majFournisseurs();
 majProfils();
 appliquerAcces();
+majDemarches();
 majEcheances();
 rappelLancement();
 document.dispatchEvent(new Event('change'));

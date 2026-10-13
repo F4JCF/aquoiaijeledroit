@@ -81,11 +81,38 @@ jobs:
           files: AQuoiAiJeLeDroit.exe
           make_latest: true
           body: |
-            Repérage des aides et droits : famille, ressources, santé, logement, handicap, autonomie, retraite, énergie, eau, téléphonie, internet, assurances (avec comparateurs), consommation et banque, jeunes, seniors, décès et succession, emploi, droit du travail, droit pénal, code de la route, impôts.
+            Repérage des aides et droits : famille, ressources, santé, logement, handicap, autonomie, retraite, énergie, eau, téléphonie, internet, assurances (avec comparateurs), consommation et banque, jeunes, seniors, décès et succession, séparation, bénévolat, micro-entreprise, santé, outre-mer, emploi, droit du travail, droit pénal, code de la route, impôts.
 
             - Aucune installation : téléchargez AQuoiAiJeLeDroit.exe et lancez-le.
             - Les règles se mettent à jour automatiquement à chaque lancement.
-            - Lettres types pré-remplies, échéances avec rappels, numéros utiles, plusieurs profils.
+            - Lettres types, suivi des démarches, simulateur de retraite, échéances, numéros utiles, plusieurs profils, sauvegarde.
+            - Version téléphone : https://f4jcf.github.io/aquoiaijeledroit/
             - Vos réponses restent sur votre ordinateur.
 
             Au premier lancement, si Windows affiche « Windows a protégé votre ordinateur » : Informations complémentaires → Exécuter quand même.
+
+  # Version téléphone : site web publié sur GitHub Pages à chaque modification de main.
+  # (Réglage unique du dépôt : Settings → Pages → Source : « GitHub Actions ».)
+  site:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: Génération du site
+        run: go run . -site public
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+      - name: Publication
+        id: deploiement
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
