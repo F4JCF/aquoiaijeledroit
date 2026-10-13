@@ -1,9 +1,14 @@
 {
  "schema": 1,
- "version": "2026.10.13.2",
+ "version": "2026.10.13.3",
  "mise_a_jour": "2026-10-13",
- "app_min": "1.3.0",
+ "app_min": "1.4.0",
  "nouveautes": [
+  {
+   "date": "2026-10-13",
+   "v": "2026.10.13.3",
+   "texte": "Nouvel onglet « Code de la route » : amendes, points, suspension, alcool, accident, FPS, fourrière, carte grise, assurance, ZFE, permis, trottinettes. Mise à jour : le CPF ne finance plus le permis que pour les demandeurs d'emploi et l'aide de 500 € aux apprentis est supprimée (loi de finances 2026)."
+  },
   {
    "date": "2026-10-13",
    "v": "2026.10.13.2",
@@ -1401,7 +1406,7 @@
    "t": "Compte personnel de formation (CPF)",
    "o": "Caisse des dépôts",
    "l": "https://www.moncompteformation.gouv.fr",
-   "r": "Des droits à formation s'accumulent chaque année (en euros pour le privé, en heures pour le public) : permis, langues, reconversion, certifications.",
+   "r": "Des droits à formation s'accumulent chaque année (en euros pour le privé, en heures pour le public) : langues, reconversion, certifications, bilan de compétences. Depuis la loi de finances pour 2026, le permis de conduire n'est plus finançable par le CPF que pour les demandeurs d'emploi.",
    "a": "Consultez votre solde sur moncompteformation.gouv.fr (connexion France Connect+). Pour les agents publics, la demande passe par l'employeur.",
    "si": "actif",
    "n": "probable",
@@ -2166,7 +2171,7 @@
    "t": "Droits des apprentis",
    "o": "Employeur / CFA",
    "l": "{SP}apprenti%20salaire",
-   "r": "Salaire minimum fixé en pourcentage du SMIC selon votre âge et votre année d'apprentissage, carte d'étudiant des métiers, et aides au logement, au transport ou au permis selon votre situation.",
+   "r": "Salaire minimum fixé en pourcentage du SMIC selon votre âge et votre année d'apprentissage, carte d'étudiant des métiers, aides au logement ou au transport selon votre situation. L'aide forfaitaire de 500 € au permis a été supprimée par la loi de finances pour 2026.",
    "a": "Renseignez-vous auprès de votre CFA et d'Action Logement.",
    "si": {
     "c": "contrat",
@@ -2375,30 +2380,6 @@
    "d": "Droit pénal"
   },
   {
-   "id": "amende",
-   "t": "Payer ou contester une amende",
-   "o": "ANTAI",
-   "l": "https://www.antai.gouv.fr",
-   "r": "L'avis de contravention se conteste en ligne en principe dans les 45 jours, sans payer l'amende (mais en consignant la somme pour certains radars). Payer vite ouvre droit au tarif minoré ; en cas de retard, l'amende est majorée. Si vous n'étiez pas au volant, vous pouvez désigner le conducteur.",
-   "a": "Gérez l'avis sur antai.gouv.fr avec le numéro qui y figure ; ne payez pas si vous contestez, car payer vaut reconnaissance.",
-   "si": "amende",
-   "n": "probable",
-   "w": "amende ou contravention",
-   "d": "Droit pénal"
-  },
-  {
-   "id": "points",
-   "t": "Points du permis de conduire",
-   "o": "Ministère de l'Intérieur",
-   "l": "{SP}solde%20de%20points%20permis",
-   "r": "Le solde de points se consulte gratuitement en ligne. Un stage de sensibilisation à la sécurité routière permet de récupérer jusqu'à 4 points, une fois par an ; les points reviennent aussi automatiquement après un délai sans nouvelle infraction.",
-   "a": "Consultez votre solde avec FranceConnect ; choisissez un stage agréé par la préfecture.",
-   "si": "amende",
-   "n": "possible",
-   "w": "perte de points possible",
-   "d": "Droit pénal"
-  },
-  {
    "id": "casier",
    "t": "Consulter ou faire effacer une mention du casier",
    "o": "Casier judiciaire national",
@@ -2440,6 +2421,279 @@
    "n": "info",
    "w": "démarche judiciaire",
    "d": "Droit pénal"
+  },
+  {
+   "id": "amende",
+   "t": "Payer ou contester une amende",
+   "o": "ANTAI",
+   "l": "https://www.antai.gouv.fr",
+   "r": "L'avis de contravention se paie ou se conteste en ligne, en principe dans les 45 jours. Payer vaut reconnaissance de l'infraction : ne payez pas si vous contestez (une consignation peut être demandée). Depuis 2024, un excès de vitesse de moins de 5 km/h ne retire plus de point. Si vous n'étiez pas au volant, vous pouvez désigner le conducteur. Une amende majorée se conteste par réclamation dans les 3 mois.",
+   "a": "Gérez l'avis sur antai.gouv.fr avec le numéro qui y figure ; ne payez pas si vous contestez, car payer vaut reconnaissance.",
+   "si": "amende",
+   "n": "probable",
+   "w": "amende ou contravention",
+   "d": "Code de la route"
+  },
+  {
+   "id": "points",
+   "t": "Points du permis de conduire",
+   "o": "Ministère de l'Intérieur",
+   "l": "{SP}solde%20de%20points%20permis",
+   "r": "Le solde se consulte gratuitement en ligne. Un stage de sensibilisation à la sécurité routière rend jusqu'à 4 points, une fois par an. Les points reviennent aussi seuls : 1 point au bout de 6 mois sans infraction, puis tous les points après 2 ou 3 ans sans nouvelle infraction selon la gravité.",
+   "a": "Consultez votre solde avec FranceConnect ; choisissez un stage agréé par la préfecture.",
+   "si": {
+    "ou": [
+     "amende",
+     "points"
+    ]
+   },
+   "n": "possible",
+   "w": [
+    {
+     "si": "points",
+     "w": "perte de points"
+    },
+    {
+     "w": "perte de points possible"
+    }
+   ],
+   "d": "Code de la route"
+  },
+  {
+   "id": "probatoire",
+   "t": "Permis probatoire : règles du jeune conducteur",
+   "o": "Sécurité routière",
+   "l": "{SP}permis%20probatoire",
+   "r": "6 points au départ, puis jusqu'à 12 points au bout de 3 ans sans infraction (2 ans après la conduite accompagnée). Taux d'alcool limité à 0,2 g/l, soit pratiquement zéro verre. Une perte de 3 points ou plus oblige à suivre un stage de récupération de points, sous 4 mois.",
+   "a": "Surveillez votre solde ; après une lettre « 48N », inscrivez-vous rapidement au stage obligatoire (remboursement possible de l'amende).",
+   "si": {
+    "c": "permis",
+    "=": "probatoire"
+   },
+   "n": "info",
+   "w": "jeune conducteur",
+   "d": "Code de la route"
+  },
+  {
+   "id": "suspension",
+   "t": "Rétention, suspension ou annulation du permis",
+   "o": "Préfecture / tribunal",
+   "l": "{SP}suspension%20du%20permis%20de%20conduire",
+   "r": "Après un excès de 40 km/h ou plus, ou un taux d'alcool délictuel, le permis peut être retenu 72 heures puis suspendu par le préfet (jusqu'à 6 mois), avant un éventuel jugement. Quand le solde tombe à zéro (lettre 48SI), le permis est invalidé : il faut le rendre dans les 10 jours, et on ne peut le repasser qu'après 6 mois minimum. Conduire malgré une suspension est un délit.",
+   "a": "Contestez dans les délais indiqués sur la décision (recours au préfet ou au tribunal administratif) ; consultez un avocat, et pour un usage professionnel, demandez s'il existe un aménagement.",
+   "si": {
+    "ou": [
+     "suspension",
+     {
+      "c": "permis",
+      "=": "suspendu"
+     }
+    ]
+   },
+   "n": "probable",
+   "w": "permis retenu, suspendu ou annulé",
+   "d": "Code de la route"
+  },
+  {
+   "id": "alcool",
+   "t": "Contrôle d'alcoolémie ou de stupéfiants",
+   "o": "Police / gendarmerie / justice",
+   "l": "{SP}alcool%20au%20volant",
+   "r": "Le taux maximal est de 0,5 g/l de sang (0,2 g/l pour les jeunes conducteurs et les conducteurs de transport en commun). À partir de 0,8 g/l, ou en cas de stupéfiants, c'est un délit : retrait de 6 points, suspension, amende, et parfois éthylotest antidémarrage. Vous pouvez demander une contre-expertise par prise de sang.",
+   "a": "Demandez la contre-expertise sur place ; faites-vous assister par un avocat si vous êtes convoqué au tribunal.",
+   "si": "alcoolStup",
+   "n": "probable",
+   "w": "contrôle d'alcool ou de stupéfiants",
+   "d": "Code de la route"
+  },
+  {
+   "id": "constat",
+   "t": "Accident : constat amiable et assurance",
+   "o": "Votre assureur",
+   "l": "{SP}constat%20amiable",
+   "r": "Remplissez un constat amiable avec l'autre conducteur et envoyez-le à votre assureur dans les 5 jours ouvrés (2 jours ouvrés en cas de vol). En cas de blessure, prévenez les secours (15, 17, 18 ou 112). Si l'autre conducteur n'est pas assuré ou a pris la fuite, le Fonds de garantie (FGAO) peut vous indemniser.",
+   "a": "Prenez des photos, relevez l'identité des témoins, ne signez pas un constat avec lequel vous n'êtes pas d'accord (ajoutez vos observations).",
+   "si": "accidentAuto",
+   "n": "probable",
+   "w": "accident avec votre véhicule",
+   "d": "Code de la route"
+  },
+  {
+   "id": "fps",
+   "t": "Contester un forfait post-stationnement (FPS)",
+   "o": "Mairie puis tribunal du stationnement payant",
+   "l": "{SP}forfait%20post-stationnement",
+   "r": "Le stationnement payant n'est plus une amende mais une redevance fixée par la commune. Il faut d'abord faire un recours administratif préalable obligatoire (RAPO) auprès de la mairie dans un délai d'un mois, puis, en cas de refus, saisir le tribunal du stationnement payant dans le mois. Les conditions de paiement préalable figurent sur l'avis.",
+   "a": "Joignez vos preuves (ticket, abonnement, carte de stationnement handicapé) au recours, envoyé par lettre recommandée ou en ligne.",
+   "si": "stationnement",
+   "n": "probable",
+   "w": "forfait de stationnement",
+   "d": "Code de la route"
+  },
+  {
+   "id": "fourriere",
+   "t": "Récupérer un véhicule en fourrière",
+   "o": "Commissariat / fourrière",
+   "l": "{SP}fourri%C3%A8re",
+   "r": "Il faut obtenir une autorisation de sortie (mainlevée) auprès de l'autorité qui a ordonné l'enlèvement, puis payer les frais d'enlèvement et de garde, qui augmentent chaque jour. Un véhicule non réclamé peut être vendu ou détruit au bout de quelques semaines.",
+   "a": "Agissez vite avec la carte grise, l'attestation d'assurance et votre permis ; contestez l'enlèvement auprès du procureur s'il vous semble abusif.",
+   "si": "fourriere",
+   "n": "probable",
+   "w": "véhicule en fourrière",
+   "d": "Code de la route"
+  },
+  {
+   "id": "cartegrise",
+   "t": "Carte grise : achat, vente, déménagement",
+   "o": "ANTS",
+   "l": "https://immatriculation.ants.gouv.fr",
+   "r": "Changement d'adresse à déclarer dans le mois (gratuit). Vente : déclaration de cession dans les 15 jours, sinon vous restez responsable des amendes. Achat d'un véhicule d'occasion : immatriculation à votre nom dans le mois. Toutes ces démarches se font uniquement sur le site officiel de l'ANTS.",
+   "a": "Méfiez-vous des sites qui facturent ces démarches ; passez par immatriculation.ants.gouv.fr ou un garage habilité.",
+   "si": "carteGrise",
+   "n": "info",
+   "w": "carte grise",
+   "d": "Code de la route"
+  },
+  {
+   "id": "assurance",
+   "t": "Assurance auto : changer, résilier, refus d'assurance",
+   "o": "Assureur / Bureau central de tarification",
+   "l": "{SP}r%C3%A9silier%20assurance%20auto",
+   "r": "Après un an de contrat, l'assurance auto se résilie à tout moment sans frais, le nouvel assureur s'occupant des démarches. Le bonus-malus évolue chaque année. Si tous les assureurs vous refusent, le Bureau central de tarification (BCT) peut obliger l'un d'eux à vous assurer.",
+   "a": "Comparez les offres et demandez votre relevé d'information à votre assureur actuel.",
+   "si": "assuranceAuto",
+   "n": "info",
+   "w": "assurance auto",
+   "d": "Code de la route"
+  },
+  {
+   "id": "zfe",
+   "t": "Zones à faibles émissions et vignette Crit'Air",
+   "o": "Ministère / votre métropole",
+   "l": "https://www.certificat-air.gouv.fr",
+   "r": "Le Parlement avait voté la suppression des ZFE au printemps 2026, mais le Conseil constitutionnel a annulé cette mesure le 21 mai 2026 : les ZFE restent en vigueur là où elles existent. Les règles (vignettes interdites, horaires, dérogations) dépendent de chaque métropole.",
+   "a": "Commandez la vignette uniquement sur certificat-air.gouv.fr ; consultez les règles et les dérogations de votre métropole.",
+   "si": "zfe",
+   "n": "info",
+   "w": "zone à faibles émissions",
+   "d": "Code de la route"
+  },
+  {
+   "id": "usurpation",
+   "t": "Plaque d'immatriculation usurpée",
+   "o": "Police / ANTAI",
+   "l": "https://www.antai.gouv.fr",
+   "r": "Si vous recevez des avis pour un véhicule qui n'est pas le vôtre, vous pouvez contester sans payer en joignant le récépissé de plainte. Il est possible de demander un nouveau numéro d'immatriculation.",
+   "a": "Portez plainte pour usurpation, puis contestez chaque avis sur antai.gouv.fr avec le récépissé.",
+   "si": "plaqueUsurpee",
+   "n": "probable",
+   "w": "plaque usurpée",
+   "d": "Code de la route"
+  },
+  {
+   "id": "permis_aide",
+   "t": "Financer le permis de conduire",
+   "o": "État / France Travail / collectivités",
+   "l": "{SP}financer%20son%20permis%20de%20conduire",
+   "r": "Permis à 1 € par jour : prêt à taux zéro de 600 à 1 200 € pour les 15-25 ans. Les demandeurs d'emploi peuvent utiliser leur CPF et demander une aide de France Travail. De nombreuses communes et départements proposent une bourse au permis, souvent en échange d'heures de bénévolat. L'aide de 500 € aux apprentis a été supprimée en 2026. Le permis B peut se passer dès 17 ans, après une conduite accompagnée possible dès 15 ans.",
+   "a": "Renseignez-vous auprès de votre mairie, de la mission locale ou de France Travail, et d'une auto-école partenaire du permis à 1 € par jour.",
+   "si": {
+    "ou": [
+     "passerPermis",
+     {
+      "et": [
+       {
+        "c": "permis",
+        "=": "aucun"
+       },
+       {
+        "c": "age",
+        "<=?": 25
+       }
+      ]
+     }
+    ]
+   },
+   "n": [
+    {
+     "si": {
+      "ou": [
+       {
+        "c": "age",
+        "<=": 25
+       },
+       "exSalarie"
+      ]
+     },
+     "n": "probable"
+    },
+    {
+     "n": "possible"
+    }
+   ],
+   "w": "vous voulez passer le permis",
+   "d": "Code de la route"
+  },
+  {
+   "id": "edpm",
+   "t": "Trottinette électrique et vélo : les règles",
+   "o": "Sécurité routière",
+   "l": "{SP}trottinette%20%C3%A9lectrique",
+   "r": "Trottinette électrique : à partir de 14 ans, 25 km/h maximum, assurance responsabilité civile obligatoire, interdite sur le trottoir (sauf autorisation de la commune), un seul passager, casque obligatoire hors agglomération. Téléphone tenu en main et écouteurs interdits, à vélo comme à trottinette. Le vélo électrique peut bénéficier d'aides locales à l'achat.",
+   "a": "Vérifiez que votre assurance habitation couvre la trottinette, sinon souscrivez une assurance spécifique.",
+   "si": "deuxRoues",
+   "n": "info",
+   "w": "trottinette ou vélo",
+   "d": "Code de la route"
+  },
+  {
+   "id": "sante_conduite",
+   "t": "Santé et permis de conduire",
+   "o": "Médecin agréé / préfecture",
+   "l": "{SP}permis%20de%20conduire%20et%20sant%C3%A9",
+   "r": "Certaines maladies ou certains handicaps imposent un avis d'un médecin agréé par la préfecture, qui peut délivrer un permis temporaire ou avec aménagements (boîte automatique, commandes adaptées). Conduire en connaissance d'une inaptitude peut poser problème avec l'assurance en cas d'accident.",
+   "a": "Parlez-en à votre médecin ; prenez rendez-vous avec un médecin agréé (liste en préfecture). Les aménagements du véhicule peuvent être financés par la PCH.",
+   "si": {
+    "ou": [
+     "santeConduite",
+     {
+      "et": [
+       {
+        "c": "permis",
+        "dans": [
+         "probatoire",
+         "confirme"
+        ]
+       },
+       {
+        "ou": [
+         "handOui",
+         "ald"
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "n": [
+    {
+     "si": "santeConduite",
+     "n": "probable"
+    },
+    {
+     "n": "info"
+    }
+   ],
+   "w": [
+    {
+     "si": "santeConduite",
+     "w": "santé et conduite"
+    },
+    {
+     "w": "santé et permis de conduire"
+    }
+   ],
+   "d": "Code de la route"
   },
   {
    "id": "demipart_iso",
