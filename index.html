@@ -1208,11 +1208,18 @@ async function verifierMaj(silencieux){
   else if(r.statut==='hors_ligne'){ etat.textContent=silencieux?'':'Pas de connexion : les règles actuelles restent utilisées.'; }
   else if(r.message){ etat.textContent=r.message; }
   if(r.app&&r.app.version){
-    document.getElementById('bandeauAppTxt').innerHTML=`<b>Une nouvelle version du logiciel est disponible : ${echapper(r.app.version)}</b><br>Téléchargez-la, puis remplacez simplement l'ancien fichier .exe. Vos réponses sont conservées.<br><button class="btn prim" style="margin-top:10px" onclick="ouvrir('${echapper(r.app.url)}')">Télécharger la version ${echapper(r.app.version)}</button>`;
+    document.getElementById('bandeauAppTxt').innerHTML=r.app.prete
+      ?`<b>✓ La version ${echapper(r.app.version)} a été téléchargée automatiquement.</b><br>Elle s'installera toute seule au prochain démarrage du logiciel. Vos réponses sont conservées.<br><button class="btn prim" style="margin-top:10px" onclick="redemarrerMaintenant()">Redémarrer maintenant</button> <button class="btn sec" style="margin-top:10px" onclick="ouvrir('${echapper(r.app.url)}')">Voir les nouveautés</button>`
+      :`<b>Une nouvelle version du logiciel est disponible : ${echapper(r.app.version)}</b><br>Téléchargez-la, puis remplacez simplement l'ancien fichier .exe. Vos réponses sont conservées.<br><button class="btn prim" style="margin-top:10px" onclick="ouvrir('${echapper(r.app.url)}')">Télécharger la version ${echapper(r.app.version)}</button>`;
     document.getElementById('bandeauApp').classList.add('on');
   }
 }
 const cmpV=(a,b)=>{const x=String(a).split('.').map(Number),y=String(b).split('.').map(Number);for(let i=0;i<Math.max(x.length,y.length);i++){const d=(x[i]||0)-(y[i]||0);if(d)return d>0?1:-1}return 0};
+async function redemarrerMaintenant(){
+  sauver();
+  let ok=false; try{ok=typeof window.redemarrerMaj==='function'&&await window.redemarrerMaj()}catch(e){}
+  if(!ok)alert("La mise à jour n'a pas pu être installée automatiquement (dossier protégé ?). Elle sera retentée au prochain démarrage ; vous pouvez aussi télécharger la nouvelle version depuis GitHub.");
+}
 const dateIso=v=>{const m=/^(\d{4})\.(\d+)\.(\d+)/.exec(v||'');return m?`${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`:''};
 afficherVersion();
 

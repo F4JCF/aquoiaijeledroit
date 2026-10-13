@@ -23,7 +23,7 @@ import (
 )
 
 // Renseignée à la compilation : -ldflags "-X main.version=1.2.0"
-var version = "1.9.0"
+var version = "1.10.0"
 
 const (
 	depot          = "F4JCF/aquoiaijeledroit"
@@ -187,8 +187,10 @@ type resultatMaj struct {
 }
 
 type infoApp struct {
-	Version string `json:"version"`
-	URL     string `json:"url"`
+	Version string       `json:"version"`
+	URL     string       `json:"url"`
+	Asset   *assetGitHub `json:"-"`
+	Prete   bool         `json:"prete,omitempty"` // téléchargée et vérifiée, installée au prochain démarrage
 }
 
 // verifierMaj télécharge les règles et vérifie la présence d'une nouvelle version du logiciel.
@@ -198,11 +200,17 @@ func verifierMaj() resultatMaj {
 	// 1. Nouvelle version du logiciel ?
 	if b, err := telecharger(urlRelease); err == nil {
 		var rel struct {
-			Tag string `json:"tag_name"`
-			URL string `json:"html_url"`
+			Tag    string        `json:"tag_name"`
+			URL    string        `json:"html_url"`
+			Assets []assetGitHub `json:"assets"`
 		}
 		if json.Unmarshal(b, &rel) == nil && rel.Tag != "" && comparerVersions(rel.Tag, version) > 0 {
 			res.App = &infoApp{Version: strings.TrimPrefix(rel.Tag, "v"), URL: rel.URL}
+			for i := range rel.Assets {
+				if rel.Assets[i].Nom == nomAsset {
+					res.App.Asset = &rel.Assets[i]
+				}
+			}
 		}
 	}
 

@@ -25,7 +25,7 @@ Il y a deux niveaux de mise à jour.
 | Ce qui change | Ce qu'on modifie | Ce que voit l'utilisateur |
 |---|---|---|
 | Une loi, un plafond, une nouvelle aide, une aide supprimée | **`droits.json` seulement** | Au lancement suivant, les règles sont téléchargées et installées toutes seules, avec un bandeau « Les règles ont été mises à jour » et la liste des nouveautés. **Rien à réinstaller.** |
-| Nouvelle question dans le formulaire, nouvelle fonction | Le code (`index.html`, `*.go`) + une nouvelle **release** | Un bandeau « Nouvelle version du logiciel disponible » avec un bouton de téléchargement. |
+| Nouvelle question dans le formulaire, nouvelle fonction | Le code (`index.html`, `*.go`) + une nouvelle **release** | **Depuis la version 1.10.0, le logiciel se met à jour tout seul** : la nouvelle version est téléchargée en arrière-plan, vérifiée (empreinte SHA-256 publiée par GitHub), puis installée au démarrage suivant ou tout de suite avec le bouton « Redémarrer maintenant ». |
 
 Fonctionnement technique :
 
@@ -33,7 +33,7 @@ Fonctionnement technique :
 - À chaque lancement, il lit `https://raw.githubusercontent.com/F4JCF/aquoiaijeledroit/main/droits.json`.
 - Si la version en ligne est plus récente **et valide**, elle est enregistrée dans `%APPDATA%\AQuoiAiJeLeDroit\droits.json` et utilisée immédiatement.
 - Un fichier en ligne illisible ou incomplet est **ignoré** : l'utilisateur garde les règles précédentes.
-- Il consulte aussi la dernière release GitHub pour signaler une nouvelle version du `.exe`.
+- Il consulte aussi la dernière release GitHub : si une nouvelle version du `.exe` existe, il la télécharge à côté du programme (`AQuoiAiJeLeDroit.exe.new`), la vérifie, et la met en place au lancement suivant (l'ancienne version est gardée sous `.old` puis supprimée). Si le dossier du programme est protégé en écriture, le bandeau propose un téléchargement manuel.
 
 ---
 
