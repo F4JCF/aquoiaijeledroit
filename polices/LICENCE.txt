@@ -1,0 +1,4 @@
+Polices DejaVu (DejaVu Sans Condensed, DejaVu Serif)
+Copyright (c) 2003 Bitstream, Inc. (Bitstream Vera) ; modifications DejaVu dans le domaine public.
+Licence libre Bitstream Vera / DejaVu : utilisation, copie, modification et redistribution autorisées.
+Texte complet : https://dejavu-fonts.github.io/License.html

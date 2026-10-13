@@ -1,9 +1,14 @@
 {
  "schema": 1,
- "version": "2026.10.13.8",
+ "version": "2026.10.13.9",
  "mise_a_jour": "2026-10-13",
  "app_min": "1.9.0",
  "nouveautes": [
+  {
+   "date": "2026-10-13",
+   "v": "2026.10.13.9",
+   "texte": "Les lettres, le dossier, l'analyse de facture et la simulation de retraite s'enregistrent maintenant en PDF, prêts à être transmis par e-mail."
+  },
   {
    "date": "2026-10-13",
    "v": "2026.10.13.8",
@@ -1182,7 +1187,7 @@
    "t": "Changer d'offre d'électricité pour payer moins",
    "o": "Fournisseurs / Médiateur de l'énergie",
    "l": "https://comparateur-offres.energie-info.fr",
-   "r": "Selon le comparateur de l'onglet Énergie, vous pourriez économiser environ {ecoElec} € par an sur l'électricité. Changer de fournisseur est gratuit, sans coupure ni intervention technique, et sans frais de résiliation pour les particuliers ; on peut revenir au tarif réglementé à tout moment.",
+   "r": "Selon le comparateur de l'étape « Factures & contrats », vous pourriez économiser environ {ecoElec} € par an sur l'électricité. Changer de fournisseur est gratuit, sans coupure ni intervention technique, et sans frais de résiliation pour les particuliers ; on peut revenir au tarif réglementé à tout moment.",
    "a": "Munissez-vous de votre numéro de point de livraison (PDL, sur la facture) ; le nouveau fournisseur s'occupe de résilier l'ancien contrat. Vérifiez la durée du prix (fixe, indexé ou variable).",
    "si": {
     "c": "ecoElec",

@@ -35,6 +35,21 @@ func modeNavigateur(adresse string, ouvrir bool) error {
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(lirePDFBase64(string(b)))
 	})
+	mux.HandleFunc("/api/document", func(w http.ResponseWriter, r *http.Request) {
+		b, _ := io.ReadAll(io.LimitReader(r.Body, 4<<20))
+		var d Document
+		if json.Unmarshal(b, &d) != nil {
+			http.Error(w, "document illisible", 400)
+			return
+		}
+		pdf, err := genererPDF(d)
+		if err != nil {
+			http.Error(w, err.Error(), 400)
+			return
+		}
+		w.Header().Set("Content-Type", "application/pdf")
+		w.Write(pdf)
+	})
 	mux.HandleFunc("/api/verifierMaj", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.Write([]byte(verifierMajJSON()))

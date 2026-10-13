@@ -69,6 +69,10 @@ Source conseillée : le comparateur du Médiateur national de l'énergie (compar
 
 L'outil « Analyse facture » compare une facture aux références du fichier de règles (tarif réglementé, prix repère du gaz, offres télécoms, prix moyen de l'eau) : il n'a donc besoin d'aucune mise à jour propre. Dans le logiciel Windows, une facture PDF est lue sur l'ordinateur (`facturepdf.go`) et les chiffres reconnus sont pré-remplis, à vérifier par l'utilisateur. Les factures scannées (images) ne sont pas lisibles.
 
+## Documents PDF
+
+Les lettres types, le dossier « Mes droits », l'analyse de facture et la simulation de retraite s'enregistrent en PDF (`documentpdf.go`, bibliothèque `go-pdf/fpdf`, polices DejaVu intégrées) dans `Documents\À quoi ai-je le droit`. Le logiciel propose ensuite d'ouvrir le fichier, de l'afficher dans le dossier ou de préparer un e-mail auquel le joindre. Dans la version web, l'impression avec « Enregistrer au format PDF » prend le relais.
+
 ## Version téléphone (site web)
 
 À chaque modification de `main`, GitHub Actions génère une version site web (`go run . -site public`) et la publie sur GitHub Pages : https://f4jcf.github.io/aquoiaijeledroit/. Elle lit les règles à jour directement sur GitHub et enregistre les réponses dans le navigateur du téléphone.

@@ -176,6 +176,14 @@ body.contraste .sous,body.contraste .confidentiel,body.contraste .majbloc{color:
 .constats li b.g{font-size:17px}
 .fact input.auto,.fact select.auto{background:#fff8e1;border-color:#e0b04a}
 
+.barre-pdf{display:none;position:fixed;right:20px;bottom:20px;max-width:640px;z-index:20;background:var(--carte);border:1.5px solid var(--mer);border-radius:14px;box-shadow:0 8px 28px rgba(0,0,0,.18);padding:14px 16px;gap:10px;align-items:center;flex-wrap:wrap}
+.barre-pdf.on{display:flex}
+.barre-pdf .txt{flex:1 1 220px;font-size:15px}
+.barre-pdf small{color:var(--doux)}
+.barre-pdf .btn{padding:9px 14px}
+.barre-pdf .fermer{background:none;border:0;font-size:20px;cursor:pointer;color:var(--doux)}
+@media print{.barre-pdf{display:none!important}}
+
 .cache{display:none!important}
 .nav{display:flex;justify-content:space-between;margin-top:26px;gap:12px}
 .btn{border:0;border-radius:10px;padding:12px 22px;cursor:pointer;font-weight:600}
@@ -811,7 +819,8 @@ body.contraste .sous,body.contraste .confidentiel,body.contraste .majbloc{color:
   <div id="piecesGen" class="pieces-gen"></div>
   <div class="avert"><b>Important :</b> ce repérage est indicatif. Les montants et plafonds changent régulièrement ; seul l'organisme concerné peut confirmer un droit. En cas de doute, un conseiller <b>France Services</b> peut vous aider gratuitement dans vos démarches.</div>
   <div class="outils">
-    <button class="btn prim" onclick="imprimerDossier()">🖨 Mon dossier (imprimer / PDF)</button>
+    <button class="btn prim" onclick="exporterPDF('dossier')">📄 Mon dossier en PDF</button>
+    <button class="btn sec" onclick="imprimerDossier()">🖨 Imprimer</button>
     <button class="btn sec" id="btnEcoute" onclick="lireResultats()">🔊 Écouter les résultats</button>
     <button class="btn sec" onclick="ouvrir('https://www.mesdroitssociaux.gouv.fr')">Simulateur officiel mesdroitssociaux.gouv.fr</button>
     <button class="btn sec" onclick="ouvrir('https://www.france-services.gouv.fr')">Trouver un France Services</button>
@@ -837,7 +846,8 @@ body.contraste .sous,body.contraste .confidentiel,body.contraste .majbloc{color:
   <div id="lettreZone" class="cache">
     <div class="q" id="lettreChamps"></div>
     <div class="outils" style="margin:0 0 12px">
-      <button class="btn prim" onclick="imprimerLettre()">🖨 Imprimer / PDF</button>
+      <button class="btn prim" onclick="exporterPDF('lettre')">📄 Enregistrer en PDF</button>
+      <button class="btn sec" onclick="imprimerLettre()">🖨 Imprimer</button>
       <button class="btn sec" onclick="copierLettre()">📋 Copier le texte</button>
       <button class="btn sec" onclick="parler(document.getElementById('lettreApercu').innerText)">🔊 Écouter</button>
       <button class="btn sec" onclick="lettreEnvoyee()">📂 J'ai envoyé cette lettre</button>
@@ -906,6 +916,7 @@ body.contraste .sous,body.contraste .confidentiel,body.contraste .majbloc{color:
   </div>
   <div id="resRetraite"></div>
   <div class="outils">
+    <button class="btn prim" onclick="exporterPDF('retraite')">📄 Enregistrer en PDF</button>
     <button class="btn sec" onclick="ouvrir('https://www.info-retraite.fr')">Mon relevé de carrière et simulateur officiel (info-retraite.fr) ↗</button>
     <button class="btn sec" onclick="ouvrir('https://www.cnracl.retraites.fr')">Fonctionnaires territoriaux et hospitaliers (CNRACL) ↗</button>
   </div>
@@ -990,6 +1001,7 @@ body.contraste .sous,body.contraste .confidentiel,body.contraste .majbloc{color:
 </section>
 
 <div class="panneau actif" style="max-width:820px;margin:0 auto" id="navbar-hote"></div>
+<div class="barre-pdf" id="barrePDF"></div>
 </main>
 
 <script>
@@ -1189,7 +1201,7 @@ function choisir(val,p,cle){ // valeur simple ou liste [{si:…, n:…}, {n:…}
 }
 function evaluer(regle,p){
   if(!cond(regle.si,p))return null;
-  return {n:choisir(regle.n,p,'n')||'possible', w:remplacer(choisir(regle.w,p,'w')||'',p), l:remplacer(regle.l,p)};
+  return {n:choisir(regle.n,p,'n')||'possible', w:remplacer(choisir(regle.w,p,'w')||'',p), l:remplacer(regle.l,p), r:remplacer(regle.r,p)};
 }
 
 // ===================== Calcul & affichage =====================
@@ -1541,7 +1553,7 @@ function afficherOutil(id){
 document.querySelectorAll('.outilsnav .etape').forEach(b=>b.onclick=()=>afficherOutil(b.dataset.outil));
 
 // ===================== Lettres types =====================
-let LETTRE=null;
+let LETTRE=null, LETTRE_DOC=null;
 function lettresVals(){try{return JSON.parse(document.getElementById('lettresVals').value||'{}')}catch(e){return {}}}
 function majLettres(){
   const L=(REGLES&&REGLES.lettres)||[], z=document.getElementById('listeLettres');
@@ -1583,6 +1595,9 @@ function majApercu(){
     base[ch.id]=v});
   const rempl=t=>echapper(t||'').replace(/\{(\w+)\}/g,(m,k)=>base[k]?echapper(base[k]):(k in labels||base.hasOwnProperty(k)?`<mark>[${echapper(labels[k]||k)}]</mark>`:''));
   const exp=['{nom}','{adresse}','{cpville}',base.tel?'Tél. : {tel}':'',base.email?'{email}':''].filter(Boolean).join('\n');
+  const remplT=t=>(t||'').replace(/\{(\w+)\}/g,(m,k)=>base[k]?base[k]:(k in labels||base.hasOwnProperty(k)?`[${labels[k]||k}]`:''));
+  LETTRE_DOC={exp:remplT(exp),dest:remplT(LETTRE.dest||''),lieu:remplT('À {ville}, le {date}'),rar:LETTRE.recommande?'Lettre recommandée avec accusé de réception':'',
+    objet:remplT(LETTRE.objet),ref:LETTRE.ref?remplT(LETTRE.ref):'',corps:remplT(LETTRE.corps),nom:remplT('{nom}')};
   document.getElementById('lettreApercu').innerHTML=
     `<div class="exp">${rempl(exp)}</div><div class="dest">${rempl(LETTRE.dest||'')}</div>`+
     `<div class="lieu">${rempl('À {ville}, le {date}')}</div>`+
@@ -1826,7 +1841,7 @@ const fv=id=>{const e=document.getElementById(id);if(!e||e.value==='')return nul
 const eur2=v=>v.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
 const pct=(a,b)=>Math.round((a/b-1)*100);
 function constats(L){return L.length?'<ul class="constats">'+L.map(([c,t])=>`<li class="${c}">${t}</li>`).join('')+'</ul>':''}
-function liensFacture(lettres){return `<div class="outils" style="margin-top:0">`+lettres.map(([id,t])=>`<button class="btn sec" onclick="afficherOutil('o-lettres');choisirLettre('${id}')">📝 ${t}</button>`).join('')+`<button class="btn sec" onclick="ouvrir('https://comparateur-offres.energie-info.fr')">Comparateur officiel ↗</button></div>`}
+function liensFacture(lettres){return `<div class="outils" style="margin-top:0"><button class="btn prim" onclick="exporterPDF('facture')">📄 Analyse en PDF</button>`+lettres.map(([id,t])=>`<button class="btn sec" onclick="afficherOutil('o-lettres');choisirLettre('${id}')">📝 ${t}</button>`).join('')+`<button class="btn sec" onclick="ouvrir('https://comparateur-offres.energie-info.fr')">Comparateur officiel ↗</button></div>`}
 function initFacture(){
   const E=energie(), sel=document.getElementById('fe_kva'); if(!sel||!E)return;
   const garde=sel.value, ks=Object.keys(E.elec.trv.abo).sort((a,b)=>a-b);
@@ -1987,6 +2002,100 @@ async function lirePDFFichier(f){
 document.getElementById('btnPDF').onclick=()=>document.getElementById('fichierPDF').click();
 document.getElementById('fichierPDF').addEventListener('change',e=>{const f=e.target.files[0];if(f)lirePDFFichier(f);e.target.value=''});
 initFacture();
+
+// ===================== Documents PDF et transmission =====================
+const PIED_PDF=()=>`Document créé avec « À quoi ai-je le droit ? » le ${dateLongue(new Date())} — informations indicatives, à vérifier auprès des organismes.`;
+function texteDe(el){return el?el.innerText.replace(/[ \t]+\n/g,'\n').trim():''}
+function docLettre(){
+  if(!LETTRE)return null;
+  const D=LETTRE_DOC||{}, B=[{t:'exp',x:D.exp},{t:'dest',x:D.dest},{t:'droite',x:D.lieu}];
+  if(D.rar)B.push({t:'i',x:D.rar});
+  B.push({t:'b',x:'Objet : '+D.objet}); if(D.ref)B.push({t:'p',x:D.ref});
+  B.push({t:'espace'},{t:'p',x:D.corps},{t:'espace'},{t:'p',x:D.nom});
+  return {titre:LETTRE.titre,fichier:LETTRE.titre,style:'lettre',pied:'',blocs:B};
+}
+function docDossier(){
+  calculer();
+  const B=[{t:'h1',x:'Mon dossier — À quoi ai-je le droit ?'},{t:'petit',x:`Profil : ${PROFIL} — édité le ${dateLongue(new Date())}`},{t:'p',x:texteDe(document.getElementById('resume-profil'))},
+    {t:'p',x:`${texteDe(document.getElementById('n-probable'))} droits probables · ${texteDe(document.getElementById('n-possible'))} droits possibles à vérifier · ${texteDe(document.getElementById('n-info'))} démarches utiles`}];
+  document.querySelectorAll('#liste > *').forEach(el=>{
+    if(el.classList.contains('domaine')){B.push({t:'h2',x:texteDe(el)});return}
+    if(!el.classList.contains('droit'))return;
+    const ps=el.querySelectorAll('p');
+    B.push({t:'b',x:`${texteDe(el.querySelector('h3 span'))} — ${texteDe(el.querySelector('.badge'))}`});
+    B.push({t:'petit',x:texteDe(ps[0])}); B.push({t:'p',x:texteDe(ps[1])});
+    if(el.querySelector('.demarche'))B.push({t:'p',x:texteDe(el.querySelector('.demarche'))});
+    if(el.querySelector('.pj'))B.push({t:'p',x:texteDe(el.querySelector('.pj'))});
+    B.push({t:'petit',x:'Lien : '+texteDe(el.querySelector('.url'))});
+  });
+  const G=(REGLES.pieces_generales||[]); if(G.length){B.push({t:'h2',x:'Pièces souvent demandées'});G.forEach(x=>B.push({t:'puce',x}))}
+  B.push({t:'sep'},{t:'petit',x:"Ce repérage est indicatif : seul l'organisme concerné peut confirmer un droit. Un conseiller France Services peut vous aider gratuitement."});
+  return {titre:'Mon dossier de droits',fichier:`Mon dossier de droits - ${PROFIL}`,style:'dossier',pied:PIED_PDF(),blocs:B};
+}
+function docFacture(){
+  const on=document.querySelector('#o-facture .ssp.on'); if(!on)return null;
+  const nom=texteDe(document.querySelector('#o-facture .sso.on')).replace(/^[^\p{L}]+/u,'');
+  const B=[{t:'h1',x:'Analyse de facture — '+nom},{t:'petit',x:`Profil : ${PROFIL} — ${dateLongue(new Date())}`},{t:'h2',x:'Chiffres de la facture'}];
+  on.querySelectorAll('.comp-reglages > label:not(.cache)').forEach(l=>{
+    const c=l.querySelector('input,select'); if(!c)return;
+    let v=c.type==='checkbox'?(c.checked?'oui':''):c.tagName==='SELECT'?c.options[c.selectedIndex].text:(c.type==='number'?String(c.value).replace('.',','):c.value);
+    if(!v)return; const lab=(l.childNodes[0].textContent||texteDe(l)).trim();
+    const unite=(l.querySelector('span')?l.querySelector('span').textContent.trim():'');
+    B.push({t:'puce',x:`${lab} : ${v}${unite&&c.type!=='checkbox'?' '+unite:''}`});
+  });
+  B.push({t:'h2',x:'Résultats de l\'analyse'});
+  on.querySelectorAll('.constats li').forEach(li=>B.push({t:'puce',x:texteDe(li)}));
+  B.push({t:'sep'},{t:'petit',x:'Comparaison avec les tarifs et offres de référence du logiciel à la date du document ; vérifiez les offres sur le comparateur officiel energie-info.fr.'});
+  return {titre:'Analyse de facture',fichier:'Analyse facture '+nom,style:'dossier',pied:PIED_PDF(),blocs:B};
+}
+function docRetraite(){
+  const B=[{t:'h1',x:'Simulation de retraite'},{t:'petit',x:`Profil : ${PROFIL} — ${dateLongue(new Date())}`}];
+  const n=document.getElementById('rNaissance').value; if(!n)return null;
+  B.push({t:'puce',x:'Date de naissance : '+new Date(n+'T12:00').toLocaleDateString('fr-FR')});
+  if(val('rTrim')!=null)B.push({t:'puce',x:'Trimestres validés : '+val('rTrim')});
+  if(val('rDebut')!=null)B.push({t:'puce',x:'Âge au premier emploi : '+val('rDebut')+' ans'});
+  B.push({t:'h2',x:'Résultats'});
+  document.querySelectorAll('#resRetraite .retr > div').forEach(d=>B.push({t:'b',x:texteDe(d).replace(/\n+/g,' — ')}));
+  document.querySelectorAll('#resRetraite .q p').forEach(p=>B.push({t:'p',x:texteDe(p).replace(/^•\s*/,'')}));
+  return {titre:'Simulation de retraite',fichier:'Simulation retraite',style:'dossier',pied:PIED_PDF(),blocs:B};
+}
+let DERNIER_PDF=null;
+async function exporterPDF(quoi){
+  const doc={lettre:docLettre,dossier:docDossier,facture:docFacture,retraite:docRetraite}[quoi]();
+  if(!doc){alert('Rien à enregistrer pour le moment : complétez d\'abord le document.');return}
+  doc.blocs=doc.blocs.filter(b=>b.t==='espace'||b.t==='sep'||(b.x&&String(b.x).trim()));
+  if(typeof window.enregistrerPDF==='function'){
+    let r; try{r=await window.enregistrerPDF(JSON.stringify(doc))}catch(e){r={erreur:String(e)}}
+    if(!r||r.erreur){alert("Le PDF n'a pas pu être créé : "+(r&&r.erreur||'erreur inconnue'));return}
+    DERNIER_PDF={...r,titre:doc.titre}; barrePDF(true); return;
+  }
+  if(/^https?:/.test(location.protocol)&&!MODE_WEB){
+    try{const b=await fetch('/api/document',{method:'POST',body:JSON.stringify(doc)}).then(x=>{if(!x.ok)throw 0;return x.blob()});
+      const nom=doc.fichier.replace(/[<>:"/\\|?*]+/g,' ')+'.pdf', a=document.createElement('a');
+      a.href=URL.createObjectURL(b); a.download=nom; document.body.appendChild(a); a.click(); a.remove();
+      DERNIER_PDF={nom,titre:doc.titre}; barrePDF(false); return}catch(e){}
+  }
+  // Version web : impression, avec « Enregistrer au format PDF » comme imprimante
+  alert('Dans la fenêtre d\'impression qui va s\'ouvrir, choisissez « Enregistrer au format PDF » comme imprimante.');
+  if(quoi==='lettre')imprimerLettre(); else if(quoi==='dossier')imprimerDossier(); else window.print();
+}
+function barrePDF(local){
+  const b=document.getElementById('barrePDF'), d=DERNIER_PDF;
+  b.innerHTML=`<div class="txt">✓ <b>PDF enregistré : ${echapper(d.nom)}</b><br><small>${local?'Dans Documents › À quoi ai-je le droit':'Dans votre dossier Téléchargements'}</small></div>
+    ${local?'<button class="btn prim" onclick="ouvrirPDF(false)">Ouvrir</button><button class="btn sec" onclick="ouvrirPDF(true)">Afficher dans le dossier</button>':''}
+    <button class="btn sec" onclick="emailPDF()">✉ Transmettre par e-mail</button><button class="fermer" onclick="this.parentElement.classList.remove('on')" aria-label="Fermer">×</button>`;
+  b.classList.add('on');
+}
+async function ouvrirPDF(dossier){ if(DERNIER_PDF&&DERNIER_PDF.chemin&&typeof window.ouvrirDocument==='function'){try{await window.ouvrirDocument(DERNIER_PDF.chemin,dossier)}catch(e){}} }
+function emailPDF(){
+  if(!DERNIER_PDF)return;
+  const nom=(document.getElementById('c_nom')||{}).value||'';
+  const corps=`Bonjour,\n\nVeuillez trouver ci-joint le document « ${DERNIER_PDF.titre} ».\n\nCordialement,\n${nom}`;
+  ouvrir('mailto:?subject='+encodeURIComponent(DERNIER_PDF.titre)+'&body='+encodeURIComponent(corps));
+  ouvrirPDF(true);
+  const b=document.getElementById('barrePDF'); const s=b.querySelector('small');
+  if(s)s.innerHTML='Votre messagerie s\'ouvre : <b>glissez le fichier PDF</b> (sélectionné dans la fenêtre du dossier) dans l\'e-mail, ou utilisez le trombone « Joindre ».';
+}
 
 restaurer();
 majComparateur();

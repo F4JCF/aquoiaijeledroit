@@ -7,12 +7,13 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 
 	webview2 "github.com/jchv/go-webview2"
 )
 
 func ouvrirLien(url string) {
-	if lienAutorise(url) {
+	if lienAutorise(url) || strings.HasPrefix(url, "mailto:") {
 		exec.Command("rundll32", "url.dll,FileProtocolHandler", url).Start()
 	}
 }
@@ -43,6 +44,17 @@ func main() {
 	w.Bind("ouvrirLien", func(url string) { ouvrirLien(url) })
 	w.Bind("stockEcrire", func(cle, valeur string) { ecrireStock(cle, valeur) })
 	w.Bind("lirePDF", func(b64 string) map[string]string { return lirePDFBase64(b64) })
+	w.Bind("enregistrerPDF", func(doc string) map[string]string { return enregistrerDocument(doc) })
+	// Ouvre le PDF, ou le dossier en sélectionnant le fichier (pour le joindre à un e-mail).
+	w.Bind("ouvrirDocument", func(chemin string, dossier bool) bool {
+		if !cheminDocumentAutorise(chemin) {
+			return false
+		}
+		if dossier {
+			return exec.Command("explorer", "/select,", chemin).Start() == nil
+		}
+		return exec.Command("rundll32", "url.dll,FileProtocolHandler", chemin).Start() == nil
+	})
 	// La vérification se fait en arrière-plan pour ne pas figer la fenêtre.
 	w.Bind("lancerVerifMaj", func() {
 		go func() {
