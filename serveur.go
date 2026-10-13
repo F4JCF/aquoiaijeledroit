@@ -30,6 +30,11 @@ func modeNavigateur(adresse string, ouvrir bool) error {
 		}
 		w.WriteHeader(http.StatusNoContent)
 	})
+	mux.HandleFunc("/api/pdf", func(w http.ResponseWriter, r *http.Request) {
+		b, _ := io.ReadAll(io.LimitReader(r.Body, 40<<20))
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(lirePDFBase64(string(b)))
+	})
 	mux.HandleFunc("/api/verifierMaj", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.Write([]byte(verifierMajJSON()))

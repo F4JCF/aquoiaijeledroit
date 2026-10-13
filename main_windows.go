@@ -42,6 +42,7 @@ func main() {
 	defer w.Destroy()
 	w.Bind("ouvrirLien", func(url string) { ouvrirLien(url) })
 	w.Bind("stockEcrire", func(cle, valeur string) { ecrireStock(cle, valeur) })
+	w.Bind("lirePDF", func(b64 string) map[string]string { return lirePDFBase64(b64) })
 	// La vérification se fait en arrière-plan pour ne pas figer la fenêtre.
 	w.Bind("lancerVerifMaj", func() {
 		go func() {

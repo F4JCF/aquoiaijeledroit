@@ -167,6 +167,15 @@ body.contraste .sous,body.contraste .confidentiel,body.contraste .majbloc{color:
 .retr b{display:block;font-family:Georgia,serif;font-size:24px;font-weight:normal;line-height:1.2}
 .retr span{font-size:14px;color:var(--doux)}
 
+.constats{list-style:none;padding:0;margin:0 0 16px}
+.constats li{background:var(--carte);border:1px solid var(--ligne);border-left:5px solid var(--ligne);border-radius:12px;padding:12px 16px;margin-bottom:8px;font-size:15px}
+.constats li.ok{border-left-color:var(--mer)}
+.constats li.alerte{border-left-color:var(--rouge);background:#fdf3f2}
+.constats li.conseil{border-left-color:var(--ambre)}
+.constats li.eco{border-left-color:var(--mer);background:var(--mer-clair)}
+.constats li b.g{font-size:17px}
+.fact input.auto,.fact select.auto{background:#fff8e1;border-color:#e0b04a}
+
 .cache{display:none!important}
 .nav{display:flex;justify-content:space-between;margin-top:26px;gap:12px}
 .btn{border:0;border-radius:10px;padding:12px 22px;cursor:pointer;font-weight:600}
@@ -261,6 +270,7 @@ body.contraste .sous,body.contraste .confidentiel,body.contraste .majbloc{color:
   <nav id="etapes"></nav>
   <div class="outilsnav">
     <div class="cherchebloc"><input type="search" id="rechercheRapide" placeholder="🔍 Chercher un droit…"></div>
+    <button class="etape" data-outil="o-facture"><span class="n">🧾</span><span>Analyse facture</span></button>
     <button class="etape" data-outil="o-lettres"><span class="n">📝</span><span>Lettres types</span></button>
     <button class="etape" data-outil="o-demarches"><span class="n">📂</span><span>Mes démarches <b id="nbDem"></b></span></button>
     <button class="etape" data-outil="o-retraite"><span class="n">🧮</span><span>Simulateur retraite</span></button>
@@ -901,6 +911,76 @@ body.contraste .sous,body.contraste .confidentiel,body.contraste .majbloc{color:
   </div>
 </section>
 
+
+<section class="panneau outil" id="o-facture" data-titre="Analyse facture">
+  <h2>🧾 Analyse de facture</h2>
+  <p class="intro">Recopiez les chiffres de votre facture, ou importez-la en PDF : le logiciel vérifie les prix, l'abonnement, la puissance, l'option, les relevés estimés et les frais en trop, et calcule ce que vous pourriez économiser.</p>
+  <div class="q" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+    <button class="btn prim" id="btnPDF">📄 Importer une facture PDF</button>
+    <input type="file" id="fichierPDF" accept="application/pdf,.pdf" class="cache">
+    <span class="aide" id="etatPDF" style="margin:0">Le fichier est lu sur cet appareil, il n'est envoyé nulle part. Les factures scannées (images) ne peuvent pas être lues : saisissez alors les chiffres.</span>
+  </div>
+  <div class="ssonglets" role="tablist">
+    <button class="sso on" data-p="f-elec">⚡ Électricité</button>
+    <button class="sso" data-p="f-gaz">🔥 Gaz</button>
+    <button class="sso" data-p="f-tel">📱 Mobile / Internet</button>
+    <button class="sso" data-p="f-eau">💧 Eau</button>
+  </div>
+  <div class="ssp on" id="ssp-f-elec">
+    <div class="comp"><div class="comp-reglages fact">
+      <label>Fournisseur<input type="text" id="fe_fourn" placeholder="ex. EDF"></label>
+      <label>Puissance<select id="fe_kva"></select></label>
+      <label>Option<select id="fe_opt"><option value="base">Base</option><option value="hphc">Heures pleines / creuses</option></select></label>
+      <label>Durée de la période<span><input type="number" id="fe_jours" min="1" max="400" placeholder="ex. 61"> jours</span></label>
+      <label class="si-base">Consommation<span><input type="number" id="fe_kwh" min="0" placeholder="ex. 812"> kWh</span></label>
+      <label class="si-base">Prix du kWh TTC<span><input type="number" id="fe_prix" step="0.0001" min="0" placeholder="ex. 0,2001"> €</span></label>
+      <label class="si-hphc">Conso. heures pleines<span><input type="number" id="fe_kwh_hp" min="0"> kWh</span></label>
+      <label class="si-hphc">Conso. heures creuses<span><input type="number" id="fe_kwh_hc" min="0"> kWh</span></label>
+      <label class="si-hphc">Prix kWh HP TTC<span><input type="number" id="fe_prix_hp" step="0.0001" min="0"> €</span></label>
+      <label class="si-hphc">Prix kWh HC TTC<span><input type="number" id="fe_prix_hc" step="0.0001" min="0"> €</span></label>
+      <label>Abonnement de la période TTC<span><input type="number" id="fe_abo" step="0.01" min="0" placeholder="ex. 39,77"> €</span></label>
+      <label>Montant total TTC<span><input type="number" id="fe_total" step="0.01" min="0" placeholder="ex. 214,95"> €</span></label>
+      <label>Relevé du compteur<select id="fe_releve"><option value="">Je ne sais pas</option><option value="reel">Réel</option><option value="estime">Estimé</option></select></label>
+      <label class="chk"><span><input type="checkbox" id="fe_regul"> Régularisation portant sur plus de 14 mois</span></label>
+    </div></div>
+    <div id="resFacElec"></div>
+  </div>
+  <div class="ssp" id="ssp-f-gaz">
+    <div class="comp"><div class="comp-reglages fact">
+      <label>Fournisseur<input type="text" id="fg_fourn"></label>
+      <label>Durée de la période<span><input type="number" id="fg_jours" min="1" max="400"> jours</span></label>
+      <label>Consommation<span><input type="number" id="fg_kwh" min="0"> kWh</span></label>
+      <label>Prix du kWh TTC<span><input type="number" id="fg_prix" step="0.0001" min="0"> €</span></label>
+      <label>Abonnement de la période TTC<span><input type="number" id="fg_abo" step="0.01" min="0"> €</span></label>
+      <label>Montant total TTC<span><input type="number" id="fg_total" step="0.01" min="0"> €</span></label>
+      <label>Relevé du compteur<select id="fg_releve"><option value="">Je ne sais pas</option><option value="reel">Réel</option><option value="estime">Estimé</option></select></label>
+    </div></div>
+    <div id="resFacGaz"></div>
+  </div>
+  <div class="ssp" id="ssp-f-tel">
+    <div class="comp"><div class="comp-reglages fact">
+      <label>Type<select id="ft_type"><option value="mobile">Forfait mobile</option><option value="box">Box internet</option></select></label>
+      <label>Opérateur<input type="text" id="ft_op"></label>
+      <label>Prix du forfait / de la box<span><input type="number" id="ft_forfait" step="0.01" min="0"> € / mois</span></label>
+      <label>Hors forfait<span><input type="number" id="ft_hf" step="0.01" min="0"> €</span></label>
+      <label>Options payantes (assurance, TV, services…)<span><input type="number" id="ft_options" step="0.01" min="0"> € / mois</span></label>
+      <label class="si-mobile">Internet mobile utilisé<select id="ft_go"><option value="10">Jusqu'à 10 Go</option><option value="30">Environ 30 Go</option><option value="100" selected>Environ 100 Go</option><option value="200">200 Go ou plus</option><option value="9999">Illimité</option></select></label>
+      <label class="chk si-box"><span><input type="checkbox" id="ft_tv"> J'utilise la télévision</span></label>
+    </div></div>
+    <div id="resFacTel"></div>
+  </div>
+  <div class="ssp" id="ssp-f-eau">
+    <div class="comp"><div class="comp-reglages fact">
+      <label>Durée de la période<span><input type="number" id="fw_jours" min="1" max="400" placeholder="ex. 182"> jours</span></label>
+      <label>Consommation<span><input type="number" id="fw_m3" min="0" step="0.1"> m³</span></label>
+      <label>Montant total TTC<span><input type="number" id="fw_total" step="0.01" min="0"> €</span></label>
+      <label>Dont abonnement (part fixe)<span><input type="number" id="fw_abo" step="0.01" min="0"> €</span></label>
+      <label>Relevé du compteur<select id="fw_releve"><option value="">Je ne sais pas</option><option value="reel">Réel</option><option value="estime">Estimé</option></select></label>
+    </div></div>
+    <div id="resFacEau"></div>
+  </div>
+</section>
+
 <section class="panneau outil" id="o-annuaire" data-titre="Numéros utiles">
   <h2>☎ Numéros utiles</h2>
   <p class="intro">Numéros d'urgence, d'aide et de conseil, classés par situation. La plupart sont gratuits.</p>
@@ -1197,7 +1277,7 @@ async function verifierMaj(silencieux){
   const ancienne=REGLES.version;
   if(r.statut==='maj'&&r.regles){
     const nouv=typeof r.regles==='string'?JSON.parse(r.regles):r.regles;
-    REGLES=nouv; afficherVersion(); try{initComparateur();majComparateur();majFournisseurs()}catch(e){}
+    REGLES=nouv; afficherVersion(); try{initComparateur();initFacture();majComparateur();majFournisseurs();majFacture()}catch(e){}
     const news=(nouv.nouveautes||[]).filter(n=>n.v?cmpV(n.v,ancienne)>0:(n.date||'')>dateIso(ancienne)).slice(0,6);
     document.getElementById('bandeauReglesTxt').innerHTML=`<b>Les règles ont été mises à jour</b> (version du ${dateFr(nouv.mise_a_jour)}).`+
       (news.length?'<ul>'+news.map(n=>`<li>${dateFr(n.date)} — ${echapper(n.texte)}</li>`).join('')+'</ul>':'');
@@ -1406,6 +1486,7 @@ function viderFormulaire(){
   });
   const kva=document.getElementById('kva'); if(kva&&[...kva.options].some(o=>o.value==='6'))kva.value='6';
   const rc=document.getElementById('rContinue'); if(rc)rc.checked=true;
+  const fk=document.getElementById('fe_kva'); if(fk&&[...fk.options].some(o=>o.value==='6'))fk.value='6';
 }
 function majProfils(){
   const sel=document.getElementById('profilSel');
@@ -1453,6 +1534,7 @@ function afficherOutil(id){
   if(id==='o-lettres')majLettres();
   if(id==='o-demarches')majDemarches();
   if(id==='o-retraite')majRetraite();
+  if(id==='o-facture')majFacture();
   if(id==='o-recherche')setTimeout(()=>document.getElementById('rechercheGrande').focus(),50);
   document.querySelector('main').scrollTo(0,0);
 }
@@ -1739,9 +1821,177 @@ function fermerMenu(){document.querySelector('aside').classList.remove('ouvert')
 document.getElementById('menuMobile').onclick=()=>{const a=document.querySelector('aside');a.classList.toggle('ouvert');document.getElementById('menuMobile').textContent=a.classList.contains('ouvert')?'✕ Fermer':'☰ Menu'};
 document.addEventListener('click',e=>{ if(e.target.closest('#etapes .etape, .outilsnav .etape'))fermerMenu() });
 
+// ===================== Analyse de facture =====================
+const fv=id=>{const e=document.getElementById(id);if(!e||e.value==='')return null;const n=+String(e.value).replace(',','.');return isNaN(n)?null:n};
+const eur2=v=>v.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+const pct=(a,b)=>Math.round((a/b-1)*100);
+function constats(L){return L.length?'<ul class="constats">'+L.map(([c,t])=>`<li class="${c}">${t}</li>`).join('')+'</ul>':''}
+function liensFacture(lettres){return `<div class="outils" style="margin-top:0">`+lettres.map(([id,t])=>`<button class="btn sec" onclick="afficherOutil('o-lettres');choisirLettre('${id}')">📝 ${t}</button>`).join('')+`<button class="btn sec" onclick="ouvrir('https://comparateur-offres.energie-info.fr')">Comparateur officiel ↗</button></div>`}
+function initFacture(){
+  const E=energie(), sel=document.getElementById('fe_kva'); if(!sel||!E)return;
+  const garde=sel.value, ks=Object.keys(E.elec.trv.abo).sort((a,b)=>a-b);
+  sel.innerHTML=ks.map(k=>`<option value="${k}">${k} kVA</option>`).join(''); sel.value=ks.includes(garde)?garde:'6';
+}
+function analyseElec(){
+  const z=document.getElementById('resFacElec'), E=energie(); if(!E){z.innerHTML='';return}
+  const T=E.elec.trv, kva=document.getElementById('fe_kva').value, opt=document.getElementById('fe_opt').value;
+  document.querySelectorAll('#ssp-f-elec .si-base').forEach(e=>e.classList.toggle('cache',opt!=='base'));
+  document.querySelectorAll('#ssp-f-elec .si-hphc').forEach(e=>e.classList.toggle('cache',opt!=='hphc'));
+  const j=fv('fe_jours'), f=j?365/j:null, L=[];
+  let kwh=opt==='base'?fv('fe_kwh'):((fv('fe_kwh_hp')||0)+(fv('fe_kwh_hc')||0))||null;
+  const partHC=opt==='hphc'&&kwh?(fv('fe_kwh_hc')||0)/kwh:null;
+  if(!kwh&&!fv('fe_total')){z.innerHTML='<p class="vide">Indiquez au moins la consommation et la durée de la période (ou importez la facture en PDF).</p>';return}
+  // 1. prix du kWh
+  if(opt==='base'&&fv('fe_prix')){const p=fv('fe_prix'),r=T.base[kva]||T.base['6'],d=pct(p,r);
+    L.push(d>2?['alerte',`Votre prix du kWh (${prixK(p)} €) est <b>${d} % plus cher</b> que le tarif réglementé (${prixK(r)} €).`]:d<-2?['ok',`Votre prix du kWh (${prixK(p)} €) est ${-d} % moins cher que le tarif réglementé (${prixK(r)} €).`]:['ok',`Votre prix du kWh (${prixK(p)} €) est au niveau du tarif réglementé.`])}
+  if(opt==='hphc'&&fv('fe_prix_hp')&&fv('fe_prix_hc')){const dh=pct(fv('fe_prix_hp'),T.hp),dc=pct(fv('fe_prix_hc'),T.hc);
+    L.push((dh>2||dc>2)?['alerte',`Vos prix (HP ${prixK(fv('fe_prix_hp'))} €, HC ${prixK(fv('fe_prix_hc'))} €) sont plus chers que le tarif réglementé (HP ${prixK(T.hp)} €, HC ${prixK(T.hc)} €).`]:['ok','Vos prix heures pleines / heures creuses ne dépassent pas le tarif réglementé.'])}
+  // 2. abonnement
+  if(fv('fe_abo')&&f){const a=fv('fe_abo')*f, r=T.abo[kva], d=pct(a,r);
+    L.push(d>5?['alerte',`Votre abonnement revient à environ <b>${euro(a)} par an</b>, soit ${d} % de plus que l'abonnement réglementé en ${kva} kVA (${euro(r)}).`]:['ok',`Abonnement : environ ${euro(a)} par an, cohérent avec le tarif réglementé en ${kva} kVA (${euro(r)}).`])}
+  const an=kwh&&f?kwh*f:null;
+  // 3. puissance
+  if(an&&+kva>=9&&an<4500&&T.abo['6']){const g=T.abo[kva]-T.abo['6'];
+    L.push(['conseil',`Votre consommation (environ ${Math.round(an).toLocaleString('fr-FR')} kWh par an) est modeste pour un compteur de ${kva} kVA. Si vos appareils ne fonctionnent pas tous en même temps, passer à 6 kVA économiserait environ <b>${euro(g)} par an</b> d'abonnement. Le compteur Linky indique la puissance maximale réellement atteinte.`])}
+  // 4. option
+  if(an&&opt==='hphc'&&partHC!=null){const base=T.abo[kva]+an*(T.base[kva]||T.base['6']), hp=T.abo[kva]+an*(T.hp*(1-partHC)+T.hc*partHC);
+    L.push(base<hp-10?['conseil',`Seulement ${Math.round(partHC*100)} % de votre consommation est en heures creuses : l'option <b>Base</b> vous coûterait environ ${euro(hp-base)} de moins par an.`]:['ok',`Avec ${Math.round(partHC*100)} % en heures creuses, l'option heures pleines / heures creuses est adaptée.`])}
+  if(an&&opt==='base'&&an>5000){const s=Math.round((T.hp-(T.base[kva]||T.base['6']))/(T.hp-T.hc)*100);
+    L.push(['conseil',`Avec une consommation importante (${Math.round(an).toLocaleString('fr-FR')} kWh par an), l'option heures pleines / heures creuses devient intéressante si plus de <b>${s} %</b> de votre consommation peut se faire en heures creuses (ballon d'eau chaude, lave-linge, recharge…).`])}
+  // 5. relevé estimé, régularisation
+  if(document.getElementById('fe_releve').value==='estime')L.push(['conseil','Cette facture repose sur un <b>relevé estimé</b>. Transmettez votre index réel (autorelevé dans votre espace client, ou données du compteur Linky) pour éviter une forte régularisation plus tard.']);
+  if(document.getElementById('fe_regul').checked)L.push(['alerte',"Un fournisseur ne peut pas facturer une consommation remontant à <b>plus de 14 mois</b> avant le dernier relevé (sauf fraude ou absence d'accès au compteur). Contestez la partie qui dépasse : la lettre « Contester une facture » est prête."]);
+  // 6. cohérence du total
+  const pr=opt==='base'?fv('fe_prix'):null;
+  if(fv('fe_total')&&fv('fe_abo')&&kwh&&pr){const c=fv('fe_abo')+kwh*pr, t=fv('fe_total');
+    if(t>c*1.15)L.push(['conseil',`Le total (${eur2(t)}) dépasse de ${eur2(t-c)} l'abonnement et la consommation affichés (${eur2(c)}). Vérifiez les autres lignes : régularisation, services ou options facturés, frais de déplacement ou de mise en service.`])}
+  // 7. économie possible
+  if(an){const L2=classementElec(kva,opt,an,partHC!=null?partHC*100:40).filter(x=>!p0zni()||x.o.type==='reg');
+    const actuel=fv('fe_total')&&f?fv('fe_total')*f:(fv('fe_abo')&&f&&pr?fv('fe_abo')*f+an*pr:null);
+    if(L2.length&&actuel){const m=L2[0], g=actuel-m.c.total;
+      L.push(g>20?['eco',`💶 Votre électricité vous coûte environ <b>${euro(actuel)} par an</b>. Avec <b>${echapper(m.o.fournisseur)} — ${echapper(m.o.nom)}</b>, vous paieriez environ ${euro(m.c.total)} : <b class="g">${euro(g)} d'économie par an</b>.`]:['ok',`Votre facture annuelle (environ ${euro(actuel)}) est proche des offres les moins chères de notre sélection.`])}}
+  z.innerHTML=constats(L)+liensFacture([['reclamation','Contester la facture'],['resiliation','Résilier le contrat']]);
+}
+function p0zni(){try{return profil().zni}catch(e){return false}}
+function analyseGaz(){
+  const z=document.getElementById('resFacGaz'), E=energie(); if(!E||!E.gaz){z.innerHTML='';return}
+  const j=fv('fg_jours'), f=j?365/j:null, kwh=fv('fg_kwh'), L=[];
+  if(!kwh||!f){z.innerHTML='<p class="vide">Indiquez la consommation et la durée de la période.</p>';return}
+  const an=kwh*f, R=E.gaz.repere, prof=an>=(R.seuil||6000)?'chauffage':'cuisson', ref=R[prof];
+  if(fv('fg_prix')){const d=pct(fv('fg_prix'),ref.kwh);L.push(d>2?['alerte',`Votre prix du kWh (${prixK(fv('fg_prix'))} €) est <b>${d} % plus cher</b> que le prix repère de la CRE (${prixK(ref.kwh)} €).`]:['ok',`Votre prix du kWh (${prixK(fv('fg_prix'))} €) ne dépasse pas le prix repère de la CRE (${prixK(ref.kwh)} €).`])}
+  if(fv('fg_abo')){const a=fv('fg_abo')*f,d=pct(a,ref.abo);L.push(d>5?['alerte',`Abonnement : environ ${euro(a)} par an, ${d} % au-dessus du prix repère (${euro(ref.abo)}).`]:['ok',`Abonnement : environ ${euro(a)} par an, cohérent avec le prix repère (${euro(ref.abo)}).`])}
+  if(document.getElementById('fg_releve').value==='estime')L.push(['conseil','Relevé <b>estimé</b> : transmettez votre index réel pour éviter une régularisation.']);
+  const actuel=fv('fg_total')?fv('fg_total')*f:(fv('fg_abo')&&fv('fg_prix')?fv('fg_abo')*f+an*fv('fg_prix'):null);
+  const G=classementGaz(an);
+  if(actuel&&G.liste.length){const m=G.liste[0],g=actuel-m.c.total;
+    L.push(g>20?['eco',`💶 Votre gaz vous coûte environ <b>${euro(actuel)} par an</b> (${Math.round(an).toLocaleString('fr-FR')} kWh). Avec <b>${echapper(m.o.fournisseur)} — ${echapper(m.o.nom)}</b>, environ ${euro(m.c.total)} : <b class="g">${euro(g)} d'économie par an</b>.`]:['ok',`Votre facture annuelle (environ ${euro(actuel)}) est proche des offres les moins chères de notre sélection.`])}
+  z.innerHTML=constats(L)+liensFacture([['reclamation','Contester la facture'],['resiliation','Résilier le contrat']]);
+}
+function analyseTel(){
+  const z=document.getElementById('resFacTel'), T=REGLES.telecom, type=document.getElementById('ft_type').value, L=[];
+  document.querySelectorAll('#ssp-f-tel .si-mobile').forEach(e=>e.classList.toggle('cache',type!=='mobile'));
+  document.querySelectorAll('#ssp-f-tel .si-box').forEach(e=>e.classList.toggle('cache',type!=='box'));
+  const prix=fv('ft_forfait'); if(!prix){z.innerHTML='<p class="vide">Indiquez le prix mensuel de votre forfait ou de votre box.</p>';return}
+  if(fv('ft_hf')>0)L.push(['alerte',`<b>${eur2(fv('ft_hf'))} de hors forfait</b> sur cette facture. Si cela se répète, un forfait plus adapté ou un blocage des services payants (numéros surtaxés, achats via la facture) coûtera moins cher. Les services non demandés se contestent par écrit.`]);
+  if(fv('ft_options')>0)L.push(['conseil',`<b>${eur2(fv('ft_options'))} d'options par mois</b>, soit ${euro(fv('ft_options')*12)} par an. Une assurance mobile fait souvent doublon avec votre carte bancaire ou la garantie légale : voir la « chasse aux doublons » dans Factures & contrats. Une option se résilie à tout moment.`]);
+  if(T){let liste;
+    if(type==='mobile'){const g=+document.getElementById('ft_go').value; liste=(T.mobile.offres||[]).filter(o=>o.data>=g)}
+    else{const tv=document.getElementById('ft_tv').checked; liste=(T.box.offres||[]).filter(o=>(!tv||o.tv)&&!o.age_max)}
+    liste=liste.map(o=>({o,c:coutN(o,12)})).sort((a,b)=>a.c-b.c);
+    if(liste.length){const m=liste[0], g=prix*12-m.c;
+      L.push(g>24?['eco',`💶 Votre ${type==='mobile'?'forfait':'box'} coûte ${euro(prix*12)} par an. <b>${echapper(m.o.operateur)} — ${echapper(m.o.nom)}</b> reviendrait à ${euro(m.c)} la première année : <b class="g">${euro(g)} d'économie</b>${m.o.promo_mois?` (prix promotionnel pendant ${m.o.promo_mois} mois)`:''}.`]:['ok','Votre prix est proche des offres les moins chères de notre sélection.'])}}
+  L.push(['conseil','Une hausse de prix vous permet de résilier sans frais, même engagé, dans les 4 mois qui suivent. Pour changer d\'opérateur mobile en gardant votre numéro, demandez le code RIO au 3179.']);
+  z.innerHTML=constats(L)+liensFacture([['reclamation','Contester la facture'],['resiliation','Résilier']]);
+}
+function analyseEau(){
+  const z=document.getElementById('resFacEau'), E=REGLES.eau, L=[];
+  const j=fv('fw_jours'), f=j?365/j:null, m3=fv('fw_m3'), t=fv('fw_total');
+  if(!m3||!t){z.innerHTML='<p class="vide">Indiquez la consommation (m³) et le montant total.</p>';return}
+  const pm=t/m3, d=pct(pm,E.prix_moyen_m3);
+  L.push(d>25?['conseil',`Votre eau revient à <b>${pm.toLocaleString('fr-FR',{maximumFractionDigits:2})} € le m³</b> (abonnement compris), ${d} % de plus que la moyenne nationale (${E.prix_moyen_m3.toLocaleString('fr-FR')} €). Le prix est fixé par la commune ou l'intercommunalité.`]:['ok',`Votre eau revient à ${pm.toLocaleString('fr-FR',{maximumFractionDigits:2})} € le m³, abonnement compris (moyenne nationale : ${E.prix_moyen_m3.toLocaleString('fr-FR')} €).`]);
+  if(f){const an=m3*f, n=personnes(profil()), att=E.conso_personne*n;
+    L.push(an>2*att?['alerte',`Consommation d'environ <b>${Math.round(an)} m³ par an</b>, plus du double de la normale pour ${n} personne${n>1?'s':''} (environ ${Math.round(att)} m³). Cherchez une fuite : relevez le compteur le soir et le matin sans utiliser d'eau. Une fuite après le compteur permet de faire plafonner la facture.`]:an>1.3*att?['conseil',`Consommation d'environ ${Math.round(an)} m³ par an, un peu au-dessus de la normale pour ${n} personne${n>1?'s':''} (environ ${Math.round(att)} m³).`]:['ok',`Consommation d'environ ${Math.round(an)} m³ par an, normale pour ${n} personne${n>1?'s':''}.`])}
+  if(document.getElementById('fw_releve').value==='estime')L.push(['conseil','Relevé <b>estimé</b> : relevez votre compteur et communiquez l\'index au service des eaux.']);
+  z.innerHTML=constats(L)+liensFacture([['reclamation','Contester la facture'],['echeancier','Demander un échéancier']]);
+}
+function majFacture(){try{analyseElec()}catch(e){} try{analyseGaz()}catch(e){} try{analyseTel()}catch(e){} try{analyseEau()}catch(e){}}
+document.querySelectorAll('#o-facture input, #o-facture select').forEach(e=>{if(e.id==='fichierPDF')return;e.addEventListener('input',()=>{e.classList.remove('auto');sauver();majFacture()});e.addEventListener('change',()=>{sauver();majFacture()})});
+
+// ---- Lecture d'une facture PDF ----
+const nombre=t=>{if(t==null)return null;const n=+String(t).replace(/\s| | /g,'').replace(',','.');return isNaN(n)?null:n};
+function cherche(txt,re,g=1){const m=re.exec(txt);return m?m[g]:null}
+function remplir(id,v){if(v==null||v==='')return false;const e=document.getElementById(id);if(!e)return false;e.value=v;e.classList.add('auto');return true}
+function analyserTexteFacture(txt){
+  const t=txt.replace(/ | /g,' '), b=t.toLowerCase(), n=[];
+  const jours=(()=>{const j=cherche(t,/\((\d{1,3})\s*jours?\)/i)||cherche(t,/(\d{1,3})\s*jours/i); if(j)return +j;
+    const m=/du\s+(\d{2})\/(\d{2})\/(\d{4})\s+au\s+(\d{2})\/(\d{2})\/(\d{4})/i.exec(t); if(m){return Math.round((new Date(m[6],m[5]-1,m[4])-new Date(m[3],m[2]-1,m[1]))/864e5)+1} return null})();
+  const total=nombre(cherche(t,/(?:total|montant)[^\n]{0,40}?(?:ttc|à payer|a payer|facture)[^\n\d]{0,25}(\d[\d ]*[.,]\d{2})/i)||cherche(t,/(\d[\d ]*[.,]\d{2})\s*€?\s*ttc/i));
+  const estime=/estim/i.test(t)?'estime':(/relev[ée]\s*:?\s*r[ée]el|index r[ée]el/i.test(t)?'reel':'');
+  let type='';
+  if(/kva|kwh/i.test(t)&&!/\bgaz\b/i.test(b.slice(0,400)))type='elec';
+  if(/\bgaz\b/i.test(t)&&/kwh/i.test(t)&&!/kva/i.test(t))type='gaz';
+  if(!type&&/\bm3\b|m³/i.test(t))type='eau';
+  if(!type&&/forfait|hors[- ]forfait|\bgo\b|box|fibre/i.test(t))type='tel';
+  if(type==='elec'){
+    const fourn=cherche(t,/\b(EDF|Engie|TotalEnergies|Total Energies|Mint|Ekwateur|Octopus|Vattenfall|Ohm|Alpiq|Gaz de Bordeaux|GEG|Dyneff|ilek|Enercoop|Eni|Plüm|Wekiwi|Iberdrola|Sowee|Happ-e)\b/i);
+    remplir('fe_fourn',fourn)&&n.push('fournisseur');
+    const kva=cherche(t,/(\d{1,2})\s*kVA/i); if(kva&&remplir('fe_kva',kva))n.push('puissance');
+    const hphc=/heures?\s+creuses|\bHC\b.*\bHP\b|\bHP\b.*\bHC\b/i.test(t);
+    remplir('fe_opt',hphc?'hphc':'base');
+    if(hphc){const hp=nombre(cherche(t,/heures?\s+pleines?[^\n]*?(\d[\d ]*)\s*kWh/i)),hc=nombre(cherche(t,/heures?\s+creuses?[^\n]*?(\d[\d ]*)\s*kWh/i));
+      remplir('fe_kwh_hp',hp)&&n.push('consommation HP'); remplir('fe_kwh_hc',hc)&&n.push('consommation HC');
+      remplir('fe_prix_hp',nombre(cherche(t,/heures?\s+pleines?[^\n]*?(0[.,]\d{3,5})/i))); remplir('fe_prix_hc',nombre(cherche(t,/heures?\s+creuses?[^\n]*?(0[.,]\d{3,5})/i)));
+    }else{
+      const kwh=nombre(cherche(t,/consommation[^\n\d]{0,40}(\d[\d ]*)\s*kWh/i)||cherche(t,/(\d[\d ]{1,7})\s*kWh(?!\s*\))/i)); remplir('fe_kwh',kwh)&&n.push('consommation');
+      const prix=nombre(cherche(t,/(0[.,]\d{3,5})\s*€?\s*(?:ttc)?\s*(?:\/|par)\s*kWh/i)||cherche(t,/prix du kwh[^\n\d]{0,20}(0[.,]\d{3,5})/i)); remplir('fe_prix',prix)&&n.push('prix du kWh');
+    }
+    remplir('fe_abo',nombre(cherche(t,/abonnement[^\n]{0,60}?(\d+[.,]\d{2})\s*€/i)))&&n.push('abonnement');
+    remplir('fe_jours',jours)&&n.push('durée'); remplir('fe_total',total)&&n.push('total'); remplir('fe_releve',estime);
+  }else if(type==='gaz'){
+    remplir('fg_fourn',cherche(t,/\b(EDF|Engie|TotalEnergies|Mint|Ekwateur|Octopus|Vattenfall|Alterna|Gaz de Bordeaux|GEG|Eni|Butagaz|Happ-e)\b/i));
+    remplir('fg_kwh',nombre(cherche(t,/consommation[^\n\d]{0,40}(\d[\d ]*)\s*kWh/i)||cherche(t,/(\d[\d ]{1,7})\s*kWh/i)))&&n.push('consommation');
+    remplir('fg_prix',nombre(cherche(t,/(0[.,]\d{3,5})\s*€?\s*(?:ttc)?\s*(?:\/|par)\s*kWh/i)))&&n.push('prix du kWh');
+    remplir('fg_abo',nombre(cherche(t,/abonnement[^\n]{0,60}?(\d+[.,]\d{2})\s*€/i)))&&n.push('abonnement');
+    remplir('fg_jours',jours)&&n.push('durée'); remplir('fg_total',total)&&n.push('total'); remplir('fg_releve',estime);
+  }else if(type==='tel'){
+    remplir('ft_type',/box|fibre|adsl|internet/i.test(t)&&!/forfait mobile|\bgo\b/i.test(t)?'box':'mobile');
+    remplir('ft_op',cherche(t,/\b(Orange|SFR|RED by SFR|Bouygues Telecom|B&You|Free|Sosh|La Poste Mobile|NRJ Mobile|Lebara|Lyca Mobile|YouPrice|Prixtel|Coriolis|Auchan Telecom|Syma)\b/i));
+    remplir('ft_forfait',nombre(cherche(t,/(?:forfait|abonnement|box)[^\n]{0,60}?(\d+[.,]\d{2})\s*€/i)))&&n.push('prix du forfait');
+    remplir('ft_hf',nombre(cherche(t,/hors[- ]forfait[^\n]{0,40}?(\d+[.,]\d{2})/i)))&&n.push('hors forfait');
+    let opt=0; t.split('\n').forEach(l=>{if(/option|assurance|service/i.test(l)&&!/hors/i.test(l)){const v=nombre(cherche(l,/(\d+[.,]\d{2})/));if(v)opt+=v}});
+    if(opt)remplir('ft_options',Math.round(opt*100)/100)&&n.push('options');
+  }else if(type==='eau'){
+    remplir('fw_m3',nombre(cherche(t,/(\d[\d ]*(?:[.,]\d+)?)\s*(?:m3|m³)/i)))&&n.push('consommation');
+    remplir('fw_abo',nombre(cherche(t,/abonnement[^\n]{0,60}?(\d+[.,]\d{2})/i)))&&n.push('abonnement');
+    remplir('fw_jours',jours)&&n.push('durée'); remplir('fw_total',total)&&n.push('total'); remplir('fw_releve',estime);
+  }
+  return {type,trouves:n};
+}
+async function lirePDFFichier(f){
+  const etat=document.getElementById('etatPDF'); etat.textContent='Lecture de la facture…';
+  const b64=await new Promise((ok,ko)=>{const r=new FileReader();r.onload=()=>ok(String(r.result).split(',')[1]);r.onerror=ko;r.readAsDataURL(f)});
+  let res;
+  try{
+    if(typeof window.lirePDF==='function')res=await window.lirePDF(b64);
+    else if(/^https?:/.test(location.protocol)&&!MODE_WEB)res=await fetch('/api/pdf',{method:'POST',body:b64}).then(r=>r.json());
+    else{etat.textContent="La lecture des PDF n'est disponible que dans le logiciel Windows : saisissez les chiffres de la facture.";return}
+  }catch(e){res={erreur:'lecture impossible'}}
+  if(!res||res.erreur){etat.textContent='⚠️ '+(res&&res.erreur||'lecture impossible')+'. Saisissez les chiffres de la facture.';return}
+  const r=analyserTexteFacture(res.texte);
+  if(!r.type){etat.textContent="⚠️ Le type de facture n'a pas été reconnu : choisissez l'onglet et saisissez les chiffres.";return}
+  const onglet={elec:'f-elec',gaz:'f-gaz',tel:'f-tel',eau:'f-eau'}[r.type];
+  document.querySelector(`#o-facture .sso[data-p="${onglet}"]`).click();
+  etat.innerHTML=r.trouves.length?`✓ Facture ${({elec:"d'électricité",gaz:'de gaz',tel:'de téléphone ou internet',eau:"d'eau"})[r.type]} lue : ${r.trouves.join(', ')}. <b>Vérifiez les champs surlignés en jaune</b> et complétez ceux qui manquent.`:'⚠️ Peu d\'informations reconnues : complétez les champs à la main.';
+  sauver(); majFacture();
+}
+document.getElementById('btnPDF').onclick=()=>document.getElementById('fichierPDF').click();
+document.getElementById('fichierPDF').addEventListener('change',e=>{const f=e.target.files[0];if(f)lirePDFFichier(f);e.target.value=''});
+initFacture();
+
 restaurer();
 majComparateur();
 majFournisseurs();
+majFacture();
 majProfils();
 appliquerAcces();
 majDemarches();

@@ -3,7 +3,7 @@
 Logiciel Windows qui repère, en quelques questions, les aides et droits auxquels une personne peut prétendre : famille, minima sociaux, santé, logement, handicap, autonomie et aidants, retraite (dont CNRACL), emploi, **droit du travail** (privé et fonction publique), **droit pénal** (victimes, mis en cause, casier), **code de la route** (permis, amendes, points, accident, véhicule) et impôts.
 
 - **Aucune installation** : un seul fichier `AQuoiAiJeLeDroit.exe`, à lancer par double-clic.
-- **Pratique** : lettres types pré-remplies, suivi des démarches avec relances, simulateur de retraite, recherche directe, échéances avec rappels, numéros utiles, plusieurs profils, sauvegarde, grands caractères et lecture à voix haute.
+- **Pratique** : analyse de facture (électricité, gaz, téléphone, internet, eau, avec import PDF), lettres types pré-remplies, suivi des démarches avec relances, simulateur de retraite, recherche directe, échéances avec rappels, numéros utiles, plusieurs profils, sauvegarde, grands caractères et lecture à voix haute.
 - **Sur téléphone** : version web sur https://f4jcf.github.io/aquoiaijeledroit/.
 - **Confidentiel** : les réponses restent sur l'ordinateur. Rien n'est envoyé sur Internet. Les réponses de l'étape « Justice » ne sont même jamais enregistrées.
 - **Toujours à jour** : les règles se mettent à jour automatiquement à chaque lancement.
@@ -64,6 +64,10 @@ Source conseillée : le comparateur du Médiateur national de l'énergie (compar
 
 - `retraite` : simulateur de retraite. `generations` : `{du, au, age_a, age_m, trim, cl}` (âge légal en années et mois, trimestres requis, carrière longue en texte) ; `taux_plein_auto` ; `progressive_min` ; `source`.
 - Dans `lettres`, `relance` (en jours) fixe la date de relance proposée quand l'utilisateur indique avoir envoyé la lettre.
+
+## Analyse de facture
+
+L'outil « Analyse facture » compare une facture aux références du fichier de règles (tarif réglementé, prix repère du gaz, offres télécoms, prix moyen de l'eau) : il n'a donc besoin d'aucune mise à jour propre. Dans le logiciel Windows, une facture PDF est lue sur l'ordinateur (`facturepdf.go`) et les chiffres reconnus sont pré-remplis, à vérifier par l'utilisateur. Les factures scannées (images) ne sont pas lisibles.
 
 ## Version téléphone (site web)
 
