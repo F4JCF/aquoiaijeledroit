@@ -35,6 +35,18 @@ Fonctionnement technique :
 
 ---
 
+## Mettre à jour les prix de l'énergie
+
+Les prix du comparateur sont dans la section `energie` de `droits.json`. Ils sont donc mis à jour comme les règles, sans nouvelle version du logiciel.
+
+- `energie.date` et `energie.source` sont affichés au-dessus du comparateur.
+- `elec.trv` contient le tarif réglementé : abonnement annuel TTC par puissance (`abo`), prix Base par puissance (`base`), `hp` et `hc`. Il change en février et en août.
+- `elec.offres` contient les offres : `base`, `hp`, `hc` (€/kWh TTC pour 6 kVA), `abo_delta` (écart d'abonnement annuel avec le tarif réglementé, par option `base` / `hphc`), `type` (`fixe`, `indexe`, `variable`), `cond`, `url`. Pour les puissances de 9 kVA et plus, le prix Base est ajusté dans la même proportion que le tarif réglementé.
+- `gaz.repere` contient le prix repère CRE, publié chaque mois. Au-dessus de `seuil` kWh, c'est le profil `chauffage` qui s'applique, en dessous le profil `cuisson`.
+- `gaz.offres` contient les offres : `cuisson` et/ou `chauffage`, chacun avec `abo` (€/an) et `kwh`.
+
+Source conseillée : le comparateur du Médiateur national de l'énergie (comparateur-offres.energie-info.fr).
+
 ## Mettre à jour les règles après une nouvelle loi
 
 1. Ouvrir `droits.json` sur GitHub (bouton crayon ✏️).
@@ -62,7 +74,7 @@ Le contrôle automatique (onglet **Actions**) vérifie le fichier. Une croix rou
 | Clé | Rôle |
 |---|---|
 | `id` | identifiant unique (sans espace) |
-| `d` | domaine affiché : Famille, Ressources, Santé, Logement, Handicap, Autonomie, Retraite, Emploi & formation, Droit du travail, Droit pénal, Code de la route, Impôts (un nouveau nom crée un nouveau domaine) |
+| `d` | domaine affiché : Famille, Ressources, Santé, Logement, Handicap, Autonomie, Retraite, Emploi & formation, Énergie, Droit du travail, Droit pénal, Code de la route, Impôts (un nouveau nom crée un nouveau domaine) |
 | `t`, `o` | titre et organisme |
 | `l` | lien ; `{SP}`, `{CAF}`, `{MDPH}`, `{RETRAITE}`, `{CNRACL}`, `{IMPOTS}`, `{AGEES}`, `{RENOV}` sont remplacés par les adresses de la section `liens` |
 | `r`, `a` | résumé et démarche |
@@ -91,6 +103,7 @@ Le contrôle automatique (onglet **Actions**) vérifie le fichier. Une croix rou
 | `niv` | niveau de ressources 1 à 4 (seuils dans `seuils.niveaux_ruc`) |
 | cases à cocher | `grossesse`, `enfantHandicap`, `pasPension`, `tempsPartiel`, `carriereLongue`, `servicesActifs`, `independant2`, `procedure`, `logementAncien`, `adapter`, `difficulte`, `cherche`, `ald`, `autonomie`, `aidant`, `aideDomicile` |
 | travail | `contrat` (`cdi`, `cdd`, `interim`, `apprenti`, `saisonnier`), `effectif` (`petite`, `moyenne`, `grande`), `anciennete` (années) ; cases `licenciement`, `depart`, `finContrat`, `heuresSup`, `salaireImpaye`, `harcelement`, `arretMaladie`, `accidentTravail`, `inaptitude`, `conges`, `naissance`, `reconversion`, `teletravail`, `horairesAtypiques`, `entrepriseDifficulte`, `mobilite` |
+| énergie | `chauffage` (`elec`, `pac`, `gaz`, `fioul`, `bois`, `collectif`), `consoElec`, `consoGaz` ; cases `factureElevee`, `changerFournisseur`, `impayeEnergie`, `coupure`, `litigeEnergie`, `demarchage`, `linky`, `changerChauffage`, `solaire` ; déduits `chauffageElec`, `ecoElec` (économie estimée en € par le comparateur) |
 | route | `permis` (`aucun`, `probatoire`, `confirme`, `suspendu`) ; cases `amende`, `points`, `suspension`, `alcoolStup`, `accidentAuto`, `stationnement`, `fourriere`, `carteGrise`, `assuranceAuto`, `zfe`, `plaqueUsurpee`, `passerPermis`, `deuxRoues`, `santeConduite` |
 | justice | `victime`, `violencesFamille`, `arnaque`, `harcelementLigne`, `accidentRoute`, `convoque`, `poursuivi`, `temoin`, `casier`, `procheDetenu` — **jamais enregistrés** sur l'ordinateur |
 | déduits | `couple`, `isole` (parent seul), `fonct`, `travaille`, `actif`, `locataire`, `proprio`, `handDeclare`, `handOui`, `prive` (salarié du privé), `public` (fonctionnaire ou contractuel), `exSalarie` (demandeur d'emploi), `cdi`, `precaire`, `victimeQ` (victime, quelle que soit l'infraction), `misEnCause` (convoqué ou poursuivi) |

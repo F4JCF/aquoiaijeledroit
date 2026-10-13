@@ -68,6 +68,36 @@ input[type=number]:focus{outline:none;border-color:var(--mer)}
 .coches label:hover{background:var(--gris-clair)}
 .coches label:has(input:checked){border-color:var(--mer);background:var(--mer-clair)}
 .coches input{width:20px;height:20px;margin-top:3px;accent-color:var(--mer);flex:none}
+/* ---- Comparateur énergie ---- */
+.comp{background:var(--carte);border:1px solid var(--ligne);border-radius:var(--rayon);padding:20px 22px;margin-bottom:16px}
+.comp h3{font-family:Georgia,serif;font-weight:normal;font-size:22px;margin:0 0 4px}
+.comp .sous2{font-size:14px;color:var(--doux);margin:0 0 14px}
+.comp-reglages{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:flex-end;margin-bottom:14px}
+.comp-reglages label{display:flex;flex-direction:column;gap:4px;font-size:14px;color:var(--doux)}
+.comp-reglages select,.comp-reglages input{padding:8px 10px;border:1.5px solid var(--ligne);border-radius:10px;background:#fff;font-size:16px;width:auto}
+.comp-reglages input[type=number]{width:120px}
+.estim{font-size:14px;background:var(--gris-clair);border-radius:10px;padding:8px 12px;margin:-4px 0 14px}
+.estim button{background:none;border:0;color:var(--mer);text-decoration:underline;cursor:pointer;font-size:14px;padding:0}
+table.offres{width:100%;border-collapse:collapse;font-size:15px}
+.offres th{text-align:left;font-size:13px;color:var(--doux);font-weight:600;padding:6px 8px;border-bottom:1.5px solid var(--ligne)}
+.offres td{padding:9px 8px;border-bottom:1px solid var(--ligne);vertical-align:top}
+.offres td.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.offres th.num{text-align:right}
+.offres tr.trv td{background:var(--gris-clair)}
+.offres tr.top td:first-child{box-shadow:inset 4px 0 0 var(--mer)}
+.offres .nom{font-weight:600}
+.offres .cond{font-size:13px;color:var(--doux)}
+.offres .eco{color:var(--mer);font-weight:600}
+.offres .sur{color:var(--rouge)}
+.typ{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;margin-left:6px;white-space:nowrap}
+.typ.fixe{background:var(--mer-clair);color:var(--mer)}
+.typ.indexe{background:var(--ambre-clair);color:var(--ambre)}
+.typ.reg,.typ.ref{background:#e6e9f2;color:#3b4a7a}
+.typ.variable{background:#fbe9e7;color:var(--rouge)}
+.comp .pied{font-size:13px;color:var(--doux);margin-top:12px}
+.comp .vide{margin:6px 0}
+.offres .ouvrir{display:inline-block;margin-top:4px;background:none;border:0;padding:0;color:var(--mer);text-decoration:underline;cursor:pointer;font-size:13px}
+
 .cache{display:none!important}
 .nav{display:flex;justify-content:space-between;margin-top:26px;gap:12px}
 .btn{border:0;border-radius:10px;padding:12px 22px;cursor:pointer;font-weight:600}
@@ -122,7 +152,7 @@ input[type=number]:focus{outline:none;border-color:var(--mer)}
 <aside>
   <img class="logo" src="{{ICONE}}" alt="">
   <h1 class="marque">À quoi ai-je <em>le droit&nbsp;?</em></h1>
-  <p class="sous">Aides, allocations, retraite, handicap, logement, droit du travail, route, justice — un premier repérage en 5 minutes.</p>
+  <p class="sous">Aides, allocations, retraite, handicap, logement, énergie, droit du travail, route, justice — un premier repérage en 5 minutes.</p>
   <nav id="etapes"></nav>
   <div class="majbloc">
     <div id="majInfo"></div>
@@ -283,6 +313,60 @@ input[type=number]:focus{outline:none;border-color:var(--mer)}
   </div></div>
 </section>
 
+<!-- 5 bis. Énergie -->
+<section class="panneau" id="p-energie" data-titre="Énergie">
+  <h2>Énergie : aides et comparateur</h2>
+  <p class="intro">Vos droits face à votre fournisseur d'électricité ou de gaz, les aides pour payer vos factures, et une comparaison des offres selon votre consommation.</p>
+  <div class="q"><span class="titre">Votre chauffage principal</span>
+    <div class="choix" data-nom="chauffage">
+      <label><input type="radio" name="chauffage" value="elec">Électrique</label>
+      <label><input type="radio" name="chauffage" value="pac">Pompe à chaleur</label>
+      <label><input type="radio" name="chauffage" value="gaz">Gaz</label>
+      <label><input type="radio" name="chauffage" value="fioul">Fioul</label>
+      <label><input type="radio" name="chauffage" value="bois">Bois / granulés</label>
+      <label><input type="radio" name="chauffage" value="collectif">Collectif / réseau de chaleur</label>
+    </div>
+  </div>
+  <div class="q"><span class="titre">Vous êtes concerné(e) par…</span><div class="coches">
+    <label><input type="checkbox" id="factureElevee"><span>Des factures trop élevées : je veux payer moins cher</span></label>
+    <label><input type="checkbox" id="changerFournisseur"><span>L'envie de changer de fournisseur</span></label>
+    <label><input type="checkbox" id="impayeEnergie"><span>Des factures d'énergie impayées</span></label>
+    <label><input type="checkbox" id="coupure"><span>Une coupure ou une réduction de puissance (menace ou en cours)</span></label>
+    <label><input type="checkbox" id="litigeEnergie"><span>Un litige avec mon fournisseur (facture contestée, erreur, mauvais relevé)</span></label>
+    <label><input type="checkbox" id="demarchage"><span>Un démarchage insistant ou un contrat signé sans le vouloir</span></label>
+    <label><input type="checkbox" id="linky"><span>Le compteur Linky ou le suivi de ma consommation</span></label>
+    <label><input type="checkbox" id="changerChauffage"><span>Remplacer mon chauffage ou isoler mon logement</span></label>
+    <label><input type="checkbox" id="solaire"><span>Installer des panneaux solaires</span></label>
+  </div></div>
+
+  <div class="comp" id="comparateur">
+    <h3>⚡ Comparateur électricité</h3>
+    <p class="sous2" id="compSource"></p>
+    <div class="comp-reglages">
+      <label>Puissance du compteur<select id="kva"></select></label>
+      <label>Option<select id="optionElec"><option value="base">Base (prix unique)</option><option value="hphc">Heures pleines / creuses</option></select></label>
+      <label>Consommation annuelle<span><input type="number" id="consoElec" min="0" step="100" placeholder="ex. 4500"> kWh</span></label>
+      <label class="si-hphc">Part en heures creuses<span><input type="number" id="partHC" min="0" max="100" step="5" value="40"> %</span></label>
+    </div>
+    <div class="estim" id="estimElec"></div>
+    <div id="tabElec"></div>
+    <p class="pied">Chiffres sur votre facture : la puissance (kVA) et la consommation annuelle (kWh) figurent sur votre facture ou dans votre espace client. Estimations TTC, hors promotions conditionnelles quand c'est précisé.</p>
+  </div>
+
+  <div class="comp" id="comparateurGaz">
+    <h3>🔥 Comparateur gaz</h3>
+    <p class="sous2">Comparaison avec le prix repère de la Commission de régulation de l'énergie (CRE), qui remplace l'ancien tarif réglementé du gaz.</p>
+    <div class="comp-reglages">
+      <label>Consommation annuelle de gaz<span><input type="number" id="consoGaz" min="0" step="100" placeholder="ex. 12000"> kWh</span></label>
+    </div>
+    <div id="tabGaz"></div>
+    <p class="pied">Les prix du gaz varient légèrement selon la zone de distribution : comptez quelques pour cent d'écart.</p>
+  </div>
+  <div class="outils" style="margin-bottom:8px">
+    <button class="btn sec" onclick="ouvrir('https://comparateur-offres.energie-info.fr')">Comparateur officiel du Médiateur de l'énergie (toutes les offres) ↗</button>
+  </div>
+</section>
+
 <!-- 6. Santé & autonomie -->
 <section class="panneau" id="p-sante" data-titre="Santé & autonomie">
   <h2>Santé, handicap et autonomie</h2>
@@ -419,7 +503,9 @@ function lireFormulaire(){
     if(i.type==='radio'){ if(i.checked) d[i.name]=i.value; }
     else if(i.type==='checkbox') d[i.id]=i.checked;
     else if(i.id) d[i.id]=i.value;
-  });return d;
+  });
+  document.querySelectorAll('select[id]').forEach(x=>{d[x.id]=x.value});
+  return d;
 }
 function sauver(){
   const d=lireFormulaire();
@@ -434,6 +520,7 @@ function restaurer(){
     else if(i.type==='checkbox') i.checked=!!d[i.id];
     else if(i.id && d[i.id]!=null) i.value=d[i.id];
   });
+  document.querySelectorAll('select[id]').forEach(x=>{ if(d[x.id]!=null && [...x.options].some(o=>o.value===d[x.id])) x.value=d[x.id]; });
 }
 document.addEventListener('change',sauver);
 
@@ -442,7 +529,7 @@ function profil(){
   const f=lireFormulaire(), n=k=>Math.max(0,parseInt(f[k])||0);
   const p={
     age:parseInt(f.age)||null, sit:f.situation||'', act:f.activite||'', log:f.logement||'', hand:f.handicap||'',
-    e0:n('e0'),anciennete:f.anciennete===''||f.anciennete==null?null:parseFloat(String(f.anciennete).replace(',','.')),contrat:f.contrat||'',permis:f.permis||'',effectif:f.effectif||'',e3:n('e3'),e6:n('e6'),e11:n('e11'),e18:n('e18'),e20:n('e20'),eTotal:n('eTotal'),
+    e0:n('e0'),anciennete:f.anciennete===''||f.anciennete==null?null:parseFloat(String(f.anciennete).replace(',','.')),contrat:f.contrat||'',permis:f.permis||'',chauffage:f.chauffage||'',consoElec:f.consoElec?+f.consoElec:null,consoGaz:f.consoGaz?+f.consoGaz:null,effectif:f.effectif||'',e3:n('e3'),e6:n('e6'),e11:n('e11'),e18:n('e18'),e20:n('e20'),eTotal:n('eTotal'),
     revenu:f.revenu===''||f.revenu==null?null:+f.revenu, revenuPerso:f.revenuPerso===''||f.revenuPerso==null?null:+f.revenuPerso
   };
   ['grossesse','enfantHandicap','pasPension','tempsPartiel','carriereLongue','servicesActifs','independant2','procedure',
@@ -450,7 +537,8 @@ function profil(){
    'licenciement','depart','finContrat','heuresSup','salaireImpaye','harcelement','arretMaladie','accidentTravail',
    'inaptitude','conges','naissance','reconversion','teletravail','horairesAtypiques','entrepriseDifficulte','mobilite',
    'victime','violencesFamille','arnaque','harcelementLigne','accidentRoute','convoque','poursuivi','temoin','amende','casier','procheDetenu',
-   'points','suspension','alcoolStup','accidentAuto','stationnement','fourriere','carteGrise','assuranceAuto','zfe','plaqueUsurpee','passerPermis','deuxRoues','santeConduite'].forEach(k=>p[k]=!!f[k]);
+   'points','suspension','alcoolStup','accidentAuto','stationnement','fourriere','carteGrise','assuranceAuto','zfe','plaqueUsurpee','passerPermis','deuxRoues','santeConduite',
+   'factureElevee','changerFournisseur','impayeEnergie','coupure','litigeEnergie','demarchage','linky','changerChauffage','solaire'].forEach(k=>p[k]=!!f[k]);
   p.couple=['couple','concubin'].includes(p.sit);
   p.enf20=p.e0+p.e3+p.e6+p.e11+p.e18;           // enfants de moins de 20 ans
   p.enf=p.enf20+p.e20;
@@ -460,6 +548,8 @@ function profil(){
   p.travaille=['salarie','fonct_t','fonct_e','fonct_h','contractuel','independant'].includes(p.act);
   p.victimeQ=p.victime||p.violencesFamille||p.arnaque||p.harcelementLigne||p.accidentRoute;
   p.misEnCause=p.convoque||p.poursuivi;
+  try{p.ecoElec=economieElec(p)}catch(e){p.ecoElec=0}
+  p.chauffageElec=['elec','pac'].includes(p.chauffage);
   p.prive=p.act==='salarie';
   p.public=p.fonct||p.act==='contractuel';
   p.exSalarie=['chomeur','chomeur_fin'].includes(p.act);
@@ -602,7 +692,7 @@ async function verifierMaj(silencieux){
   const ancienne=REGLES.version;
   if(r.statut==='maj'&&r.regles){
     const nouv=typeof r.regles==='string'?JSON.parse(r.regles):r.regles;
-    REGLES=nouv; afficherVersion();
+    REGLES=nouv; afficherVersion(); try{initComparateur();majComparateur()}catch(e){}
     const news=(nouv.nouveautes||[]).filter(n=>n.v?cmpV(n.v,ancienne)>0:(n.date||'')>dateIso(ancienne)).slice(0,6);
     document.getElementById('bandeauReglesTxt').innerHTML=`<b>Les règles ont été mises à jour</b> (version du ${dateFr(nouv.mise_a_jour)}).`+
       (news.length?'<ul>'+news.map(n=>`<li>${dateFr(n.date)} — ${echapper(n.texte)}</li>`).join('')+'</ul>':'');
@@ -621,7 +711,103 @@ const cmpV=(a,b)=>{const x=String(a).split('.').map(Number),y=String(b).split('.
 const dateIso=v=>{const m=/^(\d{4})\.(\d+)\.(\d+)/.exec(v||'');return m?`${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`:''};
 afficherVersion();
 
+// ===================== Comparateur énergie =====================
+// Les prix sont dans droits.json (section "energie") : mis à jour sans recompiler.
+const euro=v=>Math.round(v).toLocaleString('fr-FR')+' €';
+const prixK=v=>v.toLocaleString('fr-FR',{minimumFractionDigits:4,maximumFractionDigits:4});
+const TYPES={reg:'Tarif réglementé',ref:'Référence',fixe:'Prix fixe',indexe:'Indexé',variable:'Prix variable'};
+function energie(){return (REGLES&&REGLES.energie)||null}
+function personnes(p){return 1+(p.couple?1:0)+(p.enf||0)}
+function estimation(p){
+  const n=personnes(p); let e=1500+600*(n-1), g=0;
+  if(p.chauffage==='elec') e+=7000; else if(p.chauffage==='pac') e+=3500;
+  if(p.chauffage==='gaz') g=9000+800*n;
+  return {elec:Math.round(e/100)*100, gaz:Math.round(g/100)*100};
+}
+// Coût annuel d'une offre d'électricité. Renvoie null si l'offre n'existe pas pour ces réglages.
+function coutElec(o,trv,kva,opt,conso,partHC){
+  const abo=trv.abo[kva]; if(abo==null)return null;
+  if(o.kva_max&&+kva>o.kva_max)return null;
+  const delta=(o.abo_delta&&o.abo_delta[opt])||0;
+  if(opt==='base'){
+    if(o.base==null)return null;
+    const ref=trv.base['6']||trv.base[kva], k=trv.base[kva]||ref;
+    const prix=o.reg?k:o.base*k/ref;
+    return {abo:abo+delta, prix, total:abo+delta+conso*prix};
+  }
+  if(o.hp==null||o.hc==null)return null;
+  const hc=Math.min(100,Math.max(0,partHC))/100;
+  const prix=o.hp*(1-hc)+o.hc*hc;
+  return {abo:abo+delta, prix, total:abo+delta+conso*prix, hp:o.hp, hc:o.hc};
+}
+function classementElec(kva,opt,conso,partHC){
+  const E=energie(); if(!E||!E.elec)return [];
+  const trv=E.elec.trv;
+  const liste=[{nom:trv.nom||'Tarif Bleu EDF',fournisseur:'EDF',type:'reg',reg:true,base:trv.base['6'],hp:trv.hp,hc:trv.hc,cond:trv.cond||'',url:trv.url}].concat(E.elec.offres||[]);
+  const ref=coutElec(liste[0],trv,kva,opt,conso,partHC);
+  return liste.map(o=>({o,c:coutElec(o,trv,kva,opt,conso,partHC)})).filter(x=>x.c)
+    .map(x=>({...x,eco:ref?ref.total-x.c.total:0})).sort((a,b)=>a.c.total-b.c.total);
+}
+function classementGaz(conso){
+  const E=energie(); if(!E||!E.gaz)return {liste:[],profil:''};
+  const R=E.gaz.repere, profil=conso>=(R.seuil||6000)?'chauffage':'cuisson';
+  const ref=R[profil]; const totRef=ref.abo+conso*ref.kwh;
+  const liste=[{o:{nom:'Prix repère',fournisseur:'CRE',type:'ref',cond:R.cond||''},c:{abo:ref.abo,prix:ref.kwh,total:totRef},eco:0}];
+  (E.gaz.offres||[]).forEach(o=>{const t=o[profil]; if(!t)return; const tot=t.abo+conso*t.kwh; liste.push({o,c:{abo:t.abo,prix:t.kwh,total:tot},eco:totRef-tot})});
+  liste.sort((a,b)=>a.c.total-b.c.total);
+  return {liste,profil};
+}
+function ligne(x,i,detail){
+  const o=x.o, typ=`<span class="typ ${o.type||'fixe'}">${TYPES[o.type]||''}</span>`;
+  const lien=o.url?` <button class="ouvrir" onclick="ouvrir('${echapper(o.url)}')">voir l'offre ↗</button>`:'';
+  const eco=(o.type==='reg'||o.type==='ref')?'<span class="cond">référence</span>':x.eco>=1?`<span class="eco">−${euro(x.eco)}</span>`:x.eco<=-1?`<span class="sur">+${euro(-x.eco)}</span>`:'≈ 0 €';
+  return `<tr class="${['reg','ref'].includes(o.type)?'trv':''} ${i===0&&!['reg','ref'].includes(o.type)?'top':''}">
+    <td><span class="nom">${echapper(o.fournisseur||'')}</span> — ${echapper(o.nom)}${typ}${o.cond?`<div class="cond">${echapper(o.cond)}</div>`:''}${lien}</td>
+    <td class="num">${detail}</td><td class="num">${euro(x.c.abo)}</td><td class="num"><b>${euro(x.c.total)}</b></td><td class="num">${eco}</td></tr>`;
+}
+function majComparateur(){
+  const E=energie(), zone=document.getElementById('tabElec'); if(!zone)return;
+  if(!E){document.getElementById('comparateur').classList.add('cache');document.getElementById('comparateurGaz').classList.add('cache');return}
+  document.getElementById('compSource').textContent=`Prix TTC au ${dateFr(E.date)} — source : ${E.source}. Une sélection d'offres parmi les moins chères ; le comparateur officiel les recense toutes.`;
+  const p=profil(), est=estimation(p);
+  const kva=document.getElementById('kva').value, opt=document.getElementById('optionElec').value;
+  document.querySelector('.si-hphc').classList.toggle('cache',opt!=='hphc');
+  const saisie=document.getElementById('consoElec').value, conso=+saisie||est.elec;
+  const partHC=+document.getElementById('partHC').value||40;
+  document.getElementById('estimElec').innerHTML=saisie?`Calcul pour <b>${(+saisie).toLocaleString('fr-FR')} kWh</b> par an.`:
+    `Consommation non renseignée : calcul sur une <b>estimation de ${conso.toLocaleString('fr-FR')} kWh</b> par an pour votre foyer (${personnes(p)} personne${personnes(p)>1?'s':''}${p.chauffage?', chauffage '+({elec:'électrique',pac:'pompe à chaleur',gaz:'au gaz',fioul:'au fioul',bois:'au bois',collectif:'collectif'})[p.chauffage]:''}). Indiquez votre consommation réelle pour un résultat fiable.`;
+  const L=classementElec(kva,opt,conso,partHC);
+  zone.innerHTML=L.length?`<table class="offres"><thead><tr><th>Offre</th><th class="num">Prix du kWh</th><th class="num">Abonnement /an</th><th class="num">Total /an</th><th class="num">Écart / tarif réglementé</th></tr></thead><tbody>`+
+    L.map((x,i)=>ligne(x,i,opt==='hphc'?`HP ${prixK(x.c.hp)}<br>HC ${prixK(x.c.hc)}`:prixK(x.c.prix))).join('')+'</tbody></table>':'<p class="vide">Aucune offre pour ces réglages.</p>';
+  // gaz
+  const g=document.getElementById('consoGaz').value, cg=+g||est.gaz, zg=document.getElementById('tabGaz');
+  if(!cg){zg.innerHTML='<p class="vide">Indiquez votre consommation de gaz (sur votre facture) pour comparer.</p>';return}
+  const G=classementGaz(cg);
+  zg.innerHTML=(g?'':`<div class="estim">Calcul sur une <b>estimation de ${cg.toLocaleString('fr-FR')} kWh</b> par an. Indiquez votre consommation réelle pour un résultat fiable.</div>`)+
+    `<p class="sous2">Profil « ${G.profil==='chauffage'?'chauffage':'cuisson et eau chaude'} ».</p><table class="offres"><thead><tr><th>Offre</th><th class="num">Prix du kWh</th><th class="num">Abonnement /an</th><th class="num">Total /an</th><th class="num">Écart / prix repère</th></tr></thead><tbody>`+
+    G.liste.map((x,i)=>ligne(x,i,prixK(x.c.prix))).join('')+'</tbody></table>';
+}
+function initComparateur(){
+  const E=energie(), sel=document.getElementById('kva');
+  const ks=E&&E.elec?Object.keys(E.elec.trv.abo).sort((a,b)=>a-b):['6'];
+  const garde=sel.value;
+  sel.innerHTML=ks.map(k=>`<option value="${k}">${k} kVA</option>`).join('');
+  sel.value=ks.includes(garde)?garde:(ks.includes('6')?'6':ks[0]);
+}
+// Économie possible, utilisée par les règles (champ ecoElec)
+function economieElec(p){
+  const E=energie(); if(!E||!E.elec)return 0;
+  const k=document.getElementById('kva').value, opt=document.getElementById('optionElec').value;
+  const conso=+document.getElementById('consoElec').value||estimation(p).elec;
+  const L=classementElec(k,opt,conso,+document.getElementById('partHC').value||40);
+  return L.length?Math.max(0,Math.round(L[0].eco)):0;
+}
+['kva','optionElec','consoElec','partHC','consoGaz'].forEach(id=>document.getElementById(id).addEventListener('input',majComparateur));
+document.addEventListener('change',e=>{ if(e.target.name==='chauffage'){ const k=document.getElementById('kva'); if(!document.getElementById('consoElec').value) k.value=['elec','pac'].includes(e.target.value)?'9':'6'; } majComparateur(); });
+initComparateur();
+
 restaurer();
+majComparateur();
 document.dispatchEvent(new Event('change'));
 aller(0);
 setTimeout(()=>verifierMaj(true),800);

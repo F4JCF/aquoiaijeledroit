@@ -1,9 +1,14 @@
 {
  "schema": 1,
- "version": "2026.10.13.3",
+ "version": "2026.10.13.4",
  "mise_a_jour": "2026-10-13",
- "app_min": "1.4.0",
+ "app_min": "1.5.0",
  "nouveautes": [
+  {
+   "date": "2026-10-13",
+   "v": "2026.10.13.4",
+   "texte": "Nouvel onglet « Énergie » : comparateur d'offres d'électricité et de gaz (prix au 2 octobre 2026), chèque énergie 2026, trêve hivernale, impayés, litiges, démarchage (consentement obligatoire depuis le 11 août 2026), MaPrimeRénov'."
+  },
   {
    "date": "2026-10-13",
    "v": "2026.10.13.3",
@@ -627,21 +632,6 @@
    ]
   },
   {
-   "id": "cheque",
-   "d": "Logement",
-   "t": "Chèque énergie",
-   "o": "État",
-   "l": "https://chequeenergie.gouv.fr",
-   "r": "Aide annuelle pour payer les factures d'énergie ou des travaux, selon le revenu fiscal du foyer.",
-   "a": "Envoyé automatiquement au printemps d'après votre déclaration de revenus — pensez à toujours déclarer vos revenus, même faibles.",
-   "si": {
-    "c": "niv",
-    "=": 1
-   },
-   "n": "probable",
-   "w": "ressources très modestes"
-  },
-  {
    "id": "fsl",
    "d": "Logement",
    "t": "Fonds de solidarité pour le logement (FSL)",
@@ -885,6 +875,273 @@
      "w": "propriétaire de 65 ans ou plus"
     }
    ]
+  },
+  {
+   "id": "cheque",
+   "d": "Énergie",
+   "t": "Chèque énergie",
+   "o": "État",
+   "l": "https://chequeenergie.gouv.fr",
+   "r": "Aide de 153 € en moyenne (jusqu'à 277 €) pour payer l'électricité, le gaz, le fioul, le bois ou des travaux. En 2026, la plupart des foyers l'ont reçu automatiquement en avril-mai ; les foyers éligibles qui ne l'ont pas reçu peuvent le demander en ligne ou par courrier jusqu'au 31 décembre 2026. Il protège aussi contre la réduction de puissance pendant la trêve hivernale.",
+   "a": "Vérifiez votre éligibilité sur chequeenergie.gouv.fr ; aide gratuite au 0 805 204 805 ou en maison France Services. Pensez à transmettre l'attestation à votre fournisseur.",
+   "si": {
+    "ou": [
+     {
+      "c": "niv",
+      "=": 1
+     },
+     {
+      "et": [
+       {
+        "ou": [
+         "impayeEnergie",
+         "coupure",
+         "factureElevee"
+        ]
+       },
+       {
+        "c": "niv",
+        "<=?": 2
+       }
+      ]
+     }
+    ]
+   },
+   "n": [
+    {
+     "si": {
+      "c": "niv",
+      "=": 1
+     },
+     "n": "probable"
+    },
+    {
+     "n": "possible"
+    }
+   ],
+   "w": [
+    {
+     "si": {
+      "c": "niv",
+      "=": 1
+     },
+     "w": "ressources très modestes"
+    },
+    {
+     "w": "difficultés à payer l'énergie"
+    }
+   ]
+  },
+  {
+   "id": "comparer_elec",
+   "t": "Changer d'offre d'électricité pour payer moins",
+   "o": "Fournisseurs / Médiateur de l'énergie",
+   "l": "https://comparateur-offres.energie-info.fr",
+   "r": "Selon le comparateur de l'onglet Énergie, vous pourriez économiser environ {ecoElec} € par an sur l'électricité. Changer de fournisseur est gratuit, sans coupure ni intervention technique, et sans frais de résiliation pour les particuliers ; on peut revenir au tarif réglementé à tout moment.",
+   "a": "Munissez-vous de votre numéro de point de livraison (PDL, sur la facture) ; le nouveau fournisseur s'occupe de résilier l'ancien contrat. Vérifiez la durée du prix (fixe, indexé ou variable).",
+   "si": {
+    "c": "ecoElec",
+    ">=": 30
+   },
+   "n": [
+    {
+     "si": {
+      "c": "ecoElec",
+      ">=": 80
+     },
+     "n": "probable"
+    },
+    {
+     "n": "possible"
+    }
+   ],
+   "w": "économie estimée de {ecoElec} € par an",
+   "d": "Énergie"
+  },
+  {
+   "id": "changer_fourn",
+   "t": "Changer de fournisseur : vos droits",
+   "o": "Médiateur national de l'énergie",
+   "l": "https://www.energie-info.fr",
+   "r": "Le changement est gratuit et se fait sans coupure ; aucun frais de résiliation pour un particulier, même avec un prix fixe. Le compteur et le réseau restent les mêmes. Un délai de rétractation de 14 jours s'applique aux contrats conclus à distance ou à domicile.",
+   "a": "Comparez sur le comparateur officiel energie-info.fr, souscrivez avec votre numéro PDL (électricité) ou PCE (gaz).",
+   "si": {
+    "ou": [
+     "changerFournisseur",
+     "factureElevee"
+    ]
+   },
+   "n": "info",
+   "w": "vous souhaitez changer d'offre",
+   "d": "Énergie"
+  },
+  {
+   "id": "option_tarif",
+   "t": "Choisir la bonne option et la bonne puissance",
+   "o": "Votre fournisseur",
+   "l": "https://www.energie-info.fr",
+   "r": "Avec un chauffage électrique, l'option heures pleines / heures creuses ou Tempo peut faire baisser la facture si vous décalez une partie de votre consommation (ballon d'eau chaude, lave-linge). Tempo est très avantageux les 300 jours « bleus », mais l'électricité coûte environ 4 fois plus cher en heures pleines les 22 jours « rouges » d'hiver. Une puissance trop élevée augmente l'abonnement inutilement.",
+   "a": "Comparez les options dans le comparateur avec votre consommation réelle ; demandez à votre fournisseur de changer d'option ou de puissance.",
+   "si": {
+    "et": [
+     "chauffageElec",
+     {
+      "ou": [
+       "factureElevee",
+       "changerFournisseur"
+      ]
+     }
+    ]
+   },
+   "n": "info",
+   "w": "chauffage électrique",
+   "d": "Énergie"
+  },
+  {
+   "id": "treve",
+   "t": "Trêve hivernale : pas de coupure du 1er novembre au 31 mars",
+   "o": "Fournisseurs d'énergie",
+   "l": "{SP}tr%C3%AAve%20hivernale%20%C3%A9nergie",
+   "r": "Du 1er novembre au 31 mars, aucun fournisseur ne peut couper l'électricité ou le gaz d'une résidence principale pour impayé. Le fournisseur d'électricité peut toutefois réduire la puissance jusqu'à 1 kVA, sauf pour les bénéficiaires du chèque énergie. La dette reste due et la procédure peut reprendre en avril.",
+   "a": "Profitez de la trêve pour négocier un échéancier et demander une aide (FSL, CCAS) avant le 1er avril.",
+   "si": {
+    "ou": [
+     "impayeEnergie",
+     "coupure"
+    ]
+   },
+   "n": "probable",
+   "w": "impayés ou coupure",
+   "d": "Énergie"
+  },
+  {
+   "id": "impaye_energie",
+   "t": "Impayés d'énergie : délais, échéancier et aides",
+   "o": "Fournisseur / CCAS / FSL",
+   "l": "{SP}impay%C3%A9%20facture%20%C3%A9nergie",
+   "r": "Avant toute coupure ou réduction de puissance, le fournisseur doit vous relancer par écrit et respecter des délais. Vous pouvez demander un échéancier. Le Fonds de solidarité pour le logement (FSL) peut payer une partie de la dette : une demande d'aide déposée suspend la procédure pendant son examen, jusqu'à 2 mois.",
+   "a": "Contactez votre fournisseur dès la première difficulté, puis le CCAS de votre mairie pour un dossier FSL.",
+   "si": {
+    "ou": [
+     "impayeEnergie",
+     "coupure"
+    ]
+   },
+   "n": "probable",
+   "w": "factures impayées",
+   "d": "Énergie"
+  },
+  {
+   "id": "mediateur",
+   "t": "Litige avec un fournisseur : le Médiateur de l'énergie",
+   "o": "Médiateur national de l'énergie",
+   "l": "https://www.energie-info.fr",
+   "r": "Facture contestée, erreur de relevé, prélèvement abusif, contrat non demandé : faites d'abord une réclamation écrite au fournisseur. Sans réponse satisfaisante sous 2 mois, saisissez gratuitement le Médiateur national de l'énergie, en ligne. Une facture ne peut pas réclamer une consommation de plus de 14 mois en arrière (sauf fraude ou absence d'accès au compteur).",
+   "a": "Gardez une copie de vos courriers ; saisissez le Médiateur sur sollen.fr ou energie-info.fr.",
+   "si": "litigeEnergie",
+   "n": "probable",
+   "w": "litige avec votre fournisseur",
+   "d": "Énergie"
+  },
+  {
+   "id": "demarchage",
+   "t": "Démarchage : consentement obligatoire et rétractation",
+   "o": "DGCCRF / Médiateur de l'énergie",
+   "l": "{SP}d%C3%A9marchage%20t%C3%A9l%C3%A9phonique",
+   "r": "Depuis le 11 août 2026, une entreprise ne peut vous démarcher par téléphone qu'avec votre accord préalable. Le démarchage téléphonique pour des travaux de rénovation énergétique est interdit depuis 2020. Après un contrat signé à domicile ou par téléphone, vous avez 14 jours pour vous rétracter sans frais ; un changement de fournisseur que vous n'avez pas demandé peut être annulé.",
+   "a": "Envoyez la rétractation par lettre recommandée ou via le formulaire du contrat ; signalez les abus sur signal.conso.gouv.fr.",
+   "si": "demarchage",
+   "n": "probable",
+   "w": "démarchage ou contrat non voulu",
+   "d": "Énergie"
+  },
+  {
+   "id": "linky",
+   "t": "Compteur Linky et suivi de consommation",
+   "o": "Enedis",
+   "l": "https://www.enedis.fr",
+   "r": "Le compteur Linky permet de suivre sa consommation jour par jour (espace client Enedis gratuit), de choisir des options comme les heures creuses ou Tempo, et d'être facturé sur sa consommation réelle plutôt que sur des estimations. Sans compteur communicant, des frais de relève peuvent être facturés.",
+   "a": "Créez votre espace sur le site d'Enedis pour voir votre consommation et repérer les appareils gourmands.",
+   "si": "linky",
+   "n": "info",
+   "w": "compteur et consommation",
+   "d": "Énergie"
+  },
+  {
+   "id": "mpr_2026",
+   "t": "MaPrimeRénov' et primes énergie (CEE)",
+   "o": "France Rénov' / Anah",
+   "l": "{RENOV}",
+   "r": "Le guichet MaPrimeRénov' a rouvert le 23 février 2026 : aide par geste (isolation, changement de chauffage) sous conditions de revenus, ou rénovation d'ampleur (gain d'au moins deux classes énergétiques), pour laquelle un rendez-vous avec un conseiller France Rénov' est désormais obligatoire. Les primes CEE « Coup de pouce » des fournisseurs d'énergie s'y ajoutent, notamment pour remplacer une chaudière au fioul ou au gaz.",
+   "a": "Contactez un conseiller France Rénov' (gratuit) avant de signer le moindre devis, et choisissez une entreprise RGE.",
+   "si": {
+    "ou": [
+     "changerChauffage",
+     {
+      "c": "chauffage",
+      "=": "fioul"
+     }
+    ]
+   },
+   "n": [
+    {
+     "si": "changerChauffage",
+     "n": "probable"
+    },
+    {
+     "n": "possible"
+    }
+   ],
+   "w": [
+    {
+     "si": "changerChauffage",
+     "w": "projet de travaux"
+    },
+    {
+     "w": "chauffage au fioul"
+    }
+   ],
+   "d": "Énergie"
+  },
+  {
+   "id": "solaire",
+   "t": "Panneaux solaires : aides et précautions",
+   "o": "Ministère / EDF OA",
+   "l": "https://www.photovoltaique.info",
+   "r": "Une installation en autoconsommation peut bénéficier d'une prime et d'un contrat de rachat du surplus d'électricité, avec des montants révisés régulièrement. Le secteur connaît beaucoup d'arnaques : méfiez-vous des promesses d'« autofinancement » et des démarcheurs.",
+   "a": "Faites étudier votre projet par un conseiller France Rénov' et choisissez un installateur certifié RGE ; ne signez rien le jour même.",
+   "si": "solaire",
+   "n": "info",
+   "w": "projet solaire",
+   "d": "Énergie"
+  },
+  {
+   "id": "bois_fioul",
+   "t": "Fioul, bois, gaz en citerne : vos protections",
+   "o": "Fournisseurs / chèque énergie",
+   "l": "https://chequeenergie.gouv.fr",
+   "r": "Le chèque énergie sert aussi à payer le fioul, le bois, les granulés ou le gaz en citerne. Ces énergies ne sont pas couvertes par la trêve hivernale ni par le Médiateur de la même façon : comparez plusieurs livreurs et regroupez vos commandes entre voisins pour obtenir de meilleurs prix.",
+   "a": "Demandez plusieurs devis ; payez avec le chèque énergie auprès des livreurs qui l'acceptent.",
+   "si": {
+    "et": [
+     {
+      "c": "chauffage",
+      "dans": [
+       "fioul",
+       "bois"
+      ]
+     },
+     {
+      "ou": [
+       "factureElevee",
+       "impayeEnergie"
+      ]
+     }
+    ]
+   },
+   "n": "info",
+   "w": "chauffage au fioul ou au bois",
+   "d": "Énergie"
   },
   {
    "id": "rqth",
@@ -2722,5 +2979,174 @@
    "n": "info",
    "w": "indispensable pour vos aides"
   }
- ]
+ ],
+ "energie": {
+  "date": "2026-10-02",
+  "source": "tarif réglementé au 1er août 2026, prix repère CRE d'octobre 2026, offres relevées sur le comparateur du Médiateur national de l'énergie",
+  "elec": {
+   "trv": {
+    "nom": "Tarif Bleu (réglementé)",
+    "url": "https://particulier.edf.fr/fr/accueil/electricite-gaz/offres-electricite/tarif-bleu.html",
+    "cond": "Tarif fixé par l'État, révisé en février et en août.",
+    "abo": {
+     "3": 145.56,
+     "6": 190.36,
+     "9": 238.61,
+     "12": 285.12,
+     "15": 328.8,
+     "18": 373.68,
+     "24": 469.68,
+     "30": 557.64,
+     "36": 646.56
+    },
+    "base": {
+     "3": 0.2001,
+     "6": 0.2001,
+     "9": 0.1985,
+     "12": 0.1985,
+     "15": 0.1985,
+     "18": 0.1985,
+     "24": 0.1985,
+     "30": 0.1985,
+     "36": 0.1985
+    },
+    "hp": 0.2142,
+    "hc": 0.1589
+   },
+   "offres": [
+    {
+     "fournisseur": "Mint Énergie",
+     "nom": "Online & Green",
+     "type": "indexe",
+     "base": 0.1821,
+     "hp": 0.1947,
+     "hc": 0.1455,
+     "abo_delta": {
+      "base": 0,
+      "hphc": 3.35
+     },
+     "cond": "Prix indexé sur le tarif réglementé (suit ses hausses et ses baisses). Gestion en ligne, électricité verte.",
+     "url": "https://www.mint-energie.com"
+    },
+    {
+     "fournisseur": "TotalEnergies",
+     "nom": "Offre Access Électricité",
+     "type": "indexe",
+     "base": 0.1837,
+     "hp": 0.1965,
+     "hc": 0.1467,
+     "abo_delta": {
+      "base": 0,
+      "hphc": 3.35
+     },
+     "cond": "Prix indexé sur le tarif réglementé.",
+     "url": "https://www.totalenergies.fr/particuliers"
+    },
+    {
+     "fournisseur": "Gaz de Bordeaux",
+     "nom": "NovaFixe Bonus Élec",
+     "type": "fixe",
+     "base": 0.1837,
+     "hp": 0.1965,
+     "hc": 0.1467,
+     "abo_delta": {
+      "base": 0,
+      "hphc": 0
+     },
+     "cond": "Prix hors taxes fixe 3 ans. Bonus de 100 € la 1re année si le contrat est toujours actif le 11e mois (non compté ici).",
+     "url": "https://www.gazdebordeaux.fr"
+    },
+    {
+     "fournisseur": "GEG",
+     "nom": "Mon Offre Élec Verte – Fixe 3 ans",
+     "type": "fixe",
+     "base": 0.1837,
+     "abo_delta": {
+      "base": 0.45
+     },
+     "cond": "Prix fixe 3 ans, électricité verte. Option Base uniquement dans ce relevé.",
+     "url": "https://www.geg.fr"
+    },
+    {
+     "fournisseur": "Dyneff",
+     "nom": "Contrat + Électricité",
+     "type": "variable",
+     "base": 0.1907,
+     "abo_delta": {
+      "base": -2.57
+     },
+     "cond": "Le fournisseur peut modifier ses prix à tout moment (avec préavis).",
+     "url": "https://www.dyneff.fr"
+    }
+   ]
+  },
+  "gaz": {
+   "repere": {
+    "seuil": 6000,
+    "cond": "Prix de référence publié chaque mois par la CRE.",
+    "cuisson": {
+     "abo": 152.52,
+     "kwh": 0.1783
+    },
+    "chauffage": {
+     "abo": 360.84,
+     "kwh": 0.1456
+    }
+   },
+   "offres": [
+    {
+     "fournisseur": "EDF",
+     "nom": "Avantage Gaz 2 ans",
+     "type": "fixe",
+     "cuisson": {
+      "abo": 120.0,
+      "kwh": 0.1792
+     },
+     "chauffage": {
+      "abo": 341.4,
+      "kwh": 0.1342
+     },
+     "cond": "Prix fixe 2 ans.",
+     "url": "https://particulier.edf.fr"
+    },
+    {
+     "fournisseur": "Engie",
+     "nom": "Gaz Référence 3 ans",
+     "type": "fixe",
+     "cuisson": {
+      "abo": 152.4,
+      "kwh": 0.1691
+     },
+     "chauffage": {
+      "abo": 360.84,
+      "kwh": 0.1414
+     },
+     "cond": "Prix fixe 3 ans.",
+     "url": "https://particuliers.engie.fr"
+    },
+    {
+     "fournisseur": "TotalEnergies",
+     "nom": "Fixe 2 ans",
+     "type": "fixe",
+     "chauffage": {
+      "abo": 360.72,
+      "kwh": 0.1412
+     },
+     "cond": "Prix fixe 2 ans.",
+     "url": "https://www.totalenergies.fr/particuliers"
+    },
+    {
+     "fournisseur": "Alterna",
+     "nom": "Mon gaz naturel – Prix indexé",
+     "type": "indexe",
+     "cuisson": {
+      "abo": 174.0,
+      "kwh": 0.1704
+     },
+     "cond": "Indexé sur le prix repère, révisé chaque mois.",
+     "url": "https://www.alterna-energie.fr"
+    }
+   ]
+  }
+ }
 }
