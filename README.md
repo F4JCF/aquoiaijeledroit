@@ -47,6 +47,12 @@ Les prix du comparateur sont dans la section `energie` de `droits.json`. Ils son
 
 Source conseillée : le comparateur du Médiateur national de l'énergie (comparateur-offres.energie-info.fr).
 
+### Télécoms et eau
+
+- `telecom.mobile.offres` : `operateur`, `nom`, `reseau`, `data` (Go ; 9999 = illimité), `5g`, `prix`, `promo_mois` et `prix_apres` si le prix augmente, `frais` (carte SIM), `age_max`, `cond`, `url`.
+- `telecom.box.offres` : mêmes champs, plus `debit`, `tv`, `age_min`/`age_max`. Le classement se fait sur le coût total sur 24 mois, frais compris.
+- `eau` : `prix_moyen_m3` (moyenne nationale SISPEA) et `conso_personne` (m³ par personne et par an).
+
 ## Mettre à jour les règles après une nouvelle loi
 
 1. Ouvrir `droits.json` sur GitHub (bouton crayon ✏️).
@@ -74,7 +80,7 @@ Le contrôle automatique (onglet **Actions**) vérifie le fichier. Une croix rou
 | Clé | Rôle |
 |---|---|
 | `id` | identifiant unique (sans espace) |
-| `d` | domaine affiché : Famille, Ressources, Santé, Logement, Handicap, Autonomie, Retraite, Emploi & formation, Énergie, Droit du travail, Droit pénal, Code de la route, Impôts (un nouveau nom crée un nouveau domaine) |
+| `d` | domaine affiché : Famille, Ressources, Santé, Logement, Handicap, Autonomie, Retraite, Emploi & formation, Énergie, Eau, Télécoms, Assurances, Droit du travail, Droit pénal, Code de la route, Impôts (un nouveau nom crée un nouveau domaine) |
 | `t`, `o` | titre et organisme |
 | `l` | lien ; `{SP}`, `{CAF}`, `{MDPH}`, `{RETRAITE}`, `{CNRACL}`, `{IMPOTS}`, `{AGEES}`, `{RENOV}` sont remplacés par les adresses de la section `liens` |
 | `r`, `a` | résumé et démarche |
@@ -104,6 +110,7 @@ Le contrôle automatique (onglet **Actions**) vérifie le fichier. Une croix rou
 | cases à cocher | `grossesse`, `enfantHandicap`, `pasPension`, `tempsPartiel`, `carriereLongue`, `servicesActifs`, `independant2`, `procedure`, `logementAncien`, `adapter`, `difficulte`, `cherche`, `ald`, `autonomie`, `aidant`, `aideDomicile` |
 | travail | `contrat` (`cdi`, `cdd`, `interim`, `apprenti`, `saisonnier`), `effectif` (`petite`, `moyenne`, `grande`), `anciennete` (années) ; cases `licenciement`, `depart`, `finContrat`, `heuresSup`, `salaireImpaye`, `harcelement`, `arretMaladie`, `accidentTravail`, `inaptitude`, `conges`, `naissance`, `reconversion`, `teletravail`, `horairesAtypiques`, `entrepriseDifficulte`, `mobilite` |
 | énergie | `chauffage` (`elec`, `pac`, `gaz`, `fioul`, `bois`, `collectif`), `consoElec`, `consoGaz` ; cases `factureElevee`, `changerFournisseur`, `impayeEnergie`, `coupure`, `litigeEnergie`, `demarchage`, `linky`, `changerChauffage`, `solaire` ; déduits `chauffageElec`, `ecoElec` (économie estimée en € par le comparateur) |
+| fournisseurs | eau : `factureEau`, `consoEau`, cases `eauFuite`, `eauImpaye`, `eauCoupure`, `eauLitige` ; télécoms : `prixMobile`, `prixBox`, cases `mobileHausse`, `mobileResilier`, `mobileLitige`, `couverture`, `cuivre`, `boxHausse`, `boxResilier`, `boxPanne`, `boxLitige` ; assurances : cases `assurAuto`, `assurHabitation`, `assurSante`, `assurEmprunteur`, `assurObseques`, `assurHausse`, `assurResilier`, `assurSinistre`, `assurCatnat` ; déduits `prixEau`, `eauCher`, `eauSurconso`, `ecoMobile`, `ecoBox`, `telecomLitige`, `telecomHausse`, `telecomResilier` |
 | route | `permis` (`aucun`, `probatoire`, `confirme`, `suspendu`) ; cases `amende`, `points`, `suspension`, `alcoolStup`, `accidentAuto`, `stationnement`, `fourriere`, `carteGrise`, `assuranceAuto`, `zfe`, `plaqueUsurpee`, `passerPermis`, `deuxRoues`, `santeConduite` |
 | justice | `victime`, `violencesFamille`, `arnaque`, `harcelementLigne`, `accidentRoute`, `convoque`, `poursuivi`, `temoin`, `casier`, `procheDetenu` — **jamais enregistrés** sur l'ordinateur |
 | déduits | `couple`, `isole` (parent seul), `fonct`, `travaille`, `actif`, `locataire`, `proprio`, `handDeclare`, `handOui`, `prive` (salarié du privé), `public` (fonctionnaire ou contractuel), `exSalarie` (demandeur d'emploi), `cdi`, `precaire`, `victimeQ` (victime, quelle que soit l'infraction), `misEnCause` (convoqué ou poursuivi) |

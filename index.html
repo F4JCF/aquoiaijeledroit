@@ -98,6 +98,17 @@ table.offres{width:100%;border-collapse:collapse;font-size:15px}
 .comp .vide{margin:6px 0}
 .offres .ouvrir{display:inline-block;margin-top:4px;background:none;border:0;padding:0;color:var(--mer);text-decoration:underline;cursor:pointer;font-size:13px}
 
+.ssonglets{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 18px;border-bottom:1.5px solid var(--ligne)}
+.sso{border:0;background:none;padding:10px 14px;font-size:16px;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1.5px;color:var(--doux)}
+.sso:hover{color:var(--encre)}
+.sso.on{border-bottom-color:var(--mer);color:var(--mer);font-weight:600}
+.ssp{display:none}.ssp.on{display:block}
+.comp-reglages label.chk{flex-direction:row;align-items:center;padding-bottom:8px}
+.comp-reglages label.chk input{width:18px;height:18px;accent-color:var(--mer);margin-right:6px}
+.jauge{border-radius:10px;padding:12px 16px;margin-top:4px;font-size:15px}
+.jauge.ok{background:var(--mer-clair)}.jauge.haut{background:var(--ambre-clair)}.jauge.alerte{background:#fbe9e7}
+.jauge b{font-size:18px}
+
 .cache{display:none!important}
 .nav{display:flex;justify-content:space-between;margin-top:26px;gap:12px}
 .btn{border:0;border-radius:10px;padding:12px 22px;cursor:pointer;font-weight:600}
@@ -152,7 +163,7 @@ table.offres{width:100%;border-collapse:collapse;font-size:15px}
 <aside>
   <img class="logo" src="{{ICONE}}" alt="">
   <h1 class="marque">À quoi ai-je <em>le droit&nbsp;?</em></h1>
-  <p class="sous">Aides, allocations, retraite, handicap, logement, énergie, droit du travail, route, justice — un premier repérage en 5 minutes.</p>
+  <p class="sous">Aides, allocations, retraite, handicap, logement, factures et contrats, travail, route, justice — un premier repérage en 5 minutes.</p>
   <nav id="etapes"></nav>
   <div class="majbloc">
     <div id="majInfo"></div>
@@ -313,10 +324,19 @@ table.offres{width:100%;border-collapse:collapse;font-size:15px}
   </div></div>
 </section>
 
-<!-- 5 bis. Énergie -->
-<section class="panneau" id="p-energie" data-titre="Énergie">
-  <h2>Énergie : aides et comparateur</h2>
-  <p class="intro">Vos droits face à votre fournisseur d'électricité ou de gaz, les aides pour payer vos factures, et une comparaison des offres selon votre consommation.</p>
+<!-- 5 bis. Factures & contrats -->
+<section class="panneau" id="p-energie" data-titre="Factures & contrats">
+  <h2>Fournisseurs : vos droits et les meilleures offres</h2>
+  <p class="intro">Énergie, eau, téléphone, internet, assurances : vos protections face aux fournisseurs, les aides pour payer, et une comparaison des offres selon vos besoins.</p>
+  <div class="ssonglets" role="tablist">
+    <button class="sso on" data-p="energie">⚡ Électricité & gaz</button>
+    <button class="sso" data-p="eau">💧 Eau</button>
+    <button class="sso" data-p="mobile">📱 Mobile</button>
+    <button class="sso" data-p="internet">🌐 Internet</button>
+    <button class="sso" data-p="assurances">🛡 Assurances</button>
+  </div>
+
+  <div class="ssp on" id="ssp-energie">
   <div class="q"><span class="titre">Votre chauffage principal</span>
     <div class="choix" data-nom="chauffage">
       <label><input type="radio" name="chauffage" value="elec">Électrique</label>
@@ -362,8 +382,100 @@ table.offres{width:100%;border-collapse:collapse;font-size:15px}
     <div id="tabGaz"></div>
     <p class="pied">Les prix du gaz varient légèrement selon la zone de distribution : comptez quelques pour cent d'écart.</p>
   </div>
-  <div class="outils" style="margin-bottom:8px">
-    <button class="btn sec" onclick="ouvrir('https://comparateur-offres.energie-info.fr')">Comparateur officiel du Médiateur de l'énergie (toutes les offres) ↗</button>
+    <div class="outils" style="margin-bottom:8px">
+      <button class="btn sec" onclick="ouvrir('https://comparateur-offres.energie-info.fr')">Comparateur officiel du Médiateur de l'énergie (toutes les offres) ↗</button>
+    </div>
+  </div>
+
+  <div class="ssp" id="ssp-eau">
+    <div class="q"><p class="aide" style="margin-top:0">💡 L'eau ne se compare pas comme l'électricité : le distributeur est choisi par votre commune ou votre intercommunalité, pas par vous. En revanche, vous pouvez vérifier votre prix et votre consommation, et vous avez des droits importants.</p></div>
+    <div class="comp">
+      <h3>💧 Mon prix de l'eau</h3>
+      <p class="sous2" id="eauSource"></p>
+      <div class="comp-reglages">
+        <label>Montant de la facture annuelle<span><input type="number" id="factureEau" min="0" step="10" placeholder="ex. 520"> €</span></label>
+        <label>Consommation annuelle<span><input type="number" id="consoEau" min="0" step="1" placeholder="ex. 110"> m³</span></label>
+      </div>
+      <div id="resEau"></div>
+    </div>
+    <div class="q"><span class="titre">Vous êtes concerné(e) par…</span><div class="coches">
+      <label><input type="checkbox" id="eauFuite"><span>Une facture anormalement élevée ou une fuite</span></label>
+      <label><input type="checkbox" id="eauImpaye"><span>Des factures d'eau impayées</span></label>
+      <label><input type="checkbox" id="eauCoupure"><span>Une coupure d'eau ou une réduction du débit</span></label>
+      <label><input type="checkbox" id="eauLitige"><span>Un litige avec le service des eaux</span></label>
+    </div></div>
+  </div>
+
+  <div class="ssp" id="ssp-mobile">
+    <div class="comp">
+      <h3>📱 Comparateur forfaits mobiles</h3>
+      <p class="sous2" id="mobileSource"></p>
+      <div class="comp-reglages">
+        <label>Internet mobile nécessaire<select id="besoinGo">
+          <option value="0.1">Très peu (appels et SMS)</option><option value="10">Jusqu'à 10 Go</option><option value="30">Environ 30 Go</option>
+          <option value="100" selected>Environ 100 Go</option><option value="200">200 Go ou plus</option><option value="9999">Illimité</option></select></label>
+        <label>Mon forfait actuel<span><input type="number" id="prixMobile" min="0" step="0.5" placeholder="ex. 19,99"> € / mois</span></label>
+        <label class="chk"><span><input type="checkbox" id="veut5g"> 5G indispensable</span></label>
+      </div>
+      <div id="tabMobile"></div>
+      <p class="pied">Avant de choisir un petit opérateur, vérifiez la couverture du réseau qu'il utilise (Orange, SFR, Bouygues ou Free) chez vous sur le site de l'Arcep. Changer d'opérateur se fait en gardant son numéro : demandez votre code RIO en appelant le 3179.</p>
+    </div>
+    <div class="outils" style="margin:0 0 16px"><button class="btn sec" onclick="ouvrir('https://monreseaumobile.arcep.fr')">Vérifier la couverture réseau chez moi (Arcep) ↗</button></div>
+    <div class="q"><span class="titre">Vous êtes concerné(e) par…</span><div class="coches">
+      <label><input type="checkbox" id="mobileHausse"><span>Une hausse du prix de mon forfait</span></label>
+      <label><input type="checkbox" id="mobileResilier"><span>L'envie de résilier ou de changer d'opérateur (engagement en cours)</span></label>
+      <label><input type="checkbox" id="mobileLitige"><span>Un litige : facture contestée, hors-forfait, service non rendu</span></label>
+      <label><input type="checkbox" id="couverture"><span>Une mauvaise réception chez moi</span></label>
+    </div></div>
+  </div>
+
+  <div class="ssp" id="ssp-internet">
+    <div class="comp">
+      <h3>🌐 Comparateur box internet</h3>
+      <p class="sous2" id="boxSource"></p>
+      <div class="comp-reglages">
+        <label>Ma box actuelle<span><input type="number" id="prixBox" min="0" step="0.5" placeholder="ex. 39,99"> € / mois</span></label>
+        <label class="chk"><span><input type="checkbox" id="veutTV"> Je veux la télévision</span></label>
+      </div>
+      <div id="tabBox"></div>
+      <p class="pied">Offres fibre : vérifiez d'abord que votre adresse est raccordable. Coût sur 12 et 24 mois, frais de mise en service compris.</p>
+    </div>
+    <div class="outils" style="margin:0 0 16px"><button class="btn sec" onclick="ouvrir('https://maconnexioninternet.arcep.fr')">Vérifier la fibre à mon adresse (Arcep) ↗</button></div>
+    <div class="q"><span class="titre">Vous êtes concerné(e) par…</span><div class="coches">
+      <label><input type="checkbox" id="cuivre"><span>J'ai encore l'ADSL ou une ligne de téléphone fixe classique (cuivre)</span></label>
+      <label><input type="checkbox" id="boxHausse"><span>Une hausse du prix de ma box</span></label>
+      <label><input type="checkbox" id="boxResilier"><span>L'envie de résilier ou de changer de box</span></label>
+      <label><input type="checkbox" id="boxPanne"><span>Une panne longue ou des coupures répétées</span></label>
+      <label><input type="checkbox" id="boxLitige"><span>Un litige avec mon opérateur</span></label>
+    </div></div>
+  </div>
+
+  <div class="ssp" id="ssp-assurances">
+    <div class="q"><span class="titre">Vos contrats</span><div class="coches">
+      <label><input type="checkbox" id="assurAuto"><span>Assurance auto ou moto</span></label>
+      <label><input type="checkbox" id="assurHabitation"><span>Assurance habitation</span></label>
+      <label><input type="checkbox" id="assurSante"><span>Mutuelle santé (complémentaire)</span></label>
+      <label><input type="checkbox" id="assurEmprunteur"><span>Assurance emprunteur (crédit immobilier en cours)</span></label>
+      <label><input type="checkbox" id="assurObseques"><span>Assurance obsèques ou assurance vie</span></label>
+    </div></div>
+    <div class="q"><span class="titre">Vous êtes concerné(e) par…</span><div class="coches">
+      <label><input type="checkbox" id="assurHausse"><span>Une hausse de cotisation</span></label>
+      <label><input type="checkbox" id="assurResilier"><span>L'envie de résilier ou de changer d'assureur</span></label>
+      <label><input type="checkbox" id="assurSinistre"><span>Un sinistre refusé ou mal indemnisé</span></label>
+      <label><input type="checkbox" id="assurCatnat"><span>Une catastrophe naturelle (inondation, sécheresse, tempête…)</span></label>
+    </div></div>
+    <div class="comp">
+      <h3>🔎 La chasse aux doublons</h3>
+      <p class="sous2">Beaucoup de foyers paient deux fois pour la même garantie. Vérifiez si ce que vous payez à part n'est pas déjà couvert ailleurs :</p>
+      <table class="offres"><thead><tr><th>Vous payez…</th><th>Souvent déjà couvert par…</th></tr></thead><tbody>
+        <tr><td class="nom">Une assurance téléphone ou tablette</td><td>Votre carte bancaire haut de gamme, ou la garantie légale de conformité de 2 ans (panne)</td></tr>
+        <tr><td class="nom">Une assurance scolaire</td><td>La responsabilité civile de votre assurance habitation (seule la garantie « individuelle accident » est en plus)</td></tr>
+        <tr><td class="nom">Une assurance annulation de voyage ou de location de voiture</td><td>Votre carte bancaire, si le voyage a été payé avec elle</td></tr>
+        <tr><td class="nom">Une protection juridique</td><td>Votre assurance habitation ou auto, parfois votre carte bancaire</td></tr>
+        <tr><td class="nom">Une extension de garantie</td><td>La garantie légale de conformité (2 ans, gratuite et obligatoire)</td></tr>
+        <tr><td class="nom">Une assurance emprunteur de la banque</td><td>Pas un doublon, mais souvent 2 à 3 fois plus chère qu'une assurance externe : vous pouvez en changer à tout moment</td></tr>
+      </tbody></table>
+    </div>
   </div>
 </section>
 
@@ -538,7 +650,9 @@ function profil(){
    'inaptitude','conges','naissance','reconversion','teletravail','horairesAtypiques','entrepriseDifficulte','mobilite',
    'victime','violencesFamille','arnaque','harcelementLigne','accidentRoute','convoque','poursuivi','temoin','amende','casier','procheDetenu',
    'points','suspension','alcoolStup','accidentAuto','stationnement','fourriere','carteGrise','assuranceAuto','zfe','plaqueUsurpee','passerPermis','deuxRoues','santeConduite',
-   'factureElevee','changerFournisseur','impayeEnergie','coupure','litigeEnergie','demarchage','linky','changerChauffage','solaire'].forEach(k=>p[k]=!!f[k]);
+   'factureElevee','changerFournisseur','impayeEnergie','coupure','litigeEnergie','demarchage','linky','changerChauffage','solaire',
+   'eauFuite','eauImpaye','eauCoupure','eauLitige','mobileHausse','mobileResilier','mobileLitige','couverture','cuivre','boxHausse','boxResilier','boxPanne','boxLitige',
+   'assurAuto','assurHabitation','assurSante','assurEmprunteur','assurObseques','assurHausse','assurResilier','assurSinistre','assurCatnat'].forEach(k=>p[k]=!!f[k]);
   p.couple=['couple','concubin'].includes(p.sit);
   p.enf20=p.e0+p.e3+p.e6+p.e11+p.e18;           // enfants de moins de 20 ans
   p.enf=p.enf20+p.e20;
@@ -550,6 +664,11 @@ function profil(){
   p.misEnCause=p.convoque||p.poursuivi;
   try{p.ecoElec=economieElec(p)}catch(e){p.ecoElec=0}
   p.chauffageElec=['elec','pac'].includes(p.chauffage);
+  try{const e=calculEau(p); p.eauSurconso=!!(e&&e.surconso); p.prixEau=e&&e.prix?Math.round(e.prix*100)/100:null;
+      p.eauCher=!!(e&&e.prix&&e.prix>1.25*e.E.prix_moyen_m3);}catch(e){}
+  try{const m=offresMobile(p); p.ecoMobile=m.length&&val('prixMobile')!=null?Math.max(0,Math.round(m[0].eco)):0;
+      const b=offresBox(p); p.ecoBox=b.length&&val('prixBox')!=null?Math.max(0,Math.round(b[0].eco)):0;}catch(e){p.ecoMobile=0;p.ecoBox=0}
+  p.telecomLitige=p.mobileLitige||p.boxLitige; p.telecomHausse=p.mobileHausse||p.boxHausse; p.telecomResilier=p.mobileResilier||p.boxResilier;
   p.prive=p.act==='salarie';
   p.public=p.fonct||p.act==='contractuel';
   p.exSalarie=['chomeur','chomeur_fin'].includes(p.act);
@@ -692,7 +811,7 @@ async function verifierMaj(silencieux){
   const ancienne=REGLES.version;
   if(r.statut==='maj'&&r.regles){
     const nouv=typeof r.regles==='string'?JSON.parse(r.regles):r.regles;
-    REGLES=nouv; afficherVersion(); try{initComparateur();majComparateur()}catch(e){}
+    REGLES=nouv; afficherVersion(); try{initComparateur();majComparateur();majFournisseurs()}catch(e){}
     const news=(nouv.nouveautes||[]).filter(n=>n.v?cmpV(n.v,ancienne)>0:(n.date||'')>dateIso(ancienne)).slice(0,6);
     document.getElementById('bandeauReglesTxt').innerHTML=`<b>Les règles ont été mises à jour</b> (version du ${dateFr(nouv.mise_a_jour)}).`+
       (news.length?'<ul>'+news.map(n=>`<li>${dateFr(n.date)} — ${echapper(n.texte)}</li>`).join('')+'</ul>':'');
@@ -806,8 +925,77 @@ function economieElec(p){
 document.addEventListener('change',e=>{ if(e.target.name==='chauffage'){ const k=document.getElementById('kva'); if(!document.getElementById('consoElec').value) k.value=['elec','pac'].includes(e.target.value)?'9':'6'; } majComparateur(); });
 initComparateur();
 
+// ===================== Sous-onglets fournisseurs =====================
+document.querySelectorAll('.sso').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.sso').forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('.ssp').forEach(x=>x.classList.toggle('on',x.id==='ssp-'+b.dataset.p));
+}));
+const val=id=>{const v=document.getElementById(id).value;return v===''?null:+String(v).replace(',','.')};
+
+// ---- Eau ----
+function calculEau(p){
+  const E=REGLES&&REGLES.eau; if(!E)return null;
+  const f=val('factureEau'), m=val('consoEau'), n=personnes(p);
+  const attendu=Math.round(E.conso_personne*n);
+  return {prix:(f&&m)?f/m:null, conso:m, attendu, surconso:m!=null&&m>2*attendu, E};
+}
+function majEau(){
+  const p=profil(), r=calculEau(p), z=document.getElementById('resEau'); if(!r){z.innerHTML='';return}
+  document.getElementById('eauSource').textContent=`Référence nationale : ${r.E.prix_moyen_m3.toLocaleString('fr-FR')} € le m³ en moyenne, eau et assainissement compris (${r.E.source}).`;
+  let h='';
+  if(r.prix!=null){
+    const ecart=(r.prix/r.E.prix_moyen_m3-1)*100, cl=ecart>25?'haut':'ok';
+    h+=`<div class="jauge ${cl}">Votre eau coûte <b>${r.prix.toLocaleString('fr-FR',{maximumFractionDigits:2})} € le m³</b>, soit ${Math.abs(Math.round(ecart))} % ${ecart>=0?'de plus':'de moins'} que la moyenne nationale. ${ecart>25?"Le prix est fixé par votre commune ou l'intercommunalité : vous pouvez demander le rapport annuel sur le prix et la qualité du service (RPQS) en mairie.":''}</div>`;
+  }
+  if(r.conso!=null){
+    const cl=r.surconso?'alerte':(r.conso>1.3*r.attendu?'haut':'ok');
+    h+=`<div class="jauge ${cl}" style="margin-top:8px">Votre consommation : <b>${r.conso} m³</b> par an ; une consommation habituelle pour ${personnes(p)} personne${personnes(p)>1?'s':''} est d'environ ${r.attendu} m³. ${r.surconso?"⚠️ C'est plus du double : vérifiez s'il y a une fuite (relevez le compteur le soir et le matin sans utiliser d'eau). En cas de fuite après le compteur, votre facture peut être plafonnée.":''}</div>`;
+  }
+  z.innerHTML=h||'<p class="vide">Indiquez le montant et la consommation de votre facture d\'eau annuelle (ou additionnez vos factures de l\'année).</p>';
+}
+
+// ---- Coût d'un abonnement sur N mois ----
+function coutN(o,n){
+  const promo=Math.min(o.promo_mois||0,n);
+  return (o.frais||0)+promo*o.prix+(n-promo)*(o.prix_apres!=null?o.prix_apres:o.prix);
+}
+function tableTelecom(liste,actuel,colA){
+  if(!liste.length)return '<p class="vide">Aucune offre ne correspond à ces critères dans notre sélection.</p>';
+  return `<table class="offres"><thead><tr><th>Offre</th><th class="num">Prix / mois</th><th class="num">Coût 12 mois</th><th class="num">Coût 24 mois</th><th class="num">${colA}</th></tr></thead><tbody>`+
+  liste.map((x,i)=>{const o=x.o;
+    const prix=o.promo_mois?`${o.prix.toLocaleString('fr-FR')} €<div class="cond">puis ${o.prix_apres.toLocaleString('fr-FR')} € après ${o.promo_mois} mois</div>`:`${o.prix.toLocaleString('fr-FR')} €`;
+    const eco=actuel==null?'—':x.eco>=1?`<span class="eco">−${euro(x.eco)}</span>`:x.eco<=-1?`<span class="sur">+${euro(-x.eco)}</span>`:'≈ 0 €';
+    const det=[o.reseau?`réseau ${o.reseau}`:'',o.data!=null?(o.data>=9999?'internet illimité':o.data<1?Math.round(o.data*1000)+' Mo':o.data+' Go'):'',o['5g']?'5G':'',o.debit||'',o.tv?'TV incluse':'',o.engagement?`engagement ${o.engagement} mois`:'sans engagement',o.frais?`frais ${o.frais} €`:''].filter(Boolean).join(' · ');
+    const lien=o.url?` <button class="ouvrir" onclick="ouvrir('${echapper(o.url)}')">voir l'offre ↗</button>`:'';
+    return `<tr class="${i===0?'top':''}"><td><span class="nom">${echapper(o.operateur)}</span> — ${echapper(o.nom)}<div class="cond">${echapper(det)}${o.cond?' · '+echapper(o.cond):''}</div>${lien}</td>
+      <td class="num">${prix}</td><td class="num">${euro(coutN(o,12))}</td><td class="num"><b>${euro(coutN(o,24))}</b></td><td class="num">${eco}</td></tr>`}).join('')+'</tbody></table>';
+}
+function offresMobile(p){
+  const T=REGLES&&REGLES.telecom; if(!T)return [];
+  const besoin=+document.getElementById('besoinGo').value, v5=document.getElementById('veut5g').checked, act=val('prixMobile');
+  return (T.mobile.offres||[]).filter(o=>o.data>=besoin&&(!v5||o['5g'])&&(!o.age_max||p.age==null||p.age<=o.age_max))
+    .map(o=>({o,eco:act==null?0:act*12-coutN(o,12)})).sort((a,b)=>coutN(a.o,24)-coutN(b.o,24));
+}
+function offresBox(p){
+  const T=REGLES&&REGLES.telecom; if(!T)return [];
+  const tv=document.getElementById('veutTV').checked, act=val('prixBox');
+  return (T.box.offres||[]).filter(o=>(!tv||o.tv)&&(!o.age_max||(p.age!=null&&p.age<=o.age_max&&p.age>=(o.age_min||0))))
+    .map(o=>({o,eco:act==null?0:act*12-coutN(o,12)})).sort((a,b)=>coutN(a.o,24)-coutN(b.o,24));
+}
+function majTelecom(){
+  const T=REGLES&&REGLES.telecom, p=profil(); if(!T)return;
+  document.getElementById('mobileSource').textContent=`Sélection d'offres sans engagement relevées le ${dateFr(T.date)} (${T.source}). Les prix changent souvent : vérifiez sur le site de l'opérateur.`;
+  document.getElementById('boxSource').textContent=`Sélection d'offres fibre relevées le ${dateFr(T.date)} (${T.source}).`;
+  document.getElementById('tabMobile').innerHTML=tableTelecom(offresMobile(p).slice(0,8),val('prixMobile'),'Économie sur 12 mois');
+  document.getElementById('tabBox').innerHTML=tableTelecom(offresBox(p).slice(0,8),val('prixBox'),'Économie sur 12 mois');
+}
+function majFournisseurs(){ try{majEau()}catch(e){} try{majTelecom()}catch(e){} }
+['factureEau','consoEau','prixMobile','prixBox','besoinGo','veut5g','veutTV'].forEach(id=>document.getElementById(id).addEventListener('input',majFournisseurs));
+['veut5g','veutTV','besoinGo'].forEach(id=>document.getElementById(id).addEventListener('change',majFournisseurs));
+
 restaurer();
 majComparateur();
+majFournisseurs();
 document.dispatchEvent(new Event('change'));
 aller(0);
 setTimeout(()=>verifierMaj(true),800);

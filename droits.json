@@ -1,9 +1,14 @@
 {
  "schema": 1,
- "version": "2026.10.13.4",
+ "version": "2026.10.13.5",
  "mise_a_jour": "2026-10-13",
- "app_min": "1.5.0",
+ "app_min": "1.6.0",
  "nouveautes": [
+  {
+   "date": "2026-10-13",
+   "v": "2026.10.13.5",
+   "texte": "L'onglet Énergie devient « Factures & contrats » : comparateurs forfaits mobiles et box internet, prix de l'eau, droits face aux fournisseurs d'eau, aux opérateurs et aux assureurs (résiliation, hausses, litiges, fin de l'ADSL)."
+  },
   {
    "date": "2026-10-13",
    "v": "2026.10.13.4",
@@ -1142,6 +1147,296 @@
    "n": "info",
    "w": "chauffage au fioul ou au bois",
    "d": "Énergie"
+  },
+  {
+   "d": "Eau",
+   "id": "eau_coupure",
+   "t": "Pas de coupure d'eau dans votre résidence principale",
+   "o": "Service des eaux",
+   "l": "{SP}coupure%20d%27eau%20impay%C3%A9",
+   "r": "La coupure de l'eau pour impayé est interdite toute l'année dans une résidence principale, quelle que soit votre situation, et la réduction du débit est aussi jugée illégale. La facture reste due : le service peut engager un recouvrement, mais pas vous priver d'eau.",
+   "a": "En cas de coupure, envoyez une lettre recommandée demandant le rétablissement immédiat ; saisissez la Médiation de l'eau ou le tribunal en référé si besoin.",
+   "si": {
+    "ou": [
+     "eauCoupure",
+     "eauImpaye"
+    ]
+   },
+   "n": "probable",
+   "w": "impayé ou coupure d'eau"
+  },
+  {
+   "d": "Eau",
+   "id": "eau_fuite",
+   "t": "Fuite après le compteur : facture plafonnée",
+   "o": "Service des eaux",
+   "l": "{SP}fuite%20d%27eau%20facture%20loi%20Warsmann",
+   "r": "Si votre consommation dépasse le double de votre moyenne habituelle à cause d'une fuite sur une canalisation après le compteur (hors appareils ménagers, chasse d'eau, robinets), la facture est plafonnée au double de la moyenne. Le service des eaux doit vous prévenir dès qu'il constate une hausse anormale.",
+   "a": "Faites réparer la fuite dans le mois et envoyez l'attestation du plombier (lieu de la fuite, date de réparation) au service des eaux.",
+   "si": {
+    "ou": [
+     "eauFuite",
+     "eauSurconso"
+    ]
+   },
+   "n": [
+    {
+     "si": "eauSurconso",
+     "n": "probable"
+    },
+    {
+     "n": "possible"
+    }
+   ],
+   "w": [
+    {
+     "si": "eauSurconso",
+     "w": "consommation plus de deux fois supérieure à la normale"
+    },
+    {
+     "w": "facture anormale ou fuite"
+    }
+   ]
+  },
+  {
+   "d": "Eau",
+   "id": "eau_aides",
+   "t": "Aides pour payer l'eau",
+   "o": "CCAS / FSL / commune",
+   "l": "{SP}aide%20paiement%20facture%20eau",
+   "r": "Le Fonds de solidarité pour le logement (FSL) peut prendre en charge des factures d'eau impayées. Certaines communes appliquent une tarification sociale de l'eau ou un « chèque eau » pour les foyers modestes. Un échéancier peut toujours être demandé.",
+   "a": "Contactez le CCAS de votre mairie ; demandez au service des eaux s'il existe une tarification sociale.",
+   "si": {
+    "ou": [
+     "eauImpaye",
+     {
+      "et": [
+       "eauFuite",
+       {
+        "c": "niv",
+        "<=?": 2
+       }
+      ]
+     }
+    ]
+   },
+   "n": "possible",
+   "w": "difficultés à payer l'eau"
+  },
+  {
+   "d": "Eau",
+   "id": "eau_prix",
+   "t": "Prix de l'eau élevé : vos moyens d'action",
+   "o": "Commune / intercommunalité",
+   "l": "https://www.services.eaufrance.fr",
+   "r": "Votre eau coûte {prixEau} € le m³, nettement plus que la moyenne nationale. Le prix est voté par la commune ou l'intercommunalité. Vous pouvez consulter le rapport annuel sur le prix et la qualité du service, et le prix de votre commune sur le site de l'observatoire national.",
+   "a": "Comparez votre commune sur services.eaufrance.fr ; posez la question en conseil municipal ou à l'association de consommateurs locale.",
+   "si": "eauCher",
+   "n": "info",
+   "w": "prix supérieur à la moyenne"
+  },
+  {
+   "d": "Eau",
+   "id": "eau_litige",
+   "t": "Litige avec le service des eaux : la Médiation de l'eau",
+   "o": "Médiation de l'eau",
+   "l": "https://www.mediation-eau.fr",
+   "r": "Après une réclamation écrite restée sans réponse satisfaisante, la Médiation de l'eau, gratuite, peut être saisie pour une facture contestée, un relevé erroné ou un problème de branchement.",
+   "a": "Gardez la copie de votre réclamation et saisissez la médiation en ligne.",
+   "si": "eauLitige",
+   "n": "probable",
+   "w": "litige avec le service des eaux"
+  },
+  {
+   "d": "Télécoms",
+   "id": "tel_comparer_mobile",
+   "t": "Changer de forfait mobile pour payer moins",
+   "o": "Opérateurs mobiles",
+   "l": "https://monreseaumobile.arcep.fr",
+   "r": "D'après le comparateur, un forfait correspondant à vos besoins vous ferait économiser environ {ecoMobile} € sur un an. Vous gardez votre numéro : le nouvel opérateur s'occupe de résilier l'ancien grâce au code RIO.",
+   "a": "Appelez le 3179 depuis votre mobile pour obtenir votre RIO ; vérifiez la couverture du réseau chez vous avant de changer.",
+   "si": {
+    "c": "ecoMobile",
+    ">=": 24
+   },
+   "n": "probable",
+   "w": "économie estimée de {ecoMobile} € par an"
+  },
+  {
+   "d": "Télécoms",
+   "id": "tel_comparer_box",
+   "t": "Changer de box internet pour payer moins",
+   "o": "Opérateurs internet",
+   "l": "https://maconnexioninternet.arcep.fr",
+   "r": "D'après le comparateur, une box correspondant à vos besoins vous ferait économiser environ {ecoBox} € sur un an. Les offres « premier prix » sans engagement sont souvent aussi rapides que les offres haut de gamme pour un usage courant.",
+   "a": "Vérifiez l'éligibilité à la fibre à votre adresse ; le nouvel opérateur peut conserver votre numéro de téléphone fixe.",
+   "si": {
+    "c": "ecoBox",
+    ">=": 24
+   },
+   "n": "probable",
+   "w": "économie estimée de {ecoBox} € par an"
+  },
+  {
+   "d": "Télécoms",
+   "id": "tel_hausse",
+   "t": "Hausse de prix : résiliation sans frais",
+   "o": "Votre opérateur",
+   "l": "{SP}hausse%20tarif%20op%C3%A9rateur%20r%C3%A9siliation",
+   "r": "Toute modification du contrat (hausse de prix, nouveau service facturé) doit vous être annoncée au moins un mois à l'avance. Vous pouvez alors résilier sans frais, même si vous êtes engagé(e), jusqu'à 4 mois après l'entrée en vigueur de la modification.",
+   "a": "Résiliez par écrit en citant le courrier ou le courriel annonçant la hausse ; profitez-en pour comparer les offres.",
+   "si": "telecomHausse",
+   "n": "probable",
+   "w": "hausse de tarif"
+  },
+  {
+   "d": "Télécoms",
+   "id": "tel_resilier",
+   "t": "Résilier un abonnement téléphone ou internet",
+   "o": "Votre opérateur",
+   "l": "{SP}r%C3%A9silier%20abonnement%20t%C3%A9l%C3%A9phone%20internet",
+   "r": "Sans engagement, la résiliation prend effet en 10 jours au plus. Avec un engagement de 24 mois, à partir du 13e mois vous ne payez qu'un quart des mensualités restantes. Une résiliation en ligne « en 3 clics » doit être proposée. Déménagement dans une zone non couverte, chômage, surendettement, maladie : des motifs légitimes permettent souvent de résilier sans frais.",
+   "a": "En changeant d'opérateur, demandez simplement la portabilité du numéro : le nouvel opérateur résilie pour vous. Rendez le matériel (box, décodeur) contre récépissé.",
+   "si": "telecomResilier",
+   "n": "probable",
+   "w": "résiliation"
+  },
+  {
+   "d": "Télécoms",
+   "id": "tel_litige",
+   "t": "Litige avec un opérateur : le Médiateur des communications électroniques",
+   "o": "Médiateur des communications électroniques",
+   "l": "https://www.mediateur-telecom.fr",
+   "r": "Facture contestée, hors-forfait, service non fourni, frais injustifiés : faites une réclamation écrite au service client, puis au service consommateurs. Sans réponse satisfaisante, le Médiateur des communications électroniques, gratuit, peut être saisi en ligne.",
+   "a": "Conservez les numéros de réclamation et vos factures ; signalez aussi les abus sur signal.conso.gouv.fr.",
+   "si": "telecomLitige",
+   "n": "probable",
+   "w": "litige avec votre opérateur"
+  },
+  {
+   "d": "Télécoms",
+   "id": "tel_panne",
+   "t": "Panne de box ou de ligne : vos droits",
+   "o": "Votre opérateur",
+   "l": "{SP}panne%20internet%20indemnisation",
+   "r": "L'opérateur doit rétablir le service dans les délais prévus au contrat ; pendant une panne, vous pouvez demander un remboursement ou un geste commercial pour la période sans service, et parfois résilier sans frais en cas de coupures répétées.",
+   "a": "Signalez chaque panne au service client et notez la date ; réclamez par écrit le remboursement des jours sans service.",
+   "si": "boxPanne",
+   "n": "possible",
+   "w": "panne ou coupures"
+  },
+  {
+   "d": "Télécoms",
+   "id": "tel_cuivre",
+   "t": "Fin de l'ADSL et du téléphone fixe classique",
+   "o": "Orange / votre opérateur",
+   "l": "https://www.orange.fr",
+   "r": "Le réseau en cuivre (ADSL, téléphone fixe traditionnel) ferme progressivement, commune par commune, jusqu'en 2030 ; le prochain lot de communes ferme le 31 janvier 2027. Votre opérateur doit vous prévenir plusieurs mois à l'avance. Les solutions : la fibre, ou une box 4G/5G là où la fibre n'arrive pas. Pensez aux appareils branchés sur la ligne fixe (téléassistance, alarme).",
+   "a": "Vérifiez l'éligibilité à la fibre à votre adresse et la date de fermeture de votre commune ; prévenez votre service de téléassistance.",
+   "si": "cuivre",
+   "n": "probable",
+   "w": "ligne ADSL ou fixe en cuivre"
+  },
+  {
+   "d": "Télécoms",
+   "id": "tel_couverture",
+   "t": "Mauvaise réception mobile",
+   "o": "Arcep / opérateurs",
+   "l": "https://monreseaumobile.arcep.fr",
+   "r": "Les cartes de l'Arcep montrent la qualité de chaque réseau (Orange, SFR, Bouygues, Free) chez vous. Les petits opérateurs utilisent le réseau de l'un d'eux : choisir celui qui passe le mieux à votre domicile règle souvent le problème. Les appels en wifi peuvent aussi aider.",
+   "a": "Comparez les réseaux sur monreseaumobile.arcep.fr ; signalez une zone mal couverte sur la plateforme « J'alerte l'Arcep ».",
+   "si": "couverture",
+   "n": "info",
+   "w": "mauvaise réception"
+  },
+  {
+   "d": "Assurances",
+   "id": "ass_resilier",
+   "t": "Résilier ou changer d'assurance à tout moment",
+   "o": "Assureurs",
+   "l": "{SP}r%C3%A9silier%20contrat%20assurance",
+   "r": "Après un an de contrat, les assurances auto, moto, habitation et les mutuelles santé se résilient à tout moment, sans frais ni justification ; la résiliation prend effet un mois plus tard. Le nouvel assureur fait souvent les démarches pour vous (obligatoire pour l'auto et l'habitation d'un locataire). Les assureurs doivent proposer une résiliation en ligne en quelques clics.",
+   "a": "Comparez plusieurs devis à garanties équivalentes (franchises, plafonds) avant de changer.",
+   "si": {
+    "ou": [
+     "assurResilier",
+     "assurHausse"
+    ]
+   },
+   "n": "probable",
+   "w": "vous souhaitez changer d'assurance"
+  },
+  {
+   "d": "Assurances",
+   "id": "ass_hausse",
+   "t": "Hausse de cotisation : comment réagir",
+   "o": "Assureurs",
+   "l": "{SP}augmentation%20cotisation%20assurance",
+   "r": "L'avis d'échéance doit vous être envoyé à temps : s'il arrive en retard ou moins de 15 jours avant la date limite, vous disposez de 20 jours pour résilier. Une hausse importante est surtout l'occasion de faire jouer la concurrence, ce qui est possible à tout moment après un an.",
+   "a": "Demandez d'abord une révision à votre assureur en mentionnant les devis concurrents ; vérifiez si des garanties en double peuvent être supprimées.",
+   "si": "assurHausse",
+   "n": "probable",
+   "w": "hausse de cotisation"
+  },
+  {
+   "d": "Assurances",
+   "id": "ass_emprunteur",
+   "t": "Changer d'assurance de prêt immobilier",
+   "o": "Banque / assureurs",
+   "l": "{SP}assurance%20emprunteur%20changer",
+   "r": "L'assurance emprunteur peut être changée à tout moment, sans frais, à condition que le nouveau contrat offre des garanties équivalentes ; la banque ne peut pas modifier le taux du prêt. Le gain est souvent de plusieurs milliers d'euros sur la durée. Pour les prêts de moins de 200 000 € par emprunteur remboursés avant 60 ans, aucun questionnaire de santé n'est exigé.",
+   "a": "Demandez des devis à des assureurs externes avec la fiche standardisée d'information ; la banque a 10 jours ouvrés pour répondre.",
+   "si": "assurEmprunteur",
+   "n": "probable",
+   "w": "crédit immobilier en cours"
+  },
+  {
+   "d": "Assurances",
+   "id": "ass_sante",
+   "t": "Mutuelle : 100 % Santé et contrats moins chers",
+   "o": "Assurance maladie / mutuelles",
+   "l": "https://www.ameli.fr",
+   "r": "Avec un contrat responsable (la grande majorité des mutuelles), certaines lunettes, prothèses dentaires et aides auditives du panier « 100 % Santé » sont remboursées intégralement. Si vos revenus sont modestes, la Complémentaire santé solidaire peut remplacer votre mutuelle gratuitement ou pour moins d'1 € par jour. Les mutuelles se résilient à tout moment après un an.",
+   "a": "Demandez systématiquement le devis « 100 % Santé » à l'opticien, au dentiste ou à l'audioprothésiste ; comparez avec la CSS.",
+   "si": "assurSante",
+   "n": "info",
+   "w": "mutuelle santé"
+  },
+  {
+   "d": "Assurances",
+   "id": "ass_sinistre",
+   "t": "Sinistre refusé ou mal indemnisé",
+   "o": "Assureur / La Médiation de l'Assurance",
+   "l": "https://www.mediation-assurance.org",
+   "r": "Demandez par écrit les motifs précis du refus et les clauses du contrat invoquées. Vous pouvez faire appel à un expert d'assuré (contre-expertise) si le montant est contesté. Sans réponse satisfaisante du service réclamations sous 2 mois, la Médiation de l'Assurance est gratuite.",
+   "a": "Conservez photos, factures et devis ; vérifiez si votre protection juridique couvre les frais d'expert ou d'avocat.",
+   "si": "assurSinistre",
+   "n": "probable",
+   "w": "sinistre refusé ou contesté"
+  },
+  {
+   "d": "Assurances",
+   "id": "ass_catnat",
+   "t": "Catastrophe naturelle : déclarer à temps",
+   "o": "Assureur / commune",
+   "l": "{SP}catastrophe%20naturelle%20indemnisation",
+   "r": "Les dégâts sont pris en charge au titre de la garantie catastrophe naturelle, incluse dans l'assurance habitation et auto (dommages), une fois l'état de catastrophe naturelle reconnu par arrêté. Vous avez 30 jours après la publication de l'arrêté pour déclarer le sinistre ; l'assureur doit ensuite indemniser dans des délais encadrés. Une franchise légale reste à votre charge.",
+   "a": "Déclarez le sinistre dès que possible à votre assureur, sans attendre l'arrêté ; demandez à la mairie si une demande de reconnaissance est en cours.",
+   "si": "assurCatnat",
+   "n": "probable",
+   "w": "catastrophe naturelle"
+  },
+  {
+   "d": "Assurances",
+   "id": "ass_obseques",
+   "t": "Assurance vie ou obsèques : ce qu'il faut savoir",
+   "o": "Assureurs",
+   "l": "{SP}contrat%20obs%C3%A8ques",
+   "r": "Les contrats obsèques à cotisations viagères peuvent finir par coûter plus que le capital garanti : vérifiez le total des cotisations. Pour retrouver une assurance vie d'un proche décédé, le service AGIRA est gratuit, et le site Ciclade permet de récupérer les sommes non réclamées.",
+   "a": "Faites le calcul cotisations payées / capital garanti ; pour un proche décédé, interrogez l'AGIRA en ligne.",
+   "si": "assurObseques",
+   "n": "info",
+   "w": "assurance vie ou obsèques"
   },
   {
    "id": "rqth",
@@ -3145,6 +3440,165 @@
      },
      "cond": "Indexé sur le prix repère, révisé chaque mois.",
      "url": "https://www.alterna-energie.fr"
+    }
+   ]
+  }
+ },
+ "eau": {
+  "prix_moyen_m3": 4.89,
+  "conso_personne": 52,
+  "source": "observatoire national SISPEA, prix au 1er janvier 2025 pour 120 m³ par an"
+ },
+ "telecom": {
+  "date": "2026-10-13",
+  "source": "relevé sur les comparateurs Ariase, MonPetitForfait et JeChange",
+  "mobile": {
+   "offres": [
+    {
+     "operateur": "NRJ Mobile",
+     "nom": "Forfait 100 Mo",
+     "data": 0.1,
+     "5g": false,
+     "prix": 1.49,
+     "frais": 10,
+     "cond": "Appels et SMS illimités.",
+     "url": "https://www.nrjmobile.fr"
+    },
+    {
+     "operateur": "YouPrice",
+     "nom": "30 Go",
+     "reseau": "SFR",
+     "data": 30,
+     "5g": false,
+     "prix": 5.99,
+     "frais": 10,
+     "cond": "Pas d'eSIM.",
+     "url": "https://www.youprice.fr"
+    },
+    {
+     "operateur": "Lyca Mobile",
+     "nom": "150 Go",
+     "reseau": "Bouygues Telecom",
+     "data": 150,
+     "5g": true,
+     "prix": 7.99,
+     "frais": 0,
+     "url": "https://www.lycamobile.fr"
+    },
+    {
+     "operateur": "Lebara",
+     "nom": "200 Go",
+     "reseau": "SFR",
+     "data": 200,
+     "5g": true,
+     "prix": 9.99,
+     "frais": 0,
+     "url": "https://www.lebara.fr"
+    },
+    {
+     "operateur": "Free",
+     "nom": "Série Free 110 Go",
+     "reseau": "Free",
+     "data": 110,
+     "5g": true,
+     "prix": 12.99,
+     "promo_mois": 12,
+     "prix_apres": 19.99,
+     "frais": 10,
+     "url": "https://mobile.free.fr"
+    },
+    {
+     "operateur": "NRJ Mobile",
+     "nom": "Full illimité",
+     "data": 9999,
+     "5g": true,
+     "prix": 17.49,
+     "frais": 10,
+     "url": "https://www.nrjmobile.fr"
+    },
+    {
+     "operateur": "Free",
+     "nom": "Free 5G+ 350 Go",
+     "reseau": "Free",
+     "data": 350,
+     "5g": true,
+     "prix": 19.99,
+     "frais": 10,
+     "url": "https://mobile.free.fr"
+    },
+    {
+     "operateur": "Free",
+     "nom": "Free Max (illimité)",
+     "reseau": "Free",
+     "data": 9999,
+     "5g": true,
+     "prix": 29.99,
+     "frais": 10,
+     "cond": "19,99 € pour les abonnés Freebox.",
+     "url": "https://mobile.free.fr"
+    }
+   ]
+  },
+  "box": {
+   "offres": [
+    {
+     "operateur": "RED by SFR",
+     "nom": "RED Box Fibre",
+     "prix": 22.99,
+     "frais": 0,
+     "debit": "jusqu'à 1 Gbit/s",
+     "tv": false,
+     "cond": "TV en option.",
+     "url": "https://www.red-by-sfr.fr"
+    },
+    {
+     "operateur": "Sosh",
+     "nom": "Boîte Sosh Fibre",
+     "prix": 24.99,
+     "frais": 0,
+     "debit": "2 Gbit/s",
+     "tv": false,
+     "url": "https://www.sosh.fr"
+    },
+    {
+     "operateur": "Free",
+     "nom": "Freebox Pop S",
+     "prix": 24.99,
+     "frais": 0,
+     "debit": "5 Gbit/s",
+     "tv": false,
+     "cond": "Frais de 49 € offerts si souscription en ligne.",
+     "url": "https://www.free.fr"
+    },
+    {
+     "operateur": "Bouygues Telecom",
+     "nom": "B&You Pure Fibre",
+     "prix": 24.99,
+     "frais": 48,
+     "debit": "2 Gbit/s",
+     "tv": false,
+     "url": "https://www.bouyguestelecom.fr"
+    },
+    {
+     "operateur": "Orange",
+     "nom": "Livebox Fibre 18-26 ans",
+     "prix": 24.99,
+     "frais": 49,
+     "tv": false,
+     "age_min": 18,
+     "age_max": 26,
+     "cond": "Réservée aux 18-26 ans.",
+     "url": "https://www.orange.fr"
+    },
+    {
+     "operateur": "RED by SFR",
+     "nom": "RED Box Fibre + TV",
+     "prix": 27.99,
+     "frais": 0,
+     "debit": "jusqu'à 1 Gbit/s",
+     "tv": true,
+     "cond": "Décodeur TV en option à 3 € par mois.",
+     "url": "https://www.red-by-sfr.fr"
     }
    ]
   }
