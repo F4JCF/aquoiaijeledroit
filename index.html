@@ -105,6 +105,7 @@ table.offres{width:100%;border-collapse:collapse;font-size:15px}
 .sso:hover{color:var(--encre)}
 .sso.on{border-bottom-color:var(--mer);color:var(--mer);font-weight:600}
 .ssp{display:none}.ssp.on{display:block}
+.sstitre{font-family:Georgia,serif;font-weight:normal;font-size:22px;margin:0 0 4px}
 .comp-reglages label.chk{flex-direction:row;align-items:center;padding-bottom:8px}
 .comp-reglages label.chk input{width:18px;height:18px;accent-color:var(--mer);margin-right:6px}
 .jauge{border-radius:10px;padding:12px 16px;margin-top:4px;font-size:15px}
@@ -339,9 +340,16 @@ body.contraste .sous,body.contraste .confidentiel,body.contraste .majbloc{color:
   </div></div>
 </section>
 
-<!-- 3. Activité -->
-<section class="panneau" id="p-activite" data-titre="Activité">
-  <h2>Votre activité</h2>
+<!-- 3. Travail & ressources (activité, travail, ressources) -->
+<section class="panneau" id="p-activite" data-titre="Travail & ressources">
+  <h2>Travail et ressources</h2>
+  <p class="intro">Votre activité, votre situation au travail et les revenus du foyer, en trois onglets.</p>
+  <div class="ssonglets" role="tablist">
+    <button class="sso on" data-p="activite">💼 Activité</button>
+    <button class="sso" data-p="travail">🏢 Mon travail</button>
+    <button class="sso" data-p="ressources">💶 Ressources</button>
+  </div>
+  <div class="ssp on" id="ssp-activite">  <h3 class="sstitre">Votre activité</h3>
   <p class="intro">Votre situation professionnelle actuelle.</p>
   <div class="q"><span class="titre">Vous êtes…</span>
     <div class="choix" data-nom="activite">
@@ -365,11 +373,8 @@ body.contraste .sous,body.contraste .confidentiel,body.contraste .majbloc{color:
     <label class="si-fonct"><input type="checkbox" id="servicesActifs"><span>J'ai occupé un emploi classé en « catégorie active » (police municipale, sapeur-pompier, égoutier, certains emplois hospitaliers…)</span></label>
     <label><input type="checkbox" id="independant2"><span>J'ai aussi une activité indépendante ou une micro-entreprise à côté</span></label>
   </div></div>
-</section>
-
-<!-- 3 bis. Travail -->
-<section class="panneau" id="p-travail" data-titre="Travail">
-  <h2>Votre travail</h2>
+  </div>
+  <div class="ssp" id="ssp-travail">  <h3 class="sstitre">Votre travail</h3>
   <p class="intro">Pour repérer vos droits de salarié(e) ou d'agent public. Si vous ne travaillez pas, vous pouvez passer cette étape.</p>
   <div class="q pour-contrat"><span class="titre">Votre contrat</span>
     <div class="choix" data-nom="contrat">
@@ -413,11 +418,8 @@ body.contraste .sous,body.contraste .confidentiel,body.contraste .majbloc{color:
     <label><input type="checkbox" id="microActif"><span>J'ai déjà une micro-entreprise</span></label>
     <label><input type="checkbox" id="activiteCote"><span>J'ai (ou je veux) une activité rémunérée en plus de mon emploi principal</span></label>
   </div></div>
-</section>
-
-<!-- 4. Ressources -->
-<section class="panneau" id="p-ressources" data-titre="Ressources">
-  <h2>Vos ressources</h2>
+  </div>
+  <div class="ssp" id="ssp-ressources">  <h3 class="sstitre">Vos ressources</h3>
   <p class="intro">Un ordre de grandeur suffit. Il sert uniquement à estimer si les aides sous conditions de ressources peuvent vous concerner.</p>
   <div class="q"><label for="revenu">Revenus mensuels nets de tout le foyer</label>
     <input type="number" id="revenu" min="0" step="50" placeholder="ex. 2400"> € / mois
@@ -428,6 +430,7 @@ body.contraste .sous,body.contraste .confidentiel,body.contraste .majbloc{color:
   <div class="q"><div class="coches">
     <label><input type="checkbox" id="procedure"><span>J'ai (ou vais avoir) une procédure en justice ou besoin d'un avocat</span></label>
   </div></div>
+  </div>
 </section>
 
 <!-- 5. Logement -->
@@ -719,7 +722,7 @@ body.contraste .sous,body.contraste .confidentiel,body.contraste .majbloc{color:
 </section>
 
 <!-- 6 ter. Route -->
-<section class="panneau" id="p-route" data-titre="Route">
+<section class="panneau" id="p-route" data-titre="Code de la route">
   <h2>Code de la route</h2>
   <p class="intro">Permis, amendes, points, accident, véhicule… Cochez ce qui vous concerne, ou passez cette étape.</p>
   <div class="q"><span class="titre">Votre permis de conduire</span>
@@ -940,7 +943,14 @@ panneaux.forEach((p,i)=>{
   }
 });
 document.getElementById('navbar-hote').remove();
-document.addEventListener('click',e=>{const a=e.target.closest('[data-a]');if(a)aller(+a.dataset.a)});
+document.addEventListener('click',e=>{const a=e.target.closest('[data-a]');if(!a)return;
+  // « Continuer » / « Retour » parcourent d'abord les onglets de l'étape
+  const cible=+a.dataset.a, sec=panneaux[cour], tabs=sec?[...sec.querySelectorAll('.sso')]:[];
+  if(tabs.length&&!a.classList.contains('lien')&&(cible===cour+1||cible===cour-1)){
+    const k=tabs.findIndex(t=>t.classList.contains('on')), n=k+(cible>cour?1:-1);
+    if(n>=0&&n<tabs.length){tabs[n].click();document.querySelector('main').scrollTo(0,0);return}
+  }
+  aller(cible)});
 document.getElementById('raz').onclick=()=>{if(confirm('Effacer toutes les réponses de ce profil ?')){lsDel(cleProfil());viderFormulaire();try{majComparateur();majFournisseurs();majDemarches();majEcheances();majRetraite()}catch(e){};aller(0)}};
 function aller(i){
   cour=i;
