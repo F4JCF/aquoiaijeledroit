@@ -1,9 +1,14 @@
 {
  "schema": 1,
- "version": "2026.10.13.7",
+ "version": "2026.10.13.8",
  "mise_a_jour": "2026-10-13",
- "app_min": "1.8.0",
+ "app_min": "1.9.0",
  "nouveautes": [
+  {
+   "date": "2026-10-13",
+   "v": "2026.10.13.8",
+   "texte": "Nouvelle étape « Consommation & garanties » (garantie légale, occasion, vices cachés, livraison, réparation, extension de garantie) et étape « Banque » séparée."
+  },
   {
    "date": "2026-10-13",
    "v": "2026.10.13.7",
@@ -1682,28 +1687,145 @@
    "t": "Produit en panne : la garantie légale de conformité",
    "o": "Le vendeur",
    "l": "{SP}garantie%20l%C3%A9gale%20de%20conformit%C3%A9",
-   "r": "Pendant 2 ans après l'achat d'un produit neuf (1 an pour un produit d'occasion en principe), le vendeur doit réparer ou remplacer gratuitement un produit qui tombe en panne ou ne correspond pas à ce qui était promis, sans que vous ayez à prouver que le défaut existait à l'achat. Cette garantie est gratuite et obligatoire : une extension de garantie payante est souvent inutile.",
+   "r": "Pendant 2 ans après la livraison d'un produit acheté à un professionnel, neuf ou d'occasion, le vendeur doit le réparer ou le remplacer gratuitement s'il tombe en panne ou ne correspond pas à ce qui était promis. Pour un produit neuf, le défaut est présumé exister dès l'achat pendant ces 2 ans : vous n'avez rien à prouver ; pour un produit d'occasion, cette présomption dure 12 mois. Après une réparation, la garantie est prolongée de 6 mois. Si la réparation ou le remplacement est impossible, vous pouvez être remboursé. Cette garantie est gratuite et obligatoire.",
    "a": "Adressez-vous au vendeur (pas au fabricant), par écrit, avec la facture. Une lettre type est disponible dans le logiciel.",
-   "si": "achatPanne",
+   "si": {
+    "ou": [
+     "achatPanne",
+     "occasionAchat"
+    ]
+   },
    "n": "probable",
-   "w": "produit défectueux",
+   "w": [
+    {
+     "si": "occasionAchat",
+     "w": "achat d'occasion auprès d'un professionnel"
+    },
+    {
+     "w": "produit défectueux"
+    }
+   ],
    "pj": [
     "Facture ou ticket de caisse",
     "Photos du défaut"
    ],
-   "d": "Consommation & banque"
+   "d": "Consommation & garanties"
   },
   {
    "id": "retractation",
    "t": "Achat à distance : 14 jours pour changer d'avis",
    "o": "Le vendeur",
    "l": "{SP}droit%20de%20r%C3%A9tractation",
-   "r": "Pour un achat sur Internet, par téléphone ou à domicile, vous disposez de 14 jours pour vous rétracter sans justification (à partir de la réception du produit). Le vendeur doit vous rembourser sous 14 jours. Il n'existe pas de droit de rétractation pour un achat en magasin, sauf geste commercial. Un colis non livré à la date promise permet d'annuler la commande après une mise en demeure.",
+   "r": "Pour un achat sur Internet, par téléphone ou à domicile, vous disposez de 14 jours pour vous rétracter sans justification (à partir de la réception du produit, ou de la signature pour un service). Le vendeur doit vous rembourser sous 14 jours, frais de livraison initiaux compris. Il n'existe pas de droit de rétractation pour un achat en magasin, sauf geste commercial.",
    "a": "Utilisez le formulaire de rétractation du vendeur ou la lettre type du logiciel ; gardez la preuve du renvoi.",
    "si": "achatDistance",
    "n": "probable",
    "w": "achat à distance",
-   "d": "Consommation & banque"
+   "d": "Consommation & garanties"
+  },
+  {
+   "d": "Consommation & garanties",
+   "id": "vices_caches",
+   "t": "Vice caché : recours contre le vendeur",
+   "o": "Vendeur / tribunal",
+   "l": "{SP}vice%20cach%C3%A9",
+   "r": "Un défaut grave, caché au moment de la vente et qui rend le bien impropre à son usage (ou qui aurait dissuadé l'acheteur), permet d'obtenir l'annulation de la vente ou une baisse du prix, même pour un achat entre particuliers (voiture d'occasion, maison, matériel). L'action doit être engagée dans les 2 ans suivant la découverte du défaut. Il faut prouver que le défaut existait avant la vente, souvent grâce à une expertise.",
+   "a": "Faites constater le défaut (expertise, devis d'un professionnel), puis envoyez une mise en demeure au vendeur ; la protection juridique de votre assurance peut prendre en charge l'expertise.",
+   "si": {
+    "ou": [
+     "vicesCaches",
+     "occasionAchat"
+    ]
+   },
+   "n": [
+    {
+     "si": "vicesCaches",
+     "n": "probable"
+    },
+    {
+     "n": "possible"
+    }
+   ],
+   "w": [
+    {
+     "si": "vicesCaches",
+     "w": "défaut caché"
+    },
+    {
+     "w": "achat d'occasion"
+    }
+   ],
+   "pj": [
+    "Facture ou contrat de vente",
+    "Annonce de vente",
+    "Rapport d'expertise ou devis"
+   ]
+  },
+  {
+   "d": "Consommation & garanties",
+   "id": "occasion",
+   "t": "Acheter d'occasion : professionnel ou particulier",
+   "o": "Vendeur",
+   "l": "{SP}achat%20d%27occasion%20garantie",
+   "r": "Auprès d'un professionnel (garage, magasin, site de reconditionné), la garantie légale de conformité de 2 ans s'applique aussi aux produits d'occasion. Entre particuliers, elle ne s'applique pas : seul le recours pour vice caché est possible. Pour une voiture d'occasion, exigez le certificat de cession, la carte grise barrée et un contrôle technique de moins de 6 mois.",
+   "a": "Gardez l'annonce, la facture et les échanges avec le vendeur ; vérifiez l'historique du véhicule sur le service public HistoVec.",
+   "si": "occasionAchat",
+   "n": "info",
+   "w": "achat d'occasion"
+  },
+  {
+   "d": "Consommation & garanties",
+   "id": "extension_garantie",
+   "t": "Extension de garantie et assurance « produit » : souvent inutiles",
+   "o": "Vendeur / assureur",
+   "l": "{SP}extension%20de%20garantie",
+   "r": "Une extension de garantie payante fait souvent double emploi avec la garantie légale gratuite de 2 ans. Une assurance vendue avec un téléphone ou un appareil (casse, vol) peut être annulée sans frais dans les 30 jours si vous êtes déjà couvert pour les mêmes risques, par exemple par votre carte bancaire ou votre assurance habitation. Lisez les exclusions et les franchises avant de souscrire.",
+   "a": "Vérifiez vos garanties existantes (carte bancaire, assurance habitation) ; pour renoncer, écrivez à l'assureur dans les 30 jours en joignant la preuve de l'autre couverture.",
+   "si": "extensionGarantie",
+   "n": "probable",
+   "w": "extension de garantie"
+  },
+  {
+   "d": "Consommation & garanties",
+   "id": "reparation",
+   "t": "Faire réparer : bonus réparation et pièces détachées",
+   "o": "Réparateurs labellisés",
+   "l": "https://www.label-qualirepar.fr",
+   "r": "Le bonus réparation réduit directement la facture chez un réparateur labellisé QualiRépar pour de nombreux appareils (électroménager, téléphones, ordinateurs, vélos, vêtements, chaussures…), hors garantie. Les vendeurs doivent indiquer la disponibilité des pièces détachées, et un indice de réparabilité ou de durabilité informe sur la facilité de réparer certains produits. Pendant la garantie légale, choisir la réparation prolonge la garantie de 6 mois.",
+   "a": "Cherchez un réparateur labellisé sur label-qualirepar.fr : le bonus est déduit directement de la facture.",
+   "si": {
+    "ou": [
+     "reparation",
+     "achatPanne"
+    ]
+   },
+   "n": [
+    {
+     "si": "reparation",
+     "n": "probable"
+    },
+    {
+     "n": "possible"
+    }
+   ],
+   "w": "réparation d'un appareil"
+  },
+  {
+   "d": "Consommation & garanties",
+   "id": "livraison",
+   "t": "Commande non livrée ou en retard",
+   "o": "Vendeur",
+   "l": "{SP}retard%20de%20livraison",
+   "r": "Le vendeur doit livrer à la date annoncée, ou au plus tard 30 jours après la commande si aucune date n'est indiquée. En cas de retard, mettez-le en demeure de livrer dans un délai raisonnable ; s'il ne le fait pas, vous pouvez annuler la commande et être remboursé sous 14 jours. Le vendeur est responsable du colis jusqu'à ce que vous le receviez : un colis perdu ou abîmé pendant le transport est à sa charge.",
+   "a": "Envoyez une mise en demeure (lettre type disponible) ; si vous avez payé par carte, votre banque peut aussi contester le paiement pour un service non rendu.",
+   "si": "livraison",
+   "n": "probable",
+   "w": "problème de livraison",
+   "pj": [
+    "Confirmation de commande",
+    "Preuve de paiement",
+    "Échanges avec le vendeur"
+   ]
   },
   {
    "id": "litige_conso",
@@ -1715,7 +1837,7 @@
    "si": "litigeConso",
    "n": "probable",
    "w": "litige avec un professionnel",
-   "d": "Consommation & banque"
+   "d": "Consommation & garanties"
   },
   {
    "id": "abonnement",
@@ -1727,7 +1849,7 @@
    "si": "abonnementPiege",
    "n": "probable",
    "w": "abonnement à résilier",
-   "d": "Consommation & banque"
+   "d": "Consommation & garanties"
   },
   {
    "id": "frais_bancaires",
@@ -1739,7 +1861,7 @@
    "si": "fraisBancaires",
    "n": "probable",
    "w": "frais bancaires élevés",
-   "d": "Consommation & banque"
+   "d": "Banque"
   },
   {
    "id": "fraude",
@@ -1755,7 +1877,7 @@
     "Relevé de compte avec les opérations contestées",
     "Récépissé de plainte"
    ],
-   "d": "Consommation & banque"
+   "d": "Banque"
   },
   {
    "id": "droit_compte",
@@ -1772,7 +1894,7 @@
     "Pièce d'identité",
     "Justificatif de domicile"
    ],
-   "d": "Consommation & banque"
+   "d": "Banque"
   },
   {
    "id": "changer_banque",
@@ -1784,7 +1906,7 @@
    "si": "changerBanque",
    "n": "info",
    "w": "changement de banque",
-   "d": "Consommation & banque"
+   "d": "Banque"
   },
   {
    "id": "credit_conso",
@@ -1796,7 +1918,7 @@
    "si": "credit",
    "n": "info",
    "w": "crédit en cours",
-   "d": "Consommation & banque"
+   "d": "Banque"
   },
   {
    "id": "surendettement",
@@ -1835,7 +1957,7 @@
     "Justificatifs de ressources et de charges",
     "Liste des dettes avec les courriers des créanciers"
    ],
-   "d": "Consommation & banque"
+   "d": "Banque"
   },
   {
    "id": "fichage",
@@ -1847,7 +1969,7 @@
    "si": "fichage",
    "n": "info",
    "w": "fichage bancaire",
-   "d": "Consommation & banque"
+   "d": "Banque"
   },
   {
    "id": "rqth",
@@ -4907,7 +5029,12 @@
    "titre": "Faire jouer la garantie légale de conformité",
    "desc": "Produit en panne ou défectueux (moins de 2 ans)",
    "recommande": true,
-   "si": "achatPanne",
+   "si": {
+    "ou": [
+     "achatPanne",
+     "occasionAchat"
+    ]
+   },
    "champs": [
     {
      "id": "dest",
@@ -4954,7 +5081,7 @@
    ],
    "dest": "{dest}\n{dest_adr}",
    "objet": "Mise en œuvre de la garantie légale de conformité",
-   "corps": "Madame, Monsieur,\n\nLe {date_achat}, j'ai acheté dans votre établissement le produit suivant : {produit}.\n\nCe produit présente le défaut suivant : {defaut}\n\nEn application des articles L. 217-3 et suivants du Code de la consommation, je vous demande {demande}, sans frais, dans un délai raisonnable. Je vous rappelle que pendant deux ans à compter de la délivrance, le défaut est présumé exister au moment de l'achat.\n\nVeuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
+   "corps": "Madame, Monsieur,\n\nLe {date_achat}, j'ai acheté dans votre établissement le produit suivant : {produit}.\n\nCe produit présente le défaut suivant : {defaut}\n\nEn application des articles L. 217-3 et suivants du Code de la consommation, je vous demande {demande}, sans frais, dans un délai raisonnable. Je vous rappelle que le défaut apparu dans les deux ans suivant la délivrance (douze mois pour un bien d'occasion) est présumé exister au moment de l'achat.\n\nVeuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
    "conseil": "Adressez-vous au vendeur, pas au fabricant. Joignez une copie de la facture (gardez l'original).",
    "relance": 30
   },
@@ -5368,6 +5495,117 @@
    "corps": "Madame, Monsieur,\n\nLe {date_recl}, je vous ai adressé une réclamation concernant : {objet_litige}.\n\nÀ ce jour, je n'ai pas reçu de réponse satisfaisante. Je vous demande de traiter ma demande dans les meilleurs délais et de m'indiquer les coordonnées de votre service réclamations ou de votre service consommateurs.\n\nÀ défaut de solution, je saisirai le médiateur compétent, dont vous voudrez bien me communiquer les coordonnées conformément à vos obligations légales.\n\nVeuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
    "conseil": "Le médiateur peut en général être saisi deux mois après la première réclamation écrite (un mois pour certains secteurs).",
    "relance": 60
+  },
+  {
+   "id": "livraison",
+   "titre": "Mise en demeure de livrer une commande",
+   "desc": "Colis en retard ou jamais livré",
+   "recommande": true,
+   "si": "livraison",
+   "relance": 15,
+   "champs": [
+    {
+     "id": "dest",
+     "label": "Vendeur (nom du site ou du magasin)",
+     "type": "text"
+    },
+    {
+     "id": "dest_adr",
+     "label": "Adresse du vendeur",
+     "type": "text"
+    },
+    {
+     "id": "commande",
+     "label": "Numéro de commande",
+     "type": "text"
+    },
+    {
+     "id": "date_cmd",
+     "label": "Date de la commande",
+     "type": "date"
+    },
+    {
+     "id": "produit",
+     "label": "Produit commandé",
+     "type": "text"
+    },
+    {
+     "id": "montant",
+     "label": "Montant payé (€)",
+     "type": "number"
+    },
+    {
+     "id": "delai",
+     "label": "Délai accordé (jours)",
+     "type": "number",
+     "defaut": "8"
+    }
+   ],
+   "dest": "{dest}\n{dest_adr}",
+   "objet": "Mise en demeure de livrer — commande n° {commande}",
+   "corps": "Madame, Monsieur,\n\nLe {date_cmd}, j'ai commandé sur votre site ou dans votre magasin le produit suivant : {produit}, pour un montant de {montant} €.\n\nÀ ce jour, cette commande ne m'a pas été livrée dans le délai convenu.\n\nConformément aux articles L. 216-1 et suivants du Code de la consommation, je vous mets en demeure de procéder à la livraison dans un délai de {delai} jours à compter de la réception de ce courrier. À défaut, je considérerai le contrat comme résolu et vous demanderai le remboursement intégral des sommes versées, dans les 14 jours.\n\nVeuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
+   "conseil": "Si vous avez payé par carte bancaire, votre banque peut contester le paiement pour une marchandise non livrée."
+  },
+  {
+   "id": "vice_cache",
+   "titre": "Signaler un vice caché au vendeur",
+   "desc": "Défaut grave découvert après l'achat",
+   "recommande": true,
+   "si": "vicesCaches",
+   "relance": 30,
+   "champs": [
+    {
+     "id": "dest",
+     "label": "Vendeur",
+     "type": "text"
+    },
+    {
+     "id": "dest_adr",
+     "label": "Adresse du vendeur",
+     "type": "text"
+    },
+    {
+     "id": "bien",
+     "label": "Bien acheté (ex. : véhicule immatriculé…)",
+     "type": "text"
+    },
+    {
+     "id": "date_achat",
+     "label": "Date d'achat",
+     "type": "date"
+    },
+    {
+     "id": "date_decouverte",
+     "label": "Date de découverte du défaut",
+     "type": "date"
+    },
+    {
+     "id": "defaut",
+     "label": "Description du défaut",
+     "type": "textarea"
+    },
+    {
+     "id": "demande",
+     "label": "Votre demande",
+     "type": "select",
+     "options": [
+      {
+       "v": "annulation",
+       "t": "Annulation de la vente et remboursement",
+       "x": "l'annulation de la vente et le remboursement du prix, contre restitution du bien"
+      },
+      {
+       "v": "reduction",
+       "t": "Réduction du prix",
+       "x": "une réduction du prix correspondant au coût de la remise en état"
+      }
+     ]
+    }
+   ],
+   "dest": "{dest}\n{dest_adr}",
+   "objet": "Vice caché — {bien}",
+   "corps": "Madame, Monsieur,\n\nLe {date_achat}, je vous ai acheté le bien suivant : {bien}.\n\nLe {date_decouverte}, j'ai découvert le défaut suivant, qui n'était pas apparent lors de la vente et rend le bien impropre à l'usage auquel il est destiné :\n\n{defaut}\n\nEn application des articles 1641 et suivants du Code civil relatifs à la garantie des vices cachés, je vous demande {demande}. Je tiens à votre disposition les éléments établissant ce défaut.\n\nÀ défaut d'accord amiable, je me réserve la possibilité de saisir le tribunal compétent.\n\nVeuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
+   "conseil": "L'action doit être engagée dans les 2 ans suivant la découverte du défaut. Une expertise renforce beaucoup votre demande."
   }
  ],
  "echeances": [

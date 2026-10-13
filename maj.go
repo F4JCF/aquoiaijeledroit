@@ -23,7 +23,7 @@ import (
 )
 
 // Renseignée à la compilation : -ldflags "-X main.version=1.2.0"
-var version = "1.8.1"
+var version = "1.9.0"
 
 const (
 	depot          = "F4JCF/aquoiaijeledroit"

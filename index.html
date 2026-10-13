@@ -253,7 +253,7 @@ body.contraste .sous,body.contraste .confidentiel,body.contraste .majbloc{color:
 <aside>
   <img class="logo" src="{{ICONE}}" alt=""><button class="menu-mobile" id="menuMobile" aria-label="Menu">☰ Menu</button>
   <h1 class="marque">À quoi ai-je <em>le droit&nbsp;?</em></h1>
-  <p class="sous">Aides, allocations, retraite, handicap, logement, factures, consommation, travail, route, justice — un premier repérage en 5 minutes.</p>
+  <p class="sous">Aides, allocations, retraite, handicap, logement, factures, banque, consommation, travail, route, justice — un premier repérage en 5 minutes.</p>
   <div class="profilbloc">
     <label for="profilSel">Profil</label>
     <div><select id="profilSel" title="Profil"></select><button id="profilAjout" title="Ajouter un profil">＋</button><button id="profilSuppr" title="Supprimer ce profil">🗑</button></div>
@@ -618,17 +618,11 @@ body.contraste .sous,body.contraste .confidentiel,body.contraste .majbloc{color:
   </div>
 </section>
 
-<!-- 5 ter. Consommation & banque -->
-<section class="panneau" id="p-conso" data-titre="Consommation & banque">
-  <h2>Consommation et banque</h2>
-  <p class="intro">Achats, garanties, litiges avec un commerçant, frais bancaires, crédit, surendettement : vos protections.</p>
-  <div class="q"><span class="titre">Achats et litiges</span><div class="coches">
-    <label><input type="checkbox" id="achatPanne"><span>Un produit en panne ou défectueux (moins de 2 ans)</span></label>
-    <label><input type="checkbox" id="achatDistance"><span>Un achat sur Internet ou par téléphone : rétractation, colis non livré</span></label>
-    <label><input type="checkbox" id="litigeConso"><span>Un litige avec un commerçant, un artisan ou un garagiste</span></label>
-    <label><input type="checkbox" id="abonnementPiege"><span>Un abonnement difficile à résilier (salle de sport, presse, application…)</span></label>
-  </div></div>
-  <div class="q"><span class="titre">Banque et argent</span><div class="coches">
+<!-- 5 ter. Banque -->
+<section class="panneau" id="p-banque" data-titre="Banque">
+  <h2>Banque et argent</h2>
+  <p class="intro">Frais bancaires, fraude, compte refusé, crédit, surendettement : vos protections face à la banque.</p>
+  <div class="q"><span class="titre">Vous êtes concerné(e) par…</span><div class="coches">
     <label><input type="checkbox" id="fraisBancaires"><span>Des frais bancaires élevés (incidents, commissions, découvert)</span></label>
     <label><input type="checkbox" id="fraudeBancaire"><span>Des opérations frauduleuses sur mon compte (faux conseiller, carte piratée)</span></label>
     <label><input type="checkbox" id="refusCompte"><span>Une banque qui refuse de m'ouvrir un compte</span></label>
@@ -636,6 +630,25 @@ body.contraste .sous,body.contraste .confidentiel,body.contraste .majbloc{color:
     <label><input type="checkbox" id="credit"><span>Un crédit à la consommation ou renouvelable</span></label>
     <label><input type="checkbox" id="surendettement"><span>Trop de dettes : je n'arrive plus à rembourser</span></label>
     <label><input type="checkbox" id="fichage"><span>Un fichage à la Banque de France (incidents de crédit ou de chèque)</span></label>
+  </div></div>
+</section>
+
+<!-- 5 quinquies. Consommation & garanties -->
+<section class="panneau" id="p-conso" data-titre="Consommation & garanties">
+  <h2>Consommation et garanties</h2>
+  <p class="intro">Achats, garanties, livraisons, réparations, litiges avec un commerçant : ce que la loi vous garantit.</p>
+  <div class="q"><span class="titre">Garanties et réparations</span><div class="coches">
+    <label><input type="checkbox" id="achatPanne"><span>Un produit en panne ou défectueux acheté chez un professionnel (moins de 2 ans)</span></label>
+    <label><input type="checkbox" id="occasionAchat"><span>Un achat d'occasion (voiture, électroménager…) qui pose problème</span></label>
+    <label><input type="checkbox" id="vicesCaches"><span>Un défaut grave caché au moment de la vente (vice caché), même entre particuliers</span></label>
+    <label><input type="checkbox" id="extensionGarantie"><span>Une extension de garantie ou une assurance « produit » proposée ou souscrite</span></label>
+    <label><input type="checkbox" id="reparation"><span>Faire réparer un appareil plutôt que le remplacer</span></label>
+  </div></div>
+  <div class="q"><span class="titre">Achats et litiges</span><div class="coches">
+    <label><input type="checkbox" id="achatDistance"><span>Un achat sur Internet, par téléphone ou à domicile : changer d'avis (rétractation)</span></label>
+    <label><input type="checkbox" id="livraison"><span>Une commande livrée en retard, incomplète ou jamais livrée</span></label>
+    <label><input type="checkbox" id="litigeConso"><span>Un litige avec un commerçant, un artisan ou un garagiste</span></label>
+    <label><input type="checkbox" id="abonnementPiege"><span>Un abonnement difficile à résilier (salle de sport, presse, application…)</span></label>
   </div></div>
 </section>
 
@@ -1009,7 +1022,7 @@ function profil(){
    'factureElevee','changerFournisseur','impayeEnergie','coupure','litigeEnergie','demarchage','linky','changerChauffage','solaire',
    'eauFuite','eauImpaye','eauCoupure','eauLitige','mobileHausse','mobileResilier','mobileLitige','couverture','cuivre','boxHausse','boxResilier','boxPanne','boxLitige',
    'assurAuto','assurHabitation','assurSante','assurEmprunteur','assurObseques','assurHausse','assurResilier','assurSinistre','assurCatnat',
-   'depotGarantie','preavis','chargesLoc','indecent','bailleur','copro','achatPanne','achatDistance','litigeConso','abonnementPiege','fraisBancaires','fraudeBancaire','refusCompte','changerBanque','credit','surendettement','fichage',
+   'depotGarantie','preavis','chargesLoc','indecent','bailleur','copro','achatPanne','achatDistance','litigeConso','abonnementPiege','fraisBancaires','fraudeBancaire','refusCompte','changerBanque','credit','surendettement','fichage','occasionAchat','vicesCaches','extensionGarantie','reparation','livraison',
    'etudiantSup','logementEtudiant','jeuneSansEmploi','jeuneCulture','ehpad','domicile','transportSenior','maltraitance','decesProche','decesConjoint','succession','comptesDefunt','donation',
    'microProjet','microActif','activiteCote','sansMedecin','depassements','renoncement','transportSanitaire','cure','dossierMedical','separation','pensionAlim','gardeEnfants','logementFamilial','benevole','dirigeantAsso','dons'].forEach(k=>p[k]=!!f[k]);
   p.couple=['couple','concubin'].includes(p.sit);
