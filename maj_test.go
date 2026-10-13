@@ -5,8 +5,10 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"regexp"
 	"strings"
 	"testing"
+	"time"
 )
 
 func TestReglesIntegreesValides(t *testing.T) {
@@ -80,5 +82,57 @@ func TestMiseAJour(t *testing.T) {
 	urlRegles = "http://127.0.0.1:1/x"
 	if verifierMaj().Statut != "hors_ligne" {
 		t.Fatal("hors ligne non géré")
+	}
+}
+
+// Les lettres types ne doivent utiliser que des champs connus.
+func TestLettresTypes(t *testing.T) {
+	var d struct {
+		Lettres []struct {
+			ID, Titre, Objet, Dest, Ref, Corps string
+			Champs                             []struct {
+				ID, Label, Type string
+				Options         []struct{ V, T, X string }
+			}
+		}
+		Echeances []struct{ Date, Titre string }
+		Annuaire  []struct{ Cat, Nom, Num string }
+	}
+	if err := json.Unmarshal(reglesIntegrees, &d); err != nil {
+		t.Fatal(err)
+	}
+	base := map[string]bool{"nom": true, "adresse": true, "cpville": true, "tel": true, "email": true, "ville": true, "date": true}
+	re := regexp.MustCompile(`\{(\w+)\}`)
+	for _, l := range d.Lettres {
+		if l.ID == "" || l.Titre == "" || l.Corps == "" {
+			t.Fatalf("lettre incomplète : %+v", l.ID)
+		}
+		connus := map[string]bool{}
+		for k := range base {
+			connus[k] = true
+		}
+		for _, c := range l.Champs {
+			connus[c.ID] = true
+			if c.Type == "select" && len(c.Options) == 0 {
+				t.Errorf("%s : liste %s vide", l.ID, c.ID)
+			}
+		}
+		for _, txt := range []string{l.Objet, l.Dest, l.Ref, l.Corps} {
+			for _, m := range re.FindAllStringSubmatch(txt, -1) {
+				if !connus[m[1]] {
+					t.Errorf("lettre %s : champ inconnu {%s}", l.ID, m[1])
+				}
+			}
+		}
+	}
+	for _, e := range d.Echeances {
+		if _, err := time.Parse("2006-01-02", e.Date); err != nil || e.Titre == "" {
+			t.Errorf("échéance invalide : %+v", e)
+		}
+	}
+	for _, a := range d.Annuaire {
+		if a.Nom == "" || a.Num == "" || a.Cat == "" {
+			t.Errorf("annuaire incomplet : %+v", a)
+		}
 	}
 }

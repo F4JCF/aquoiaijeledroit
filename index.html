@@ -109,6 +109,48 @@ table.offres{width:100%;border-collapse:collapse;font-size:15px}
 .jauge.ok{background:var(--mer-clair)}.jauge.haut{background:var(--ambre-clair)}.jauge.alerte{background:#fbe9e7}
 .jauge b{font-size:18px}
 
+.profilbloc{margin:0 0 14px}
+.profilbloc label{font-size:12px;color:#b9d3cf;text-transform:uppercase;letter-spacing:.05em}
+.profilbloc div{display:flex;gap:4px;margin-top:4px}
+.profilbloc select{flex:1;min-width:0;padding:7px 8px;border-radius:8px;border:1px solid #3d847e;background:#1c625e;color:#fff;font-size:15px}
+.profilbloc button,.access button{background:#1c625e;color:#eaf3f1;border:1px solid #3d847e;border-radius:8px;padding:6px 9px;cursor:pointer;font-size:14px}
+.profilbloc button:hover,.access button:hover{background:#24706b}
+.outilsnav{margin-top:10px;padding-top:10px;border-top:1px solid #2c6d68}
+.outilsnav .n{border:0;font-size:16px}
+.outilsnav b{background:#f3c98b;color:#14524f;border-radius:999px;padding:0 7px;font-size:12px;margin-left:4px}
+.outilsnav b:empty{display:none}
+.access{display:flex;gap:6px;margin-top:10px}
+.lettres-grille{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:18px}
+.lettres-grille button{text-align:left;background:var(--carte);border:1.5px solid var(--ligne);border-radius:12px;padding:12px 14px;cursor:pointer}
+.lettres-grille button:hover{border-color:var(--mer)}
+.lettres-grille button.on{border-color:var(--mer);background:var(--mer-clair)}
+.lettres-grille .lt{font-weight:600;display:block}
+.lettres-grille .lc{font-size:13px;color:var(--doux)}
+.lettre{background:#fff;border:1px solid var(--ligne);border-radius:6px;padding:40px 46px;font-family:Georgia,"Times New Roman",serif;font-size:16px;line-height:1.55;white-space:pre-wrap;color:#111;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.lettre .exp{white-space:pre-line}
+.lettre .dest{white-space:pre-line;margin:22px 0 22px 50%}
+.lettre .lieu{text-align:right;margin-bottom:18px}
+.lettre .objet{font-weight:bold;margin-bottom:6px}
+.lettre .rar{font-style:italic;margin-bottom:18px}
+.ech{display:flex;gap:14px;align-items:center;background:var(--carte);border:1px solid var(--ligne);border-left:5px solid var(--ligne);border-radius:12px;padding:12px 16px;margin-bottom:8px}
+.ech.proche{border-left-color:var(--ambre);background:var(--ambre-clair)}
+.ech.passe{opacity:.55}
+.ech .d{font-family:Georgia,serif;font-size:20px;min-width:110px}
+.ech .t{flex:1}.ech .t small{display:block;color:var(--doux);font-size:13px}
+.ech button{background:none;border:0;cursor:pointer;color:var(--doux);font-size:18px}
+.annu-cat{font-family:Georgia,serif;font-size:20px;margin:22px 0 8px;padding-bottom:4px;border-bottom:1px solid var(--ligne)}
+.annu{display:flex;gap:14px;align-items:baseline;padding:8px 4px;border-bottom:1px dashed var(--ligne)}
+.annu .num{font-weight:700;font-size:18px;min-width:150px;color:var(--mer);font-variant-numeric:tabular-nums}
+.annu .info{flex:1}.annu .info small{display:block;color:var(--doux);font-size:13px}
+.pj{font-size:14px;margin-top:8px;background:var(--gris-clair);border-radius:8px;padding:8px 12px}
+.pieces-gen{margin-top:20px}
+.dossier-entete{display:none}
+.droit .ecouter{background:none;border:0;cursor:pointer;font-size:15px;margin-left:10px;color:var(--mer)}
+body.contraste{--doux:#2c3438;--ligne:#8a8f94;--mer:#0a3a38;--encre:#000;--papier:#fff;--carte:#fff;--gris-clair:#e6e6e6}
+body.contraste aside{background:#06302e}
+body.contraste .etape{color:#fff}
+body.contraste .sous,body.contraste .confidentiel,body.contraste .majbloc{color:#e6f2f0}
+
 .cache{display:none!important}
 .nav{display:flex;justify-content:space-between;margin-top:26px;gap:12px}
 .btn{border:0;border-radius:10px;padding:12px 22px;cursor:pointer;font-weight:600}
@@ -147,7 +189,13 @@ table.offres{width:100%;border-collapse:collapse;font-size:15px}
 
 @media (max-width:900px){aside{width:220px}main{padding:28px 24px}.grille{grid-template-columns:repeat(2,1fr)}}
 @media print{
-  aside,.nav,.filtres,.outils,.droit .ouvrir{display:none!important}
+  aside,.nav,.filtres,.outils,.droit .ouvrir,.droit .ecouter,#bandeauApp,#bandeauRegles,#bandeauEch{display:none!important}
+  .dossier-entete{display:flex!important;justify-content:space-between;border-bottom:2px solid #000;padding-bottom:6px;margin-bottom:12px;font-size:14px}
+  body.impr-lettre #p-resultats{display:none!important}
+  body.impr-lettre #o-lettres{display:block!important}
+  body.impr-lettre #o-lettres>*:not(#lettreZone){display:none!important}
+  body.impr-lettre #lettreZone>*:not(#lettreApercu){display:none!important}
+  body.impr-lettre .lettre{border:0;box-shadow:none;padding:0}
   body{display:block;background:#fff}
   main{overflow:visible;padding:0}
   .panneau{display:none!important}
@@ -163,8 +211,21 @@ table.offres{width:100%;border-collapse:collapse;font-size:15px}
 <aside>
   <img class="logo" src="{{ICONE}}" alt="">
   <h1 class="marque">À quoi ai-je <em>le droit&nbsp;?</em></h1>
-  <p class="sous">Aides, allocations, retraite, handicap, logement, factures et contrats, travail, route, justice — un premier repérage en 5 minutes.</p>
+  <p class="sous">Aides, allocations, retraite, handicap, logement, factures, consommation, travail, route, justice — un premier repérage en 5 minutes.</p>
+  <div class="profilbloc">
+    <label for="profilSel">Profil</label>
+    <div><select id="profilSel" title="Profil"></select><button id="profilAjout" title="Ajouter un profil">＋</button><button id="profilSuppr" title="Supprimer ce profil">🗑</button></div>
+  </div>
   <nav id="etapes"></nav>
+  <div class="outilsnav">
+    <button class="etape" data-outil="o-lettres"><span class="n">📝</span><span>Lettres types</span></button>
+    <button class="etape" data-outil="o-echeances"><span class="n">📅</span><span>Mes échéances <b id="nbEch"></b></span></button>
+    <button class="etape" data-outil="o-annuaire"><span class="n">☎</span><span>Numéros utiles</span></button>
+  </div>
+  <div class="access">
+    <button id="btnTaille" title="Agrandir le texte">A+ Taille</button>
+    <button id="btnContraste" title="Contraste renforcé">◐ Contraste</button>
+  </div>
   <div class="majbloc">
     <div id="majInfo"></div>
     <button id="btnMaj" onclick="verifierMaj(false)">⟳ Rechercher les mises à jour</button>
@@ -175,6 +236,7 @@ table.offres{width:100%;border-collapse:collapse;font-size:15px}
 
 <main>
 <div class="bandeau app" id="bandeauApp"><div class="txt" id="bandeauAppTxt"></div><button class="fermer" onclick="this.parentElement.classList.remove('on')" aria-label="Fermer">×</button></div>
+<div class="bandeau app" id="bandeauEch"><div class="txt" id="bandeauEchTxt"></div><button class="fermer" onclick="this.parentElement.classList.remove('on')" aria-label="Fermer">×</button></div>
 <div class="bandeau regles" id="bandeauRegles"><div class="txt" id="bandeauReglesTxt"></div><button class="fermer" onclick="this.parentElement.classList.remove('on')" aria-label="Fermer">×</button></div>
 
 <!-- 1. Vous -->
@@ -321,6 +383,14 @@ table.offres{width:100%;border-collapse:collapse;font-size:15px}
     <label><input type="checkbox" id="adapter"><span>J'aimerais adapter mon logement à l'âge ou au handicap (douche, monte-escalier…)</span></label>
     <label><input type="checkbox" id="difficulte"><span>J'ai des difficultés à payer mon loyer, mes charges ou mes factures d'énergie</span></label>
     <label><input type="checkbox" id="cherche"><span>Je cherche un logement (location ou logement social)</span></label>
+  </div></div>
+  <div class="q"><span class="titre">Locataire ou propriétaire : vous êtes concerné(e) par…</span><div class="coches">
+    <label class="pour-loc"><input type="checkbox" id="depotGarantie"><span>Un dépôt de garantie non rendu ou des retenues contestées</span></label>
+    <label class="pour-loc"><input type="checkbox" id="preavis"><span>Mon départ du logement (préavis, état des lieux)</span></label>
+    <label class="pour-loc"><input type="checkbox" id="chargesLoc"><span>Des charges ou une hausse de loyer contestées</span></label>
+    <label class="pour-loc"><input type="checkbox" id="indecent"><span>Un logement en mauvais état : humidité, chauffage défaillant, travaux non faits</span></label>
+    <label><input type="checkbox" id="bailleur"><span>Je loue un logement à quelqu'un (je suis bailleur)</span></label>
+    <label><input type="checkbox" id="copro"><span>Une copropriété (charges, assemblée générale, syndic)</span></label>
   </div></div>
 </section>
 
@@ -479,6 +549,63 @@ table.offres{width:100%;border-collapse:collapse;font-size:15px}
   </div>
 </section>
 
+<!-- 5 ter. Consommation & banque -->
+<section class="panneau" id="p-conso" data-titre="Consommation & banque">
+  <h2>Consommation et banque</h2>
+  <p class="intro">Achats, garanties, litiges avec un commerçant, frais bancaires, crédit, surendettement : vos protections.</p>
+  <div class="q"><span class="titre">Achats et litiges</span><div class="coches">
+    <label><input type="checkbox" id="achatPanne"><span>Un produit en panne ou défectueux (moins de 2 ans)</span></label>
+    <label><input type="checkbox" id="achatDistance"><span>Un achat sur Internet ou par téléphone : rétractation, colis non livré</span></label>
+    <label><input type="checkbox" id="litigeConso"><span>Un litige avec un commerçant, un artisan ou un garagiste</span></label>
+    <label><input type="checkbox" id="abonnementPiege"><span>Un abonnement difficile à résilier (salle de sport, presse, application…)</span></label>
+  </div></div>
+  <div class="q"><span class="titre">Banque et argent</span><div class="coches">
+    <label><input type="checkbox" id="fraisBancaires"><span>Des frais bancaires élevés (incidents, commissions, découvert)</span></label>
+    <label><input type="checkbox" id="fraudeBancaire"><span>Des opérations frauduleuses sur mon compte (faux conseiller, carte piratée)</span></label>
+    <label><input type="checkbox" id="refusCompte"><span>Une banque qui refuse de m'ouvrir un compte</span></label>
+    <label><input type="checkbox" id="changerBanque"><span>L'envie de changer de banque</span></label>
+    <label><input type="checkbox" id="credit"><span>Un crédit à la consommation ou renouvelable</span></label>
+    <label><input type="checkbox" id="surendettement"><span>Trop de dettes : je n'arrive plus à rembourser</span></label>
+    <label><input type="checkbox" id="fichage"><span>Un fichage à la Banque de France (incidents de crédit ou de chèque)</span></label>
+  </div></div>
+</section>
+
+<!-- 5 quater. Étapes de vie -->
+<section class="panneau" id="p-vie" data-titre="Étapes de vie">
+  <h2>Étapes de vie</h2>
+  <p class="intro">Études et premiers pas, vieillissement, décès d'un proche : les droits liés à ces moments.</p>
+  <div class="ssonglets" role="tablist">
+    <button class="sso on" data-g="vie" data-p="jeunes">🎓 Jeunes & études</button>
+    <button class="sso" data-g="vie" data-p="seniors">🧓 Seniors</button>
+    <button class="sso" data-g="vie" data-p="deces">🕊 Décès & succession</button>
+  </div>
+  <div class="ssp on" data-g="vie" id="ssp-jeunes">
+    <div class="q"><span class="titre">Vous êtes (ou votre enfant est)…</span><div class="coches">
+      <label><input type="checkbox" id="etudiantSup"><span>Étudiant(e) dans l'enseignement supérieur, ou futur étudiant</span></label>
+      <label><input type="checkbox" id="logementEtudiant"><span>À la recherche d'un logement étudiant</span></label>
+      <label><input type="checkbox" id="jeuneSansEmploi"><span>Âgé(e) de 16 à 25 ans, sans emploi ni formation</span></label>
+      <label><input type="checkbox" id="jeuneCulture"><span>Âgé(e) de 17 ou 18 ans (pass Culture)</span></label>
+    </div></div>
+  </div>
+  <div class="ssp" data-g="vie" id="ssp-seniors">
+    <div class="q"><span class="titre">Pour vous ou un proche âgé…</span><div class="coches">
+      <label><input type="checkbox" id="ehpad"><span>Une entrée en EHPAD ou en résidence autonomie (envisagée ou faite)</span></label>
+      <label><input type="checkbox" id="domicile"><span>Rester chez soi le plus longtemps possible (téléassistance, portage de repas, aide)</span></label>
+      <label><input type="checkbox" id="transportSenior"><span>Les transports et sorties (tarifs réduits, accompagnement)</span></label>
+      <label><input type="checkbox" id="maltraitance"><span>Une situation de maltraitance ou d'abus envers une personne âgée</span></label>
+    </div></div>
+  </div>
+  <div class="ssp" data-g="vie" id="ssp-deces">
+    <div class="q"><span class="titre">Vous êtes concerné(e) par…</span><div class="coches">
+      <label><input type="checkbox" id="decesProche"><span>Le décès récent d'un proche</span></label>
+      <label><input type="checkbox" id="decesConjoint"><span>Le défunt était mon conjoint ou partenaire de PACS</span></label>
+      <label><input type="checkbox" id="succession"><span>Une succession (je suis héritier ou héritière)</span></label>
+      <label><input type="checkbox" id="comptesDefunt"><span>Les comptes bancaires, contrats et abonnements du défunt</span></label>
+      <label><input type="checkbox" id="donation"><span>Un projet de donation à un enfant ou petit-enfant</span></label>
+    </div></div>
+  </div>
+</section>
+
 <!-- 6. Santé & autonomie -->
 <section class="panneau" id="p-sante" data-titre="Santé & autonomie">
   <h2>Santé, handicap et autonomie</h2>
@@ -554,6 +681,7 @@ table.offres{width:100%;border-collapse:collapse;font-size:15px}
 
 <!-- 7. Résultats -->
 <section class="panneau" id="p-resultats" data-titre="Mes droits">
+  <div class="dossier-entete"><b>Mon dossier — À quoi ai-je le droit ?</b><span id="dossierInfo"></span></div>
   <h2>Ce à quoi vous pourriez avoir droit</h2>
   <p class="intro" id="resume-profil"></p>
   <div class="bilan">
@@ -563,20 +691,100 @@ table.offres{width:100%;border-collapse:collapse;font-size:15px}
   </div>
   <div class="filtres" id="filtres"></div>
   <div id="liste"></div>
+  <div id="piecesGen" class="pieces-gen"></div>
   <div class="avert"><b>Important :</b> ce repérage est indicatif. Les montants et plafonds changent régulièrement ; seul l'organisme concerné peut confirmer un droit. En cas de doute, un conseiller <b>France Services</b> peut vous aider gratuitement dans vos démarches.</div>
   <div class="outils">
-    <button class="btn prim" onclick="window.print()">🖨 Imprimer / enregistrer en PDF</button>
+    <button class="btn prim" onclick="imprimerDossier()">🖨 Mon dossier (imprimer / PDF)</button>
+    <button class="btn sec" id="btnEcoute" onclick="lireResultats()">🔊 Écouter les résultats</button>
     <button class="btn sec" onclick="ouvrir('https://www.mesdroitssociaux.gouv.fr')">Simulateur officiel mesdroitssociaux.gouv.fr</button>
     <button class="btn sec" onclick="ouvrir('https://www.france-services.gouv.fr')">Trouver un France Services</button>
   </div>
+</section>
+
+
+<!-- ===== Outils ===== -->
+<section class="panneau outil" id="o-lettres" data-titre="Lettres types">
+  <h2>📝 Lettres types</h2>
+  <p class="intro">Choisissez une lettre : elle se remplit avec vos coordonnées et vos réponses. Relisez-la, imprimez-la ou copiez-la.</p>
+  <details class="q" id="coordBloc"><summary class="titre" style="cursor:pointer">Mes coordonnées (à saisir une seule fois)</summary>
+    <div class="grille" style="margin-top:12px">
+      <label>Prénom et nom<input type="text" id="c_nom"></label>
+      <label>Adresse<input type="text" id="c_adresse"></label>
+      <label>Code postal et ville<input type="text" id="c_cpville"></label>
+      <label>Téléphone<input type="text" id="c_tel"></label>
+      <label>Courriel<input type="text" id="c_email"></label>
+      <label>Ville où vous signez<input type="text" id="c_ville"></label>
+    </div>
+  </details>
+  <div class="lettres-grille" id="listeLettres"></div>
+  <div id="lettreZone" class="cache">
+    <div class="q" id="lettreChamps"></div>
+    <div class="outils" style="margin:0 0 12px">
+      <button class="btn prim" onclick="imprimerLettre()">🖨 Imprimer / PDF</button>
+      <button class="btn sec" onclick="copierLettre()">📋 Copier le texte</button>
+      <button class="btn sec" onclick="parler(document.getElementById('lettreApercu').innerText)">🔊 Écouter</button>
+      <span id="copieOk" class="aide"></span>
+    </div>
+    <div class="lettre" id="lettreApercu"></div>
+    <p class="aide" id="lettreConseil"></p>
+  </div>
+</section>
+
+<section class="panneau outil" id="o-echeances" data-titre="Mes échéances">
+  <h2>📅 Mes échéances</h2>
+  <p class="intro">Les dates importantes pour vous : échéances nationales qui vous concernent et vos propres rappels. Le logiciel vous prévient au lancement quand une date approche.</p>
+  <div class="comp">
+    <h3>Ajouter un rappel personnel</h3>
+    <div class="comp-reglages">
+      <label>Type<select id="echType">
+        <option>Fin d'engagement forfait mobile / box</option><option>Échéance assurance auto</option><option>Échéance assurance habitation</option>
+        <option>Contrôle technique du véhicule</option><option>Renouvellement des droits MDPH</option><option>Fin des droits au chômage</option>
+        <option>Départ à la retraite</option><option>Fin de bail / préavis</option><option>Rendez-vous administratif</option><option>Autre</option></select></label>
+      <label>Date<input type="date" id="echDate"></label>
+      <label>Note (facultatif)<input type="text" id="echNote" style="width:220px"></label>
+      <button class="btn prim" onclick="ajouterEcheance()" style="align-self:flex-end">Ajouter</button>
+    </div>
+    <input type="hidden" id="mesEcheances" value="[]"><input type="hidden" id="lettresVals" value="{}">
+  </div>
+  <div id="listeEcheances"></div>
+</section>
+
+<section class="panneau outil" id="o-annuaire" data-titre="Numéros utiles">
+  <h2>☎ Numéros utiles</h2>
+  <p class="intro">Numéros d'urgence, d'aide et de conseil, classés par situation. La plupart sont gratuits.</p>
+  <div class="avert urgence" style="margin-top:0"><b>Urgence vitale :</b> 15 (SAMU), 17 (police), 18 (pompiers), 112 (urgence européenne), 114 (par SMS, pour les personnes sourdes ou qui ne peuvent pas parler).</div>
+  <input type="text" id="filtreAnnuaire" placeholder="Rechercher (ex. : retraite, violences, banque…)" style="width:100%;padding:10px 12px;border:1.5px solid var(--ligne);border-radius:10px;margin-bottom:12px;font-size:16px">
+  <div id="listeAnnuaire"></div>
 </section>
 
 <div class="panneau actif" style="max-width:820px;margin:0 auto" id="navbar-hote"></div>
 </main>
 
 <script>
+// ===================== Profils =====================
+// Chaque profil (moi, un parent, un enfant…) a ses propres réponses, rangées sur cet ordinateur.
+// Stockage : fichier local géré par le logiciel (Windows) ; navigateur sinon.
+const STOCK=/*STOCK*/null;
+function lsGet(k,def){
+  if(STOCK){return k in STOCK?STOCK[k]:def}
+  try{const v=localStorage.getItem(k);return v==null?def:v}catch(e){return def}
+}
+function lsSet(k,v){
+  v=v==null?'':String(v);
+  if(STOCK){ if(v==='')delete STOCK[k]; else STOCK[k]=v;
+    if(typeof window.stockEcrire==='function'){try{window.stockEcrire(k,v)}catch(e){}}
+    else if(/^https?:/.test(location.protocol)){try{fetch('/api/stock',{method:'POST',body:JSON.stringify({K:k,V:v})})}catch(e){}}
+    return; }
+  try{ if(v==='')localStorage.removeItem(k); else localStorage.setItem(k,v) }catch(e){}
+}
+function lsDel(k){lsSet(k,'')}
+let PROFILS=(()=>{try{return JSON.parse(lsGet('aqdroit_profils','null'))||['Moi']}catch(e){return ['Moi']}})();
+let PROFIL=lsGet('aqdroit_profil','Moi'); if(!PROFILS.includes(PROFIL))PROFIL=PROFILS[0];
+function cleProfil(){return PROFIL==='Moi'?'aqdroit':'aqdroit:'+PROFIL}
+
 // ===================== Navigation =====================
-const panneaux=[...document.querySelectorAll('section.panneau')];
+const panneaux=[...document.querySelectorAll('section.panneau:not(.outil)')];
+const outilsP=[...document.querySelectorAll('section.panneau.outil')];
 let cour=0;
 const nav=document.getElementById('etapes');
 panneaux.forEach((p,i)=>{
@@ -597,9 +805,11 @@ panneaux.forEach((p,i)=>{
 });
 document.getElementById('navbar-hote').remove();
 document.addEventListener('click',e=>{const a=e.target.closest('[data-a]');if(a)aller(+a.dataset.a)});
-document.getElementById('raz').onclick=()=>{if(confirm('Effacer toutes vos réponses ?')){try{localStorage.removeItem('aqdroit')}catch(e){};document.querySelectorAll('input').forEach(i=>{if(i.type==='checkbox'||i.type==='radio')i.checked=false;else i.value=''});aller(0)}};
+document.getElementById('raz').onclick=()=>{if(confirm('Effacer toutes les réponses de ce profil ?')){lsDel(cleProfil());viderFormulaire();try{majComparateur();majFournisseurs();majEcheances()}catch(e){};aller(0)}};
 function aller(i){
   cour=i;
+  outilsP.forEach(p=>p.classList.remove('actif'));
+  document.querySelectorAll('.outilsnav .etape').forEach(b=>b.classList.remove('actif'));
   panneaux.forEach((p,k)=>p.classList.toggle('actif',k===i));
   [...nav.children].forEach((b,k)=>{b.classList.toggle('actif',k===i);b.classList.toggle('fait',k<i)});
   if(panneaux[i].id==='p-resultats')calculer();
@@ -622,10 +832,10 @@ function lireFormulaire(){
 function sauver(){
   const d=lireFormulaire();
   document.querySelectorAll('input[data-prive]').forEach(i=>delete d[i.id]); // jamais enregistrées
-  try{localStorage.setItem('aqdroit',JSON.stringify(d))}catch(e){}
+  lsSet(cleProfil(),JSON.stringify(d))
 }
 function restaurer(){
-  let d=null;try{d=JSON.parse(localStorage.getItem('aqdroit')||'null')}catch(e){}
+  let d=null;try{d=JSON.parse(lsGet(cleProfil(),'null'))}catch(e){}
   if(!d)return;
   document.querySelectorAll('input').forEach(i=>{
     if(i.type==='radio') i.checked=(d[i.name]===i.value);
@@ -652,7 +862,9 @@ function profil(){
    'points','suspension','alcoolStup','accidentAuto','stationnement','fourriere','carteGrise','assuranceAuto','zfe','plaqueUsurpee','passerPermis','deuxRoues','santeConduite',
    'factureElevee','changerFournisseur','impayeEnergie','coupure','litigeEnergie','demarchage','linky','changerChauffage','solaire',
    'eauFuite','eauImpaye','eauCoupure','eauLitige','mobileHausse','mobileResilier','mobileLitige','couverture','cuivre','boxHausse','boxResilier','boxPanne','boxLitige',
-   'assurAuto','assurHabitation','assurSante','assurEmprunteur','assurObseques','assurHausse','assurResilier','assurSinistre','assurCatnat'].forEach(k=>p[k]=!!f[k]);
+   'assurAuto','assurHabitation','assurSante','assurEmprunteur','assurObseques','assurHausse','assurResilier','assurSinistre','assurCatnat',
+   'depotGarantie','preavis','chargesLoc','indecent','bailleur','copro','achatPanne','achatDistance','litigeConso','abonnementPiege','fraisBancaires','fraudeBancaire','refusCompte','changerBanque','credit','surendettement','fichage',
+   'etudiantSup','logementEtudiant','jeuneSansEmploi','jeuneCulture','ehpad','domicile','transportSenior','maltraitance','decesProche','decesConjoint','succession','comptesDefunt','donation'].forEach(k=>p[k]=!!f[k]);
   p.couple=['couple','concubin'].includes(p.sit);
   p.enf20=p.e0+p.e3+p.e6+p.e11+p.e18;           // enfants de moins de 20 ans
   p.enf=p.enf20+p.e20;
@@ -740,6 +952,7 @@ function evaluer(regle,p){
 // ===================== Calcul & affichage =====================
 let filtre='Tous';
 function calculer(){
+  try{const G=(REGLES.pieces_generales||[]);document.getElementById('piecesGen').innerHTML=G.length?`<div class="pj"><b>Pièces souvent demandées pour vos démarches :</b><ul style="margin:6px 0 0">${G.map(x=>`<li>${echapper(x)}</li>`).join('')}</ul></div>`:''}catch(e){}
   const p=profil();
   const res=[];
   (REGLES.droits||[]).forEach(x=>{let r=null;try{r=evaluer(x,p)}catch(e){};if(r)res.push({...x,...r})});
@@ -769,12 +982,14 @@ function calculer(){
     const h=document.createElement('div');h.className='domaine';h.textContent=d;L.appendChild(h);
     res.filter(r=>r.d===d).sort((a,b)=>ordre[a.n]-ordre[b.n]).forEach(r=>{
       const el=document.createElement('article');el.className='droit '+r.n;
-      el.innerHTML=`<h3><span>${r.t}</span><span class="badge">${lib[r.n]}</span></h3>
+      el.innerHTML=`<h3><span>${r.t}</span><span><span class="badge">${lib[r.n]}</span><button class="ecouter" title="Écouter">🔊</button></span></h3>
         <p class="pourquoi">Pourquoi : ${r.w} · ${r.o}</p>
         <p>${r.r}</p>
         <p class="demarche"><b>Démarche :</b> ${r.a}</p>
+        ${r.pj&&r.pj.length?`<div class="pj"><b>Pièces à préparer :</b> ${r.pj.map(echapper).join(' · ')}</div>`:''}
         <button class="ouvrir">En savoir plus / faire la demande ↗</button><span class="url">${r.l}</span>`;
       el.querySelector('.ouvrir').onclick=()=>ouvrir(r.l);
+      el.querySelector('.ecouter').onclick=()=>parler(el.querySelector('h3 span').innerText+'. '+el.querySelectorAll('p')[1].innerText+' '+el.querySelector('.demarche').innerText);
       L.appendChild(el);
     });
   });
@@ -927,8 +1142,9 @@ initComparateur();
 
 // ===================== Sous-onglets fournisseurs =====================
 document.querySelectorAll('.sso').forEach(b=>b.addEventListener('click',()=>{
-  document.querySelectorAll('.sso').forEach(x=>x.classList.toggle('on',x===b));
-  document.querySelectorAll('.ssp').forEach(x=>x.classList.toggle('on',x.id==='ssp-'+b.dataset.p));
+  const sec=b.closest('section');
+  sec.querySelectorAll('.sso').forEach(x=>x.classList.toggle('on',x===b));
+  sec.querySelectorAll('.ssp').forEach(x=>x.classList.toggle('on',x.id==='ssp-'+b.dataset.p));
 }));
 const val=id=>{const v=document.getElementById(id).value;return v===''?null:+String(v).replace(',','.')};
 
@@ -993,9 +1209,224 @@ function majFournisseurs(){ try{majEau()}catch(e){} try{majTelecom()}catch(e){} 
 ['factureEau','consoEau','prixMobile','prixBox','besoinGo','veut5g','veutTV'].forEach(id=>document.getElementById(id).addEventListener('input',majFournisseurs));
 ['veut5g','veutTV','besoinGo'].forEach(id=>document.getElementById(id).addEventListener('change',majFournisseurs));
 
+// ===================== Profils (interface) =====================
+function viderFormulaire(){
+  document.querySelectorAll('input').forEach(i=>{
+    if(i.type==='checkbox'||i.type==='radio')i.checked=false;
+    else if(i.id==='mesEcheances')i.value='[]';
+    else if(i.id==='lettresVals')i.value='{}';
+    else if(i.id==='partHC')i.value='40';
+    else if(!i.id.startsWith('c_'))i.value='';
+  });
+  document.querySelectorAll('select[id]').forEach(x=>{
+    if(x.id==='profilSel'||x.id==='echType')return;
+    const k=[...x.options].findIndex(o=>o.defaultSelected); x.selectedIndex=k<0?0:k;
+  });
+  const kva=document.getElementById('kva'); if(kva&&[...kva.options].some(o=>o.value==='6'))kva.value='6';
+}
+function majProfils(){
+  const sel=document.getElementById('profilSel');
+  sel.innerHTML=PROFILS.map(p=>`<option>${echapper(p)}</option>`).join('');
+  sel.value=PROFIL;
+  document.getElementById('profilSuppr').disabled=PROFIL==='Moi';
+}
+function changerProfil(nom){
+  sauver();
+  PROFIL=nom; lsSet('aqdroit_profil',nom);
+  viderFormulaire(); restaurer();
+  document.dispatchEvent(new Event('change'));
+  try{majComparateur();majFournisseurs();majEcheances()}catch(e){}
+  majProfils(); aller(0);
+}
+document.getElementById('profilSel').addEventListener('change',e=>changerProfil(e.target.value));
+document.getElementById('profilAjout').onclick=()=>{
+  let n=prompt('Nom du nouveau profil (par exemple : Maman, Maxence…)');
+  if(!n)return; n=n.trim().slice(0,30); if(!n)return;
+  if(PROFILS.includes(n)){changerProfil(n);return}
+  PROFILS.push(n); lsSet('aqdroit_profils',JSON.stringify(PROFILS));
+  sauver(); PROFIL=n; lsSet('aqdroit_profil',n);
+  viderFormulaire(); document.dispatchEvent(new Event('change'));
+  try{majComparateur();majFournisseurs();majEcheances()}catch(e){}
+  majProfils(); aller(0);
+};
+document.getElementById('profilSuppr').onclick=()=>{
+  if(PROFIL==='Moi')return;
+  if(!confirm(`Supprimer le profil « ${PROFIL} » et toutes ses réponses ?`))return;
+  lsDel(cleProfil()); PROFILS=PROFILS.filter(p=>p!==PROFIL); lsSet('aqdroit_profils',JSON.stringify(PROFILS));
+  PROFIL='Moi'; lsSet('aqdroit_profil','Moi');
+  viderFormulaire(); restaurer(); document.dispatchEvent(new Event('change'));
+  try{majComparateur();majFournisseurs();majEcheances()}catch(e){}
+  majProfils(); aller(0);
+};
+
+// ===================== Outils : navigation =====================
+function afficherOutil(id){
+  panneaux.forEach(p=>p.classList.remove('actif'));
+  outilsP.forEach(p=>p.classList.toggle('actif',p.id===id));
+  [...nav.children].forEach(b=>b.classList.remove('actif'));
+  document.querySelectorAll('.outilsnav .etape').forEach(b=>b.classList.toggle('actif',b.dataset.outil===id));
+  if(id==='o-echeances')majEcheances();
+  if(id==='o-annuaire')majAnnuaire();
+  if(id==='o-lettres')majLettres();
+  document.querySelector('main').scrollTo(0,0);
+}
+document.querySelectorAll('.outilsnav .etape').forEach(b=>b.onclick=()=>afficherOutil(b.dataset.outil));
+
+// ===================== Lettres types =====================
+let LETTRE=null;
+function lettresVals(){try{return JSON.parse(document.getElementById('lettresVals').value||'{}')}catch(e){return {}}}
+function majLettres(){
+  const L=(REGLES&&REGLES.lettres)||[], z=document.getElementById('listeLettres');
+  const p=profil();
+  // les lettres liées à vos réponses d'abord
+  const tri=L.map(l=>({l,ok:l.si?cond(l.si,p):false})).sort((a,b)=>(b.ok-a.ok));
+  z.innerHTML=tri.map(({l,ok})=>`<button data-l="${l.id}" class="${LETTRE&&LETTRE.id===l.id?'on':''}"><span class="lt">${ok?'⭐ ':''}${echapper(l.titre)}</span><span class="lc">${echapper(l.desc||'')}</span></button>`).join('');
+  z.querySelectorAll('button').forEach(b=>b.onclick=()=>choisirLettre(b.dataset.l));
+  if(!document.getElementById('c_nom').value)document.getElementById('coordBloc').open=true;
+}
+function choisirLettre(id){
+  LETTRE=((REGLES&&REGLES.lettres)||[]).find(l=>l.id===id); if(!LETTRE)return;
+  const V=lettresVals()[id]||{};
+  const champs=document.getElementById('lettreChamps');
+  champs.innerHTML=`<span class="titre">${echapper(LETTRE.titre)}</span><div class="grille">`+(LETTRE.champs||[]).map(c=>{
+    const v=V[c.id]!=null?V[c.id]:(c.defaut||'');
+    if(c.type==='select')return `<label>${echapper(c.label)}<select data-c="${c.id}">${c.options.map(o=>`<option value="${echapper(o.v)}" ${o.v===v?'selected':''}>${echapper(o.t||o.v)}</option>`).join('')}</select></label>`;
+    if(c.type==='textarea')return `<label style="grid-column:1/-1">${echapper(c.label)}<textarea data-c="${c.id}" rows="3" style="padding:8px;border:1.5px solid var(--ligne);border-radius:10px;font:inherit">${echapper(v)}</textarea></label>`;
+    return `<label>${echapper(c.label)}<input data-c="${c.id}" type="${c.type==='date'?'date':c.type==='number'?'number':'text'}" value="${echapper(v)}"></label>`;
+  }).join('')+'</div>';
+  champs.querySelectorAll('[data-c]').forEach(x=>x.addEventListener('input',majApercu));
+  document.getElementById('lettreZone').classList.remove('cache');
+  document.getElementById('lettreConseil').textContent=LETTRE.conseil?'💡 '+LETTRE.conseil:'';
+  majLettres(); majApercu();
+  document.getElementById('lettreZone').scrollIntoView({behavior:'smooth'});
+}
+const dateLongue=d=>d.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+function majApercu(){
+  if(!LETTRE)return;
+  const V={}, all=lettresVals();
+  document.querySelectorAll('#lettreChamps [data-c]').forEach(x=>V[x.dataset.c]=x.value);
+  all[LETTRE.id]=V; document.getElementById('lettresVals').value=JSON.stringify(all); sauver();
+  const c=id=>document.getElementById(id).value.trim();
+  const base={nom:c('c_nom'),adresse:c('c_adresse'),cpville:c('c_cpville'),tel:c('c_tel'),email:c('c_email'),ville:c('c_ville')||c('c_cpville').replace(/^\d+\s*/,''),date:dateLongue(new Date())};
+  const labels={nom:'vos prénom et nom',adresse:'votre adresse',cpville:'code postal et ville',ville:'ville'};
+  (LETTRE.champs||[]).forEach(ch=>{labels[ch.id]=ch.label.toLowerCase();
+    let v=V[ch.id]||''; if(ch.type==='date'&&v){const [y,m,d]=v.split('-');v=`${d}/${m}/${y}`}
+    if(ch.type==='select'){const o=ch.options.find(o=>o.v===V[ch.id])||ch.options[0]; if(o&&o.x!=null)v=o.x.replace(/\{(\w+)\}/g,(m,k)=>V[k]||'')}
+    base[ch.id]=v});
+  const rempl=t=>echapper(t||'').replace(/\{(\w+)\}/g,(m,k)=>base[k]?echapper(base[k]):(k in labels||base.hasOwnProperty(k)?`<mark>[${echapper(labels[k]||k)}]</mark>`:''));
+  const exp=['{nom}','{adresse}','{cpville}',base.tel?'Tél. : {tel}':'',base.email?'{email}':''].filter(Boolean).join('\n');
+  document.getElementById('lettreApercu').innerHTML=
+    `<div class="exp">${rempl(exp)}</div><div class="dest">${rempl(LETTRE.dest||'')}</div>`+
+    `<div class="lieu">${rempl('À {ville}, le {date}')}</div>`+
+    (LETTRE.recommande?'<div class="rar">Lettre recommandée avec accusé de réception</div>':'')+
+    `<div class="objet">Objet : ${rempl(LETTRE.objet)}</div>`+
+    (LETTRE.ref?`<div>${rempl(LETTRE.ref)}</div>`:'')+
+    `\n${rempl(LETTRE.corps)}\n\n${rempl('{nom}')}`;
+}
+['c_nom','c_adresse','c_cpville','c_tel','c_email','c_ville'].forEach(id=>document.getElementById(id).addEventListener('input',()=>{sauver();majApercu()}));
+function imprimerLettre(){document.body.classList.add('impr-lettre');window.print();setTimeout(()=>document.body.classList.remove('impr-lettre'),500)}
+window.addEventListener('afterprint',()=>document.body.classList.remove('impr-lettre'));
+function copierLettre(){
+  const t=document.getElementById('lettreApercu').innerText, ok=document.getElementById('copieOk');
+  const fin=()=>{ok.textContent='✓ Copié';setTimeout(()=>ok.textContent='',2500)};
+  try{navigator.clipboard.writeText(t).then(fin,()=>{throw 0})}catch(e){
+    const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();fin()}
+}
+
+// ===================== Échéances =====================
+function mesEch(){try{return JSON.parse(document.getElementById('mesEcheances').value||'[]')}catch(e){return []}}
+function ajouterEcheance(){
+  const d=document.getElementById('echDate').value; if(!d){alert('Choisissez une date.');return}
+  const l=mesEch(); l.push({t:document.getElementById('echType').value,d,n:document.getElementById('echNote').value.trim()});
+  document.getElementById('mesEcheances').value=JSON.stringify(l); document.getElementById('echNote').value=''; document.getElementById('echDate').value='';
+  sauver(); majEcheances();
+}
+function supprimerEcheance(i){const l=mesEch();l.splice(i,1);document.getElementById('mesEcheances').value=JSON.stringify(l);sauver();majEcheances()}
+const jours=d=>Math.round((new Date(d+'T12:00:00')-new Date(new Date().toDateString()+' 12:00'))/864e5);
+function toutesEcheances(){
+  const p=profil(), res=[];
+  ((REGLES&&REGLES.echeances)||[]).forEach(e=>{ if(!e.si||cond(e.si,p)) res.push({...e,nat:true}) });
+  mesEch().forEach((e,i)=>res.push({titre:e.t,date:e.d,info:e.n,perso:i}));
+  return res.map(e=>({...e,j:jours(e.date)})).sort((a,b)=>a.date.localeCompare(b.date));
+}
+function majEcheances(){
+  const L=toutesEcheances(), z=document.getElementById('listeEcheances');
+  const proches=L.filter(e=>e.j>=0&&e.j<=30);
+  document.getElementById('nbEch').textContent=proches.length||'';
+  if(!z)return;
+  const vis=L.filter(e=>e.perso!=null?e.j>=-30:(e.j>=-7&&e.j<=400));
+  z.innerHTML=vis.length?vis.map(e=>{
+    const quand=e.j===0?"aujourd'hui":e.j===1?'demain':e.j>0?`dans ${e.j} jours`:`il y a ${-e.j} jours`;
+    return `<div class="ech ${e.j<0?'passe':e.j<=30?'proche':''}"><div class="d">${new Date(e.date+'T12:00').toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'})}</div>
+      <div class="t"><b>${echapper(e.titre)}</b>${e.approx?' <span class="cond">(date approximative)</span>':''}<small>${quand}${e.info?' — '+echapper(e.info):''}${e.nat?' · échéance nationale':''}</small>
+      ${e.lien?`<button class="ouvrir" style="font-size:13px" onclick="ouvrir('${echapper(e.lien)}')">en savoir plus ↗</button>`:''}</div>
+      ${e.perso!=null?`<button title="Supprimer" onclick="supprimerEcheance(${e.perso})">✕</button>`:''}</div>`}).join(''):'<p class="vide">Aucune échéance pour le moment. Ajoutez vos dates (fin de forfait, assurance, contrôle technique…).</p>';
+}
+function rappelLancement(){
+  const L=toutesEcheances().filter(e=>e.j>=0&&e.j<=30); if(!L.length)return;
+  const b=document.getElementById('bandeauEch');
+  document.getElementById('bandeauEchTxt').innerHTML=`<b>📅 ${L.length} échéance${L.length>1?'s':''} dans les 30 prochains jours</b><ul>`+
+    L.slice(0,5).map(e=>`<li>${new Date(e.date+'T12:00').toLocaleDateString('fr-FR',{day:'numeric',month:'long'})} — ${echapper(e.titre)}</li>`).join('')+
+    `</ul><button class="btn sec" style="margin-top:8px" onclick="afficherOutil('o-echeances')">Voir mes échéances</button>`;
+  b.classList.add('on');
+}
+
+// ===================== Numéros utiles =====================
+function majAnnuaire(){
+  const A=(REGLES&&REGLES.annuaire)||[], f=(document.getElementById('filtreAnnuaire').value||'').toLowerCase();
+  const norm=t=>t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  const F=A.filter(a=>!f||norm([a.cat,a.nom,a.info||'',a.num].join(' ')).includes(norm(f)));
+  const cats=[...new Set(F.map(a=>a.cat))];
+  document.getElementById('listeAnnuaire').innerHTML=cats.map(c=>`<div class="annu-cat">${echapper(c)}</div>`+
+    F.filter(a=>a.cat===c).map(a=>`<div class="annu"><div class="num">${echapper(a.num)}</div><div class="info"><b>${echapper(a.nom)}</b>${a.info?`<small>${echapper(a.info)}</small>`:''}${a.url?`<button class="ouvrir" style="font-size:13px" onclick="ouvrir('${echapper(a.url)}')">site ↗</button>`:''}</div></div>`).join('')).join('')
+    ||'<p class="vide">Aucun résultat.</p>';
+}
+document.getElementById('filtreAnnuaire').addEventListener('input',majAnnuaire);
+
+// ===================== Accessibilité =====================
+const ZOOMS=[1,1.15,1.3];
+let zoomI=+lsGet('aqdroit_zoom','0')||0;
+function appliquerAcces(){
+  document.body.style.zoom=ZOOMS[zoomI];
+  document.body.classList.toggle('contraste',lsGet('aqdroit_contraste','')==='1');
+  document.getElementById('btnTaille').textContent=['A+ Taille','A++ Taille','A Taille normale'][zoomI];
+}
+document.getElementById('btnTaille').onclick=()=>{zoomI=(zoomI+1)%ZOOMS.length;lsSet('aqdroit_zoom',String(zoomI));appliquerAcces()};
+document.getElementById('btnContraste').onclick=()=>{lsSet('aqdroit_contraste',lsGet('aqdroit_contraste','')==='1'?'':'1');appliquerAcces()};
+
+// ===================== Lecture à voix haute =====================
+function parler(texte){
+  if(!('speechSynthesis' in window)){alert("La lecture à voix haute n'est pas disponible sur cet ordinateur.");return}
+  const s=window.speechSynthesis;
+  if(s.speaking){s.cancel();majBoutonEcoute(false);return}
+  const u=new SpeechSynthesisUtterance(texte.replace(/[↗🔊📝📅☎⭐]/g,'')); u.lang='fr-FR'; u.rate=0.95;
+  const v=s.getVoices().find(v=>/^fr(-|_)FR/i.test(v.lang))||s.getVoices().find(v=>/^fr/i.test(v.lang)); if(v)u.voice=v;
+  u.onend=u.onerror=()=>majBoutonEcoute(false);
+  majBoutonEcoute(true); s.speak(u);
+}
+function majBoutonEcoute(on){const b=document.getElementById('btnEcoute'); if(b)b.textContent=on?'⏹ Arrêter la lecture':'🔊 Écouter les résultats'}
+function lireResultats(){
+  const parts=[document.getElementById('resume-profil').innerText];
+  document.querySelectorAll('#liste .droit').forEach(d=>{
+    parts.push(d.querySelector('h3 span').innerText+', '+d.querySelector('.badge').innerText+'. '+d.querySelectorAll('p')[1].innerText+' '+(d.querySelector('.demarche')?d.querySelector('.demarche').innerText:''));
+  });
+  parler(parts.join('\n'));
+}
+
+// ===================== Dossier =====================
+function imprimerDossier(){
+  document.body.classList.remove('impr-lettre');
+  document.getElementById('dossierInfo').textContent=`Profil : ${PROFIL} — édité le ${dateLongue(new Date())}`;
+  window.print();
+}
+
 restaurer();
 majComparateur();
 majFournisseurs();
+majProfils();
+appliquerAcces();
+majEcheances();
+rappelLancement();
 document.dispatchEvent(new Event('change'));
 aller(0);
 setTimeout(()=>verifierMaj(true),800);

@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+	"io"
 	"net"
 	"net/http"
 )
@@ -20,6 +22,13 @@ func modeNavigateur(adresse string, ouvrir bool) error {
 		}
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		w.Write([]byte(construirePage()))
+	})
+	mux.HandleFunc("/api/stock", func(w http.ResponseWriter, r *http.Request) {
+		var d struct{ K, V string }
+		if r.Method == http.MethodPost && json.NewDecoder(io.LimitReader(r.Body, 2<<20)).Decode(&d) == nil {
+			ecrireStock(d.K, d.V)
+		}
+		w.WriteHeader(http.StatusNoContent)
 	})
 	mux.HandleFunc("/api/verifierMaj", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")

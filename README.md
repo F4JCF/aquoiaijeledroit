@@ -3,6 +3,7 @@
 Logiciel Windows qui repère, en quelques questions, les aides et droits auxquels une personne peut prétendre : famille, minima sociaux, santé, logement, handicap, autonomie et aidants, retraite (dont CNRACL), emploi, **droit du travail** (privé et fonction publique), **droit pénal** (victimes, mis en cause, casier), **code de la route** (permis, amendes, points, accident, véhicule) et impôts.
 
 - **Aucune installation** : un seul fichier `AQuoiAiJeLeDroit.exe`, à lancer par double-clic.
+- **Pratique** : lettres types pré-remplies, échéances avec rappels, numéros utiles, plusieurs profils, grands caractères et lecture à voix haute.
 - **Confidentiel** : les réponses restent sur l'ordinateur. Rien n'est envoyé sur Internet. Les réponses de l'étape « Justice » ne sont même jamais enregistrées.
 - **Toujours à jour** : les règles se mettent à jour automatiquement à chaque lancement.
 
@@ -53,6 +54,17 @@ Source conseillée : le comparateur du Médiateur national de l'énergie (compar
 - `telecom.box.offres` : mêmes champs, plus `debit`, `tv`, `age_min`/`age_max`. Le classement se fait sur le coût total sur 24 mois, frais compris.
 - `eau` : `prix_moyen_m3` (moyenne nationale SISPEA) et `conso_personne` (m³ par personne et par an).
 
+### Pièces à préparer, lettres types, échéances, numéros utiles
+
+- `pj` (dans un droit) : liste des pièces à préparer, affichée dans les résultats et dans le dossier imprimé. `pieces_generales` : pièces souvent demandées.
+- `lettres` : modèles de courrier. Chaque lettre a `id`, `titre`, `desc`, `recommande` (lettre recommandée), `si` (condition qui la met en avant ⭐), `champs` (`id`, `label`, `type` : `text`, `date`, `number`, `textarea`, `select` avec `options` `{v, t, x}` où `x` est le texte inséré), `dest`, `objet`, `ref`, `corps`, `conseil`. Dans les textes, `{nom}`, `{adresse}`, `{cpville}`, `{tel}`, `{email}`, `{ville}`, `{date}` et `{id_du_champ}` sont remplacés. Le test `go test` vérifie qu'aucun champ inconnu n'est utilisé.
+- `echeances` : dates nationales `{date: "AAAA-MM-JJ", titre, info, si, lien, approx}`, affichées si la condition `si` correspond au profil. Les rappels personnels sont saisis dans le logiciel.
+- `annuaire` : numéros utiles `{cat, nom, num, info, url}`.
+
+## Données de l'utilisateur
+
+Les réponses, les profils, les coordonnées des lettres et les rappels sont enregistrés uniquement sur l'ordinateur, dans `%APPDATA%\AQuoiAiJeLeDroit\donnees.json`. Les réponses de l'étape « Justice » ne sont jamais enregistrées.
+
 ## Mettre à jour les règles après une nouvelle loi
 
 1. Ouvrir `droits.json` sur GitHub (bouton crayon ✏️).
@@ -80,7 +92,7 @@ Le contrôle automatique (onglet **Actions**) vérifie le fichier. Une croix rou
 | Clé | Rôle |
 |---|---|
 | `id` | identifiant unique (sans espace) |
-| `d` | domaine affiché : Famille, Ressources, Santé, Logement, Handicap, Autonomie, Retraite, Emploi & formation, Énergie, Eau, Télécoms, Assurances, Droit du travail, Droit pénal, Code de la route, Impôts (un nouveau nom crée un nouveau domaine) |
+| `d` | domaine affiché : Famille, Ressources, Santé, Logement, Handicap, Autonomie, Retraite, Emploi & formation, Énergie, Eau, Télécoms, Assurances, Consommation & banque, Jeunes, Seniors, Décès & succession, Droit du travail, Droit pénal, Code de la route, Impôts (un nouveau nom crée un nouveau domaine) |
 | `t`, `o` | titre et organisme |
 | `l` | lien ; `{SP}`, `{CAF}`, `{MDPH}`, `{RETRAITE}`, `{CNRACL}`, `{IMPOTS}`, `{AGEES}`, `{RENOV}` sont remplacés par les adresses de la section `liens` |
 | `r`, `a` | résumé et démarche |
@@ -111,6 +123,9 @@ Le contrôle automatique (onglet **Actions**) vérifie le fichier. Une croix rou
 | travail | `contrat` (`cdi`, `cdd`, `interim`, `apprenti`, `saisonnier`), `effectif` (`petite`, `moyenne`, `grande`), `anciennete` (années) ; cases `licenciement`, `depart`, `finContrat`, `heuresSup`, `salaireImpaye`, `harcelement`, `arretMaladie`, `accidentTravail`, `inaptitude`, `conges`, `naissance`, `reconversion`, `teletravail`, `horairesAtypiques`, `entrepriseDifficulte`, `mobilite` |
 | énergie | `chauffage` (`elec`, `pac`, `gaz`, `fioul`, `bois`, `collectif`), `consoElec`, `consoGaz` ; cases `factureElevee`, `changerFournisseur`, `impayeEnergie`, `coupure`, `litigeEnergie`, `demarchage`, `linky`, `changerChauffage`, `solaire` ; déduits `chauffageElec`, `ecoElec` (économie estimée en € par le comparateur) |
 | fournisseurs | eau : `factureEau`, `consoEau`, cases `eauFuite`, `eauImpaye`, `eauCoupure`, `eauLitige` ; télécoms : `prixMobile`, `prixBox`, cases `mobileHausse`, `mobileResilier`, `mobileLitige`, `couverture`, `cuivre`, `boxHausse`, `boxResilier`, `boxPanne`, `boxLitige` ; assurances : cases `assurAuto`, `assurHabitation`, `assurSante`, `assurEmprunteur`, `assurObseques`, `assurHausse`, `assurResilier`, `assurSinistre`, `assurCatnat` ; déduits `prixEau`, `eauCher`, `eauSurconso`, `ecoMobile`, `ecoBox`, `telecomLitige`, `telecomHausse`, `telecomResilier` |
+| logement (locataire / propriétaire) | cases `depotGarantie`, `preavis`, `chargesLoc`, `indecent`, `bailleur`, `copro` |
+| consommation & banque | cases `achatPanne`, `achatDistance`, `litigeConso`, `abonnementPiege`, `fraisBancaires`, `fraudeBancaire`, `refusCompte`, `changerBanque`, `credit`, `surendettement`, `fichage` |
+| étapes de vie | jeunes : `etudiantSup`, `logementEtudiant`, `jeuneSansEmploi`, `jeuneCulture` ; seniors : `ehpad`, `domicile`, `transportSenior`, `maltraitance` ; décès : `decesProche`, `decesConjoint`, `succession`, `comptesDefunt`, `donation` |
 | route | `permis` (`aucun`, `probatoire`, `confirme`, `suspendu`) ; cases `amende`, `points`, `suspension`, `alcoolStup`, `accidentAuto`, `stationnement`, `fourriere`, `carteGrise`, `assuranceAuto`, `zfe`, `plaqueUsurpee`, `passerPermis`, `deuxRoues`, `santeConduite` |
 | justice | `victime`, `violencesFamille`, `arnaque`, `harcelementLigne`, `accidentRoute`, `convoque`, `poursuivi`, `temoin`, `casier`, `procheDetenu` — **jamais enregistrés** sur l'ordinateur |
 | déduits | `couple`, `isole` (parent seul), `fonct`, `travaille`, `actif`, `locataire`, `proprio`, `handDeclare`, `handOui`, `prive` (salarié du privé), `public` (fonctionnaire ou contractuel), `exSalarie` (demandeur d'emploi), `cdi`, `precaire`, `victimeQ` (victime, quelle que soit l'infraction), `misEnCause` (convoqué ou poursuivi) |

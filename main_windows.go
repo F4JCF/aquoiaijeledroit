@@ -35,6 +35,7 @@ func main() {
 	}
 	defer w.Destroy()
 	w.Bind("ouvrirLien", func(url string) { ouvrirLien(url) })
+	w.Bind("stockEcrire", func(cle, valeur string) { ecrireStock(cle, valeur) })
 	// La vérification se fait en arrière-plan pour ne pas figer la fenêtre.
 	w.Bind("lancerVerifMaj", func() {
 		go func() {

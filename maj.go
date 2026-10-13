@@ -23,7 +23,7 @@ import (
 )
 
 // Renseignée à la compilation : -ldflags "-X main.version=1.2.0"
-var version = "1.6.0"
+var version = "1.7.0"
 
 const (
 	depot          = "F4JCF/aquoiaijeledroit"
@@ -147,6 +147,8 @@ func construirePage() string {
 	p := strings.Replace(pageModele, "/*REGLES*/null", string(regles), 1)
 	p = strings.ReplaceAll(p, "{{ICONE}}", "data:image/png;base64,"+base64.StdEncoding.EncodeToString(icone))
 	p = strings.ReplaceAll(p, "{{VERSION}}", version)
+	// "</" est échappé pour ne jamais fermer la balise <script> par accident.
+	p = strings.Replace(p, "/*STOCK*/null", strings.ReplaceAll(stockJSON(), "</", "<\\/"), 1)
 	return p
 }
 

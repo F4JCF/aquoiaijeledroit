@@ -1,9 +1,14 @@
 {
  "schema": 1,
- "version": "2026.10.13.5",
+ "version": "2026.10.13.6",
  "mise_a_jour": "2026-10-13",
- "app_min": "1.6.0",
+ "app_min": "1.7.0",
  "nouveautes": [
+  {
+   "date": "2026-10-13",
+   "v": "2026.10.13.6",
+   "texte": "Nouveaux domaines : consommation et banque, locataires et propriétaires, jeunes et études, seniors, décès et succession. Nouveaux outils : lettres types pré-remplies, échéances avec rappels, numéros utiles, plusieurs profils, grands caractères et lecture à voix haute."
+  },
   {
    "date": "2026-10-13",
    "v": "2026.10.13.5",
@@ -68,7 +73,12 @@
     ">=": 2
    },
    "n": "probable",
-   "w": "{enf20} enfants de moins de 20 ans"
+   "w": "{enf20} enfants de moins de 20 ans",
+   "pj": [
+    "Pièce d'identité",
+    "RIB",
+    "Livret de famille"
+   ]
   },
   {
    "id": "cf",
@@ -142,6 +152,11 @@
     {
      "w": "enfant de moins de 3 ans"
     }
+   ],
+   "pj": [
+    "Déclaration de grossesse ou acte de naissance",
+    "RIB",
+    "Avis d'imposition"
    ]
   },
   {
@@ -283,6 +298,13 @@
     {
      "w": "parent seul avec enfant"
     }
+   ],
+   "pj": [
+    "Pièce d'identité",
+    "RIB",
+    "Numéro d'allocataire ou de sécurité sociale",
+    "Justificatifs de ressources des 3 derniers mois",
+    "Jugement fixant la pension, s'il existe"
    ]
   },
   {
@@ -295,7 +317,13 @@
    "a": "Dossier à déposer à la MDPH de votre département.",
    "si": "enfantHandicap",
    "n": "probable",
-   "w": "enfant en situation de handicap"
+   "w": "enfant en situation de handicap",
+   "pj": [
+    "Formulaire de demande MDPH (Cerfa)",
+    "Certificat médical de moins d'un an",
+    "Pièce d'identité",
+    "Justificatif de domicile"
+   ]
   },
   {
    "id": "cfn",
@@ -349,7 +377,13 @@
     ]
    },
    "n": "possible",
-   "w": "ressources très modestes"
+   "w": "ressources très modestes",
+   "pj": [
+    "Pièce d'identité",
+    "RIB",
+    "Numéro d'allocataire ou de sécurité sociale",
+    "Justificatifs de ressources des 3 derniers mois"
+   ]
   },
   {
    "id": "pa",
@@ -400,6 +434,12 @@
     {
      "w": "vous travaillez"
     }
+   ],
+   "pj": [
+    "Pièce d'identité",
+    "RIB",
+    "Numéro d'allocataire ou de sécurité sociale",
+    "Justificatifs de ressources des 3 derniers mois"
    ]
   },
   {
@@ -450,7 +490,12 @@
      "n": "possible"
     }
    ],
-   "w": "{age} ans et ressources modestes"
+   "w": "{age} ans et ressources modestes",
+   "pj": [
+    "Avis d'imposition",
+    "Relevés de pensions",
+    "Justificatifs de patrimoine"
+   ]
   },
   {
    "id": "asi",
@@ -519,7 +564,12 @@
      "n": "possible"
     }
    ],
-   "w": "procédure en justice"
+   "w": "procédure en justice",
+   "pj": [
+    "Avis d'imposition",
+    "Justificatifs de ressources",
+    "Documents de la procédure"
+   ]
   },
   {
    "id": "css",
@@ -545,7 +595,12 @@
      "n": "possible"
     }
    ],
-   "w": "ressources modestes"
+   "w": "ressources modestes",
+   "pj": [
+    "Avis d'imposition",
+    "Justificatifs de ressources des 12 derniers mois",
+    "Carte Vitale"
+   ]
   },
   {
    "id": "ald",
@@ -634,6 +689,14 @@
     {
      "w": "locataire"
     }
+   ],
+   "pj": [
+    "Pièce d'identité",
+    "RIB",
+    "Numéro d'allocataire ou de sécurité sociale",
+    "Justificatifs de ressources des 3 derniers mois",
+    "Bail ou contrat de location",
+    "Attestation de loyer du bailleur"
    ]
   },
   {
@@ -763,7 +826,11 @@
      "n": "possible"
     }
    ],
-   "w": "propriétaire d'un logement de plus de 15 ans"
+   "w": "propriétaire d'un logement de plus de 15 ans",
+   "pj": [
+    "Avis d'imposition",
+    "Devis d'une entreprise RGE (non signé)"
+   ]
   },
   {
    "id": "ecoptz",
@@ -882,6 +949,88 @@
    ]
   },
   {
+   "id": "depot_garantie",
+   "t": "Récupérer son dépôt de garantie",
+   "o": "Le bailleur",
+   "l": "{SP}d%C3%A9p%C3%B4t%20de%20garantie",
+   "r": "Le dépôt de garantie doit être rendu dans un délai d'un mois si l'état des lieux de sortie est conforme à celui d'entrée, et de deux mois sinon (déduction faite des sommes justifiées). En cas de retard, le bailleur doit une pénalité de 10 % du loyer mensuel par mois de retard commencé. Les retenues doivent être justifiées (devis, factures), et l'usure normale ne peut pas être facturée.",
+   "a": "Envoyez une mise en demeure (lettre type disponible), puis saisissez la commission départementale de conciliation ou le tribunal.",
+   "si": "depotGarantie",
+   "n": "probable",
+   "w": "dépôt de garantie",
+   "pj": [
+    "Bail",
+    "États des lieux d'entrée et de sortie",
+    "Preuve de remise des clés"
+   ],
+   "d": "Logement"
+  },
+  {
+   "id": "preavis_loc",
+   "t": "Quitter son logement : préavis et état des lieux",
+   "o": "Le bailleur",
+   "l": "{SP}pr%C3%A9avis%20locataire",
+   "r": "Pour une location vide, le préavis est de 3 mois, réduit à 1 mois en zone tendue, en cas de mutation, perte d'emploi, nouvel emploi après une perte d'emploi, état de santé le justifiant, ou pour les bénéficiaires du RSA ou de l'AAH. Pour une location meublée, il est d'un mois. Le congé se donne par lettre recommandée, acte de commissaire de justice ou remise en main propre contre signature.",
+   "a": "Utilisez la lettre type en indiquant le motif de préavis réduit et joignez le justificatif.",
+   "si": "preavis",
+   "n": "probable",
+   "w": "départ du logement",
+   "d": "Logement"
+  },
+  {
+   "id": "charges_loc",
+   "t": "Charges et loyer : ce que le bailleur peut demander",
+   "o": "Le bailleur / commission de conciliation",
+   "l": "{SP}charges%20locatives",
+   "r": "Seules les charges figurant dans la liste officielle des charges récupérables peuvent vous être demandées, avec une régularisation annuelle ; vous pouvez demander les justificatifs pendant six mois après l'envoi du décompte. Le loyer ne peut être augmenté qu'une fois par an, dans la limite de l'indice de référence des loyers (IRL) si le bail le prévoit, et ne peut pas l'être pour les logements classés F ou G au DPE. Dans certaines villes, les loyers sont encadrés.",
+   "a": "Demandez par écrit les justificatifs ; en cas de désaccord, la commission départementale de conciliation est gratuite. L'ADIL de votre département vous conseille gratuitement.",
+   "si": "chargesLoc",
+   "n": "probable",
+   "w": "charges ou loyer contestés",
+   "d": "Logement"
+  },
+  {
+   "id": "indecent",
+   "t": "Logement en mauvais état : faire réaliser les travaux",
+   "o": "Le bailleur / mairie / CAF",
+   "l": "{SP}logement%20d%C3%A9cent",
+   "r": "Le bailleur doit fournir un logement décent (sans risque pour la santé, avec chauffage, eau, électricité aux normes, surface suffisante) et faire les grosses réparations. Depuis le 1er janvier 2025, un logement classé G au DPE ne peut plus être proposé à la location (les logements F suivront en 2028). En cas de logement non décent, la CAF peut conserver l'aide au logement jusqu'à la réalisation des travaux, et le juge peut ordonner les travaux et réduire le loyer.",
+   "a": "Mettez le bailleur en demeure par écrit (lettre type), faites constater les désordres (service d'hygiène de la mairie), puis saisissez la commission de conciliation ou le tribunal ; ne cessez pas de payer le loyer sans décision du juge.",
+   "si": "indecent",
+   "n": "probable",
+   "w": "logement en mauvais état",
+   "pj": [
+    "Bail",
+    "Photos datées",
+    "Courriers au bailleur"
+   ],
+   "d": "Logement"
+  },
+  {
+   "id": "bailleur",
+   "t": "Propriétaire bailleur : vos obligations et protections",
+   "o": "ADIL / Action Logement",
+   "l": "https://www.anil.org",
+   "r": "Un logement mis en location doit être décent et respecter le niveau de performance énergétique minimal (logements G interdits à la location depuis 2025, F à partir de 2028 ; le mode de calcul du DPE pour les logements chauffés à l'électricité a été assoupli au 1er janvier 2026). Contre les impayés, la garantie Visale (gratuite) ou une assurance loyers impayés peuvent vous protéger.",
+   "a": "Faites vérifier votre DPE ; l'ADIL conseille gratuitement les bailleurs. MaPrimeRénov' peut financer des travaux.",
+   "si": "bailleur",
+   "n": "info",
+   "w": "vous louez un logement",
+   "d": "Logement"
+  },
+  {
+   "id": "copro",
+   "t": "Copropriété : vos droits",
+   "o": "Syndic / ADIL",
+   "l": "{SP}copropri%C3%A9t%C3%A9",
+   "r": "Le syndic doit vous convoquer à l'assemblée générale au moins 21 jours avant, vous donner accès aux documents (extranet) et tenir les comptes. Une décision d'assemblée générale se conteste devant le tribunal dans les 2 mois suivant la notification du procès-verbal, si vous avez voté contre ou étiez absent.",
+   "a": "Demandez les pièces au syndic par écrit ; l'ADIL et les associations de copropriétaires conseillent gratuitement.",
+   "si": "copro",
+   "n": "info",
+   "w": "copropriété",
+   "d": "Logement"
+  },
+  {
    "id": "cheque",
    "d": "Énergie",
    "t": "Chèque énergie",
@@ -935,6 +1084,10 @@
     {
      "w": "difficultés à payer l'énergie"
     }
+   ],
+   "pj": [
+    "Avis d'imposition",
+    "Numéro du point de livraison d'électricité (PDL, sur la facture)"
    ]
   },
   {
@@ -1106,7 +1259,11 @@
      "w": "chauffage au fioul"
     }
    ],
-   "d": "Énergie"
+   "d": "Énergie",
+   "pj": [
+    "Avis d'imposition",
+    "Devis d'une entreprise RGE (non signé)"
+   ]
   },
   {
    "id": "solaire",
@@ -1439,6 +1596,178 @@
    "w": "assurance vie ou obsèques"
   },
   {
+   "id": "garantie_legale",
+   "t": "Produit en panne : la garantie légale de conformité",
+   "o": "Le vendeur",
+   "l": "{SP}garantie%20l%C3%A9gale%20de%20conformit%C3%A9",
+   "r": "Pendant 2 ans après l'achat d'un produit neuf (1 an pour un produit d'occasion en principe), le vendeur doit réparer ou remplacer gratuitement un produit qui tombe en panne ou ne correspond pas à ce qui était promis, sans que vous ayez à prouver que le défaut existait à l'achat. Cette garantie est gratuite et obligatoire : une extension de garantie payante est souvent inutile.",
+   "a": "Adressez-vous au vendeur (pas au fabricant), par écrit, avec la facture. Une lettre type est disponible dans le logiciel.",
+   "si": "achatPanne",
+   "n": "probable",
+   "w": "produit défectueux",
+   "pj": [
+    "Facture ou ticket de caisse",
+    "Photos du défaut"
+   ],
+   "d": "Consommation & banque"
+  },
+  {
+   "id": "retractation",
+   "t": "Achat à distance : 14 jours pour changer d'avis",
+   "o": "Le vendeur",
+   "l": "{SP}droit%20de%20r%C3%A9tractation",
+   "r": "Pour un achat sur Internet, par téléphone ou à domicile, vous disposez de 14 jours pour vous rétracter sans justification (à partir de la réception du produit). Le vendeur doit vous rembourser sous 14 jours. Il n'existe pas de droit de rétractation pour un achat en magasin, sauf geste commercial. Un colis non livré à la date promise permet d'annuler la commande après une mise en demeure.",
+   "a": "Utilisez le formulaire de rétractation du vendeur ou la lettre type du logiciel ; gardez la preuve du renvoi.",
+   "si": "achatDistance",
+   "n": "probable",
+   "w": "achat à distance",
+   "d": "Consommation & banque"
+  },
+  {
+   "id": "litige_conso",
+   "t": "Litige avec un commerçant ou un artisan",
+   "o": "Médiateur de la consommation / conciliateur de justice",
+   "l": "https://signal.conso.gouv.fr",
+   "r": "Après une réclamation écrite au professionnel, vous pouvez saisir gratuitement le médiateur de la consommation dont il dépend (ses coordonnées doivent figurer sur ses conditions générales ou son site). Le conciliateur de justice, gratuit lui aussi, peut aider à trouver un accord. SignalConso permet de signaler un problème à l'administration.",
+   "a": "Réclamation écrite d'abord (lettre type disponible), puis médiateur ; pour un petit montant, le tribunal peut être saisi sans avocat.",
+   "si": "litigeConso",
+   "n": "probable",
+   "w": "litige avec un professionnel",
+   "d": "Consommation & banque"
+  },
+  {
+   "id": "abonnement",
+   "t": "Résilier un abonnement en 3 clics",
+   "o": "Le professionnel",
+   "l": "{SP}r%C3%A9siliation%20en%20trois%20clics",
+   "r": "Les contrats souscrits en ligne doivent pouvoir être résiliés en ligne, simplement, grâce à une fonctionnalité de résiliation « en 3 clics ». Pour les contrats reconduits tacitement, le professionnel doit vous rappeler la possibilité de ne pas renouveler ; à défaut, vous pouvez résilier à tout moment.",
+   "a": "Cherchez le bouton « résilier mon contrat » sur le site ; gardez la confirmation reçue par courriel.",
+   "si": "abonnementPiege",
+   "n": "probable",
+   "w": "abonnement à résilier",
+   "d": "Consommation & banque"
+  },
+  {
+   "id": "frais_bancaires",
+   "t": "Frais bancaires plafonnés",
+   "o": "Votre banque / Banque de France",
+   "l": "https://www.banque-france.fr",
+   "r": "Les commissions d'intervention sont plafonnées à 8 € par opération et 80 € par mois. Si votre banque vous identifie comme client en situation de fragilité financière, les frais d'incidents sont plafonnés à 25 € par mois ; avec l'« offre spécifique » (environ 3 € par mois), ils sont limités à 20 € par mois et 200 € par an. Les banques doivent proposer cette offre aux clients fragiles.",
+   "a": "Demandez par écrit le remboursement des frais excessifs (lettre type disponible) et l'offre spécifique si vous êtes en difficulté.",
+   "si": "fraisBancaires",
+   "n": "probable",
+   "w": "frais bancaires élevés",
+   "d": "Consommation & banque"
+  },
+  {
+   "id": "fraude",
+   "t": "Opérations frauduleuses : remboursement par la banque",
+   "o": "Votre banque",
+   "l": "https://www.cybermalveillance.gouv.fr",
+   "r": "Pour un paiement que vous n'avez pas autorisé (carte piratée, faux conseiller qui a validé une opération à votre place), la banque doit vous rembourser immédiatement, au plus tard à la fin du jour ouvrable suivant votre signalement, sauf si elle prouve une négligence grave de votre part. Un conseiller bancaire ne vous demandera jamais de valider une opération ou de donner vos codes.",
+   "a": "Faites opposition, contestez par écrit dans les 13 mois, portez plainte (17Cyber ou THESEE) et joignez le récépissé à votre demande.",
+   "si": "fraudeBancaire",
+   "n": "probable",
+   "w": "opérations frauduleuses",
+   "pj": [
+    "Relevé de compte avec les opérations contestées",
+    "Récépissé de plainte"
+   ],
+   "d": "Consommation & banque"
+  },
+  {
+   "id": "droit_compte",
+   "t": "Droit au compte",
+   "o": "Banque de France",
+   "l": "https://www.banque-france.fr",
+   "r": "Toute personne domiciliée en France a droit à un compte bancaire. Si une banque refuse, demandez-lui une attestation de refus et saisissez la Banque de France : elle désigne une banque obligée de vous ouvrir un compte avec des services de base gratuits.",
+   "a": "Demandez l'attestation de refus, puis faites la demande en ligne ou au guichet de la Banque de France (3414).",
+   "si": "refusCompte",
+   "n": "probable",
+   "w": "refus d'ouverture de compte",
+   "pj": [
+    "Attestation de refus de la banque",
+    "Pièce d'identité",
+    "Justificatif de domicile"
+   ],
+   "d": "Consommation & banque"
+  },
+  {
+   "id": "changer_banque",
+   "t": "Changer de banque gratuitement",
+   "o": "La nouvelle banque",
+   "l": "{SP}mobilit%C3%A9%20bancaire",
+   "r": "Avec la mobilité bancaire, la nouvelle banque s'occupe gratuitement de transférer vos prélèvements et virements réguliers et de clôturer l'ancien compte si vous le souhaitez.",
+   "a": "Signez le mandat de mobilité bancaire auprès de la nouvelle banque ; comparez les tarifs sur le comparateur public des frais bancaires.",
+   "si": "changerBanque",
+   "n": "info",
+   "w": "changement de banque",
+   "d": "Consommation & banque"
+  },
+  {
+   "id": "credit_conso",
+   "t": "Crédit à la consommation : vos protections",
+   "o": "Le prêteur",
+   "l": "{SP}cr%C3%A9dit%20%C3%A0%20la%20consommation",
+   "r": "Vous disposez de 14 jours pour renoncer à un crédit à la consommation après la signature. Un crédit renouvelable peut être remboursé par anticipation et résilié à tout moment. Méfiez-vous des rachats de crédits et des « regroupements » proposés par démarchage.",
+   "a": "Faites le point sur le taux réel (TAEG) ; un conseiller budget (Point conseil budget) peut vous aider gratuitement.",
+   "si": "credit",
+   "n": "info",
+   "w": "crédit en cours",
+   "d": "Consommation & banque"
+  },
+  {
+   "id": "surendettement",
+   "t": "Surendettement : la procédure de la Banque de France",
+   "o": "Banque de France",
+   "l": "https://www.banque-france.fr",
+   "r": "Si vous ne pouvez plus faire face à vos dettes non professionnelles, un dossier de surendettement peut être déposé gratuitement auprès de la Banque de France. S'il est recevable, les poursuites et saisies sont suspendues, et des mesures sont proposées : échelonnement, baisse des taux, effacement partiel, voire total dans les situations les plus graves. Les Points conseil budget accompagnent gratuitement.",
+   "a": "Déposez le dossier en ligne ou au guichet (3414) ; le CCAS ou un Point conseil budget peut vous aider à le remplir.",
+   "si": {
+    "ou": [
+     "surendettement",
+     {
+      "et": [
+       "difficulte",
+       {
+        "c": "niv",
+        "=": 1
+       }
+      ]
+     }
+    ]
+   },
+   "n": [
+    {
+     "si": "surendettement",
+     "n": "probable"
+    },
+    {
+     "n": "possible"
+    }
+   ],
+   "w": "dettes difficiles à rembourser",
+   "pj": [
+    "Pièce d'identité",
+    "Relevés de compte des 3 derniers mois",
+    "Justificatifs de ressources et de charges",
+    "Liste des dettes avec les courriers des créanciers"
+   ],
+   "d": "Consommation & banque"
+  },
+  {
+   "id": "fichage",
+   "t": "Fichiers de la Banque de France (FICP, FCC)",
+   "o": "Banque de France",
+   "l": "https://www.banque-france.fr",
+   "r": "Vous pouvez consulter gratuitement les informations vous concernant dans les fichiers de la Banque de France. Une inscription pour incident de remboursement de crédit est effacée dès le remboursement complet. Une inscription erronée peut être contestée auprès de l'établissement qui l'a déclarée.",
+   "a": "Demandez la consultation au guichet ou en ligne avec une pièce d'identité.",
+   "si": "fichage",
+   "n": "info",
+   "w": "fichage bancaire",
+   "d": "Consommation & banque"
+  },
+  {
    "id": "rqth",
    "d": "Handicap",
    "t": "Reconnaissance de la qualité de travailleur handicapé (RQTH)",
@@ -1492,6 +1821,12 @@
     {
      "w": "handicap"
     }
+   ],
+   "pj": [
+    "Formulaire de demande MDPH (Cerfa)",
+    "Certificat médical de moins d'un an",
+    "Pièce d'identité",
+    "Justificatif de domicile"
    ]
   },
   {
@@ -1530,7 +1865,13 @@
      "n": "possible"
     }
    ],
-   "w": "taux d'incapacité de {tauxTxt}"
+   "w": "taux d'incapacité de {tauxTxt}",
+   "pj": [
+    "Formulaire de demande MDPH (Cerfa)",
+    "Certificat médical de moins d'un an",
+    "Pièce d'identité",
+    "Justificatif de domicile"
+   ]
   },
   {
    "id": "pch",
@@ -1563,7 +1904,14 @@
     ]
    },
    "n": "possible",
-   "w": "handicap et besoins d'aide"
+   "w": "handicap et besoins d'aide",
+   "pj": [
+    "Formulaire de demande MDPH (Cerfa)",
+    "Certificat médical de moins d'un an",
+    "Pièce d'identité",
+    "Justificatif de domicile",
+    "Devis des aides demandées"
+   ]
   },
   {
    "id": "cmi",
@@ -1605,6 +1953,12 @@
     {
      "w": "gêne dans les déplacements possible"
     }
+   ],
+   "pj": [
+    "Formulaire de demande MDPH (Cerfa)",
+    "Certificat médical de moins d'un an",
+    "Pièce d'identité",
+    "Justificatif de domicile"
    ]
   },
   {
@@ -1687,7 +2041,13 @@
     ]
    },
    "n": "probable",
-   "w": "60 ans ou plus et besoin d'aide au quotidien"
+   "w": "60 ans ou plus et besoin d'aide au quotidien",
+   "pj": [
+    "Avis d'imposition",
+    "Pièce d'identité",
+    "Justificatif de domicile",
+    "RIB"
+   ]
   },
   {
    "id": "aidecaisse",
@@ -1757,6 +2117,306 @@
    "w": "vous aidez un proche"
   },
   {
+   "id": "bourse_crous",
+   "t": "Bourse sur critères sociaux et logement Crous",
+   "o": "Crous",
+   "l": "https://www.messervices.etudiant.gouv.fr",
+   "r": "La bourse du Crous dépend des revenus des parents, du nombre d'enfants à charge et de l'éloignement. La demande se fait par le dossier social étudiant (DSE), de préférence au printemps pour la rentrée suivante, en même temps que la demande de logement en résidence universitaire. Une demande reste possible en cours d'année.",
+   "a": "Remplissez le dossier social étudiant sur messervices.etudiant.gouv.fr dès l'ouverture, même avant d'avoir vos résultats.",
+   "si": {
+    "ou": [
+     "etudiantSup",
+     {
+      "c": "act",
+      "=": "etudiant"
+     }
+    ]
+   },
+   "n": "probable",
+   "w": "étudiant(e)",
+   "pj": [
+    "Avis d'imposition des parents",
+    "Certificat de scolarité ou inscription",
+    "RIB"
+   ],
+   "d": "Jeunes"
+  },
+  {
+   "id": "repas1",
+   "t": "Repas au restaurant universitaire à 1 €",
+   "o": "Crous",
+   "l": "https://www.etudiant.gouv.fr",
+   "r": "Depuis le 4 mai 2026, le repas à 1 € au restaurant universitaire est ouvert à tous les étudiants (y compris apprentis, alternants, doctorants et volontaires du service civique), avec un compte Izly actif, à raison d'un repas par service.",
+   "a": "Activez votre compte Izly et présentez votre carte étudiante en caisse.",
+   "si": {
+    "ou": [
+     "etudiantSup",
+     {
+      "c": "act",
+      "=": "etudiant"
+     }
+    ]
+   },
+   "n": "probable",
+   "w": "étudiant(e)",
+   "d": "Jeunes"
+  },
+  {
+   "id": "logement_etu",
+   "t": "Se loger quand on est étudiant",
+   "o": "Crous / CAF / Action Logement",
+   "l": "https://trouverunlogement.lescrous.fr",
+   "r": "Résidences du Crous, aide au logement de la CAF (même en colocation ou en résidence), garantie Visale gratuite qui remplace le garant pour les moins de 31 ans, et aides d'Action Logement pour les alternants.",
+   "a": "Cherchez sur la plateforme du Crous, demandez Visale avant de signer le bail, puis l'aide au logement en ligne.",
+   "si": "logementEtudiant",
+   "n": "probable",
+   "w": "recherche de logement étudiant",
+   "d": "Jeunes"
+  },
+  {
+   "id": "cej",
+   "t": "Contrat d'engagement jeune (CEJ)",
+   "o": "France Travail / mission locale",
+   "l": "https://www.1jeune1solution.gouv.fr",
+   "r": "Pour les 16-25 ans (jusqu'à 29 ans avec une reconnaissance de handicap) sans emploi ni formation : un accompagnement intensif de 15 à 20 heures par semaine vers l'emploi, avec une allocation pouvant aller jusqu'à environ 566 € par mois selon l'âge et les ressources du foyer (montants revalorisés au 1er avril).",
+   "a": "Prenez rendez-vous à la mission locale ou à France Travail (l'inscription comme demandeur d'emploi est requise).",
+   "si": {
+    "et": [
+     "jeuneSansEmploi",
+     {
+      "c": "age",
+      "<=?": 29
+     }
+    ]
+   },
+   "n": "probable",
+   "w": "jeune sans emploi ni formation",
+   "d": "Jeunes"
+  },
+  {
+   "id": "pass_culture",
+   "t": "Pass Culture",
+   "o": "Ministère de la Culture",
+   "l": "https://pass.culture.fr",
+   "r": "Une somme à dépenser en livres, places de concert, cinéma, cours ou instruments : 50 € à 17 ans et 150 € à 18 ans depuis la réforme de mars 2025 (avec un complément possible sous conditions), à utiliser via l'application.",
+   "a": "Téléchargez l'application pass Culture et validez votre identité.",
+   "si": {
+    "ou": [
+     "jeuneCulture",
+     {
+      "et": [
+       {
+        "c": "age",
+        ">=": 17
+       },
+       {
+        "c": "age",
+        "<=": 18
+       }
+      ]
+     }
+    ]
+   },
+   "n": "possible",
+   "w": "17 ou 18 ans",
+   "d": "Jeunes"
+  },
+  {
+   "id": "ehpad",
+   "t": "Financer un EHPAD ou une résidence autonomie",
+   "o": "Département / CAF / impôts",
+   "l": "https://www.pour-les-personnes-agees.gouv.fr",
+   "r": "Plusieurs aides se cumulent : l'APA en établissement (pour la part dépendance), l'aide au logement de la CAF (APL ou ALS selon l'établissement), l'aide sociale à l'hébergement (ASH) du département si les ressources ne suffisent pas (les enfants peuvent être sollicités au titre de l'obligation alimentaire), et une réduction d'impôt de 25 % des frais d'hébergement et de dépendance, dans la limite d'un plafond annuel.",
+   "a": "Comparez les tarifs et le reste à charge sur le portail pour-les-personnes-agees.gouv.fr ; déposez les demandes d'aide avant ou dès l'entrée.",
+   "si": "ehpad",
+   "n": "probable",
+   "w": "entrée en établissement",
+   "pj": [
+    "Avis d'imposition",
+    "Justificatifs de ressources et de patrimoine",
+    "Certificat médical (dossier d'admission)"
+   ],
+   "d": "Seniors"
+  },
+  {
+   "id": "domicile",
+   "t": "Rester chez soi : aides au maintien à domicile",
+   "o": "Département / caisse de retraite / CCAS",
+   "l": "https://www.pour-les-personnes-agees.gouv.fr",
+   "r": "Téléassistance, portage de repas, aide ménagère, petits travaux et adaptation du logement peuvent être financés par l'APA (en cas de perte d'autonomie), les caisses de retraite (pour les retraités autonomes mais fragiles), le CCAS et MaPrimeAdapt'. Le crédit d'impôt de 50 % s'applique aux services à domicile.",
+   "a": "Contactez le CCAS de votre mairie ou votre caisse de retraite ; une évaluation des besoins est faite à domicile.",
+   "si": {
+    "ou": [
+     "domicile",
+     {
+      "et": [
+       {
+        "c": "age",
+        ">=": 75
+       },
+       "autonomie"
+      ]
+     }
+    ]
+   },
+   "n": "probable",
+   "w": "maintien à domicile",
+   "d": "Seniors"
+  },
+  {
+   "id": "transport_senior",
+   "t": "Transports et sorties à tarif réduit",
+   "o": "Région / commune / SNCF",
+   "l": "{SP}r%C3%A9duction%20transport%20senior",
+   "r": "Beaucoup de communes, départements et régions proposent des tarifs réduits ou la gratuité des transports en commun aux seniors, parfois sous conditions de ressources. La carte Avantage Senior de la SNCF réduit le prix des billets de train à partir de 60 ans. La carte mobilité inclusion donne droit à des réductions et à un accompagnateur.",
+   "a": "Renseignez-vous auprès du CCAS, de votre région et du réseau de transport local.",
+   "si": {
+    "ou": [
+     "transportSenior",
+     {
+      "et": [
+       {
+        "c": "age",
+        ">=": 65
+       },
+       "domicile"
+      ]
+     }
+    ]
+   },
+   "n": "info",
+   "w": "transports",
+   "d": "Seniors"
+  },
+  {
+   "id": "maltraitance",
+   "t": "Maltraitance d'une personne âgée ou handicapée : le 3977",
+   "o": "3977 / justice",
+   "l": "https://3977.fr",
+   "r": "Le 3977, numéro national, écoute et oriente les victimes et les témoins de maltraitance envers les personnes âgées ou handicapées (violences, négligences, abus financiers), de façon confidentielle. Les abus financiers (procurations détournées, dons extorqués) peuvent être signalés au procureur. Une mesure de protection (curatelle, tutelle, habilitation familiale) peut être demandée au juge des contentieux de la protection.",
+   "a": "Appelez le 3977 ; en cas de danger immédiat, le 17 ou le 112.",
+   "si": "maltraitance",
+   "n": "probable",
+   "w": "maltraitance",
+   "d": "Seniors"
+  },
+  {
+   "id": "deces_demarches",
+   "t": "Décès d'un proche : les démarches dans l'ordre",
+   "o": "Mairie / organismes",
+   "l": "{SP}d%C3%A9c%C3%A8s%20d%C3%A9marches",
+   "r": "Dans les 24 heures : déclaration du décès en mairie (souvent faite par les pompes funèbres). Dans la semaine : employeur, banques, assurance maladie et caisses de retraite, CAF. Dans le mois : assurances, notaire, organismes de crédit, bailleur. Le service en ligne « Déclarer un décès » permet d'informer plusieurs organismes en une seule fois. Les contrats (électricité, téléphone, abonnements) peuvent être résiliés sans frais sur présentation de l'acte de décès.",
+   "a": "Demandez plusieurs copies de l'acte de décès à la mairie ; utilisez le service en ligne de déclaration de décès sur service-public.fr.",
+   "si": "decesProche",
+   "n": "probable",
+   "w": "décès d'un proche",
+   "pj": [
+    "Acte de décès (plusieurs exemplaires)",
+    "Livret de famille",
+    "Pièce d'identité du déclarant"
+   ],
+   "d": "Décès & succession"
+  },
+  {
+   "id": "capital_deces",
+   "t": "Capital décès de l'Assurance maladie",
+   "o": "CPAM / employeur public",
+   "l": "https://www.ameli.fr",
+   "r": "Si le défunt était salarié, demandeur d'emploi indemnisé, en invalidité ou en arrêt de travail dans les 3 mois précédant le décès, un capital décès forfaitaire (4 009 € depuis le 1er avril 2026) est versé à ses proches. La personne qui était à sa charge est prioritaire si elle le demande dans le mois ; sinon, le conjoint, puis les enfants, puis les parents peuvent le demander pendant 2 ans. Pour un fonctionnaire, le capital est calculé différemment et versé par l'employeur.",
+   "a": "Demandez-le à la CPAM du défunt avec le formulaire S3180 (pas de versement automatique).",
+   "si": "decesProche",
+   "n": "possible",
+   "w": "décès d'un proche",
+   "pj": [
+    "Acte de décès",
+    "Formulaire S3180",
+    "RIB",
+    "Justificatif du lien avec le défunt"
+   ],
+   "d": "Décès & succession"
+  },
+  {
+   "id": "obseques_compte",
+   "t": "Payer les obsèques avec le compte du défunt",
+   "o": "La banque du défunt",
+   "l": "{SP}frais%20d%27obs%C3%A8ques%20compte%20d%C3%A9funt",
+   "r": "La personne qui règle les obsèques peut demander à la banque du défunt de payer la facture des pompes funèbres directement sur ses comptes, dans la limite de 5 965 € en 2026 (montant révisé chaque année) et du solde disponible.",
+   "a": "Présentez la facture des obsèques à la banque du défunt avec une pièce d'identité.",
+   "si": {
+    "ou": [
+     "decesProche",
+     "comptesDefunt"
+    ]
+   },
+   "n": "possible",
+   "w": "frais d'obsèques",
+   "pj": [
+    "Facture des pompes funèbres",
+    "Acte de décès",
+    "Pièce d'identité"
+   ],
+   "d": "Décès & succession"
+  },
+  {
+   "id": "frais_succession",
+   "t": "Frais bancaires de succession plafonnés",
+   "o": "La banque du défunt",
+   "l": "https://www.banque-france.fr",
+   "r": "Les frais que la banque peut prélever pour traiter une succession sont plafonnés à 1 % du total des comptes et placements du défunt, dans la limite de 857 €. Les cas de gratuité instaurés auparavant ont été supprimés par le Conseil constitutionnel le 19 juin 2026 ; le plafond, lui, reste en vigueur.",
+   "a": "Vérifiez le montant facturé et contestez par écrit tout dépassement du plafond.",
+   "si": {
+    "ou": [
+     "comptesDefunt",
+     "succession"
+    ]
+   },
+   "n": "probable",
+   "w": "comptes du défunt",
+   "d": "Décès & succession"
+  },
+  {
+   "id": "succession_droits",
+   "t": "Succession : délais et droits à payer",
+   "o": "Notaire / impôts",
+   "l": "{SP}droits%20de%20succession",
+   "r": "Le conjoint marié ou partenaire de PACS est exonéré de droits de succession. Chaque enfant bénéficie d'un abattement de 100 000 € par parent ; au-delà, un barème progressif s'applique. La déclaration de succession est à déposer dans les 6 mois du décès (si elle est obligatoire). Un notaire est indispensable en présence d'un bien immobilier ou d'une donation antérieure. Un héritier peut aussi renoncer à une succession endettée.",
+   "a": "Prenez rendez-vous chez un notaire rapidement ; ne prenez aucune décision sur une succession possiblement endettée sans conseil (option successorale).",
+   "si": "succession",
+   "n": "probable",
+   "w": "succession",
+   "pj": [
+    "Acte de décès",
+    "Livret de famille",
+    "Testament ou donation éventuels",
+    "Relevés des comptes et titres de propriété"
+   ],
+   "d": "Décès & succession"
+  },
+  {
+   "id": "reversion_conj",
+   "t": "Conjoint survivant : vos droits",
+   "o": "Caisses de retraite / CAF / notaire",
+   "l": "https://www.info-retraite.fr",
+   "r": "Pension de réversion (demande unique sur info-retraite.fr pour tous les régimes), capital décès, droit de rester dans le logement pendant un an aux frais de la succession puis droit viager au logement pour le conjoint marié, allocation veuvage sous conditions d'âge et de ressources, et éventuellement aide au logement et Complémentaire santé solidaire selon les nouvelles ressources.",
+   "a": "Faites la demande de réversion en ligne ; signalez le changement de situation à la CAF et aux impôts.",
+   "si": "decesConjoint",
+   "n": "probable",
+   "w": "décès du conjoint",
+   "d": "Décès & succession"
+  },
+  {
+   "id": "donation",
+   "t": "Donation à un enfant ou petit-enfant",
+   "o": "Notaire / impôts",
+   "l": "{SP}don%20familial",
+   "r": "Chaque parent peut donner 100 000 € à chaque enfant tous les 15 ans sans droits, et 31 865 € à chaque petit-enfant ; un don d'argent supplémentaire de 31 865 € est possible sous conditions d'âge. Jusqu'au 31 décembre 2026, un don d'argent de 100 000 € supplémentaires est exonéré s'il finance dans les 6 mois l'achat d'un logement neuf ou des travaux de rénovation énergétique du bénéficiaire.",
+   "a": "Déclarez le don aux impôts (en ligne) ; consultez un notaire pour une donation de biens immobiliers.",
+   "si": "donation",
+   "n": "info",
+   "w": "projet de donation",
+   "d": "Décès & succession"
+  },
+  {
    "id": "bilan_ret",
    "d": "Retraite",
    "t": "Faire le point sur votre retraite",
@@ -1805,7 +2465,11 @@
     ]
    },
    "n": "possible",
-   "w": "début de carrière avant 21 ans"
+   "w": "début de carrière avant 21 ans",
+   "pj": [
+    "Relevé de carrière (info-retraite.fr)",
+    "Bulletins de salaire anciens si des périodes manquent"
+   ]
   },
   {
    "id": "catactive",
@@ -1950,7 +2614,13 @@
     "=": "veuf"
    },
    "n": "probable",
-   "w": "veuf / veuve"
+   "w": "veuf / veuve",
+   "pj": [
+    "Acte de décès",
+    "Livret de famille",
+    "Avis d'imposition",
+    "RIB"
+   ]
   },
   {
    "id": "cpf",
@@ -1962,7 +2632,10 @@
    "a": "Consultez votre solde sur moncompteformation.gouv.fr (connexion France Connect+). Pour les agents publics, la demande passe par l'employeur.",
    "si": "actif",
    "n": "probable",
-   "w": "vous avez travaillé"
+   "w": "vous avez travaillé",
+   "pj": [
+    "Identifiant FranceConnect"
+   ]
   },
   {
    "id": "are",
@@ -2075,7 +2748,12 @@
      "w": "licenciement"
     }
    ],
-   "d": "Droit du travail"
+   "d": "Droit du travail",
+   "pj": [
+    "Contrat de travail",
+    "Bulletins de salaire des 12 derniers mois",
+    "Lettre de licenciement"
+   ]
   },
   {
    "id": "proc_licenc",
@@ -2763,7 +3441,13 @@
    "si": "victime",
    "n": "probable",
    "w": "vous êtes victime d'une infraction",
-   "d": "Droit pénal"
+   "d": "Droit pénal",
+   "pj": [
+    "Pièce d'identité",
+    "Preuves (photos, messages, factures)",
+    "Certificat médical éventuel",
+    "Coordonnées des témoins"
+   ]
   },
   {
    "id": "aide_victimes",
@@ -2809,7 +3493,12 @@
    },
    "n": "possible",
    "w": "victime d'une infraction",
-   "d": "Droit pénal"
+   "d": "Droit pénal",
+   "pj": [
+    "Récépissé de plainte ou jugement",
+    "Certificats médicaux",
+    "Justificatifs des frais et pertes"
+   ]
   },
   {
    "id": "violences",
@@ -3602,5 +4291,1024 @@
     }
    ]
   }
- }
+ },
+ "pieces_generales": [
+  "Pièce d'identité en cours de validité",
+  "Justificatif de domicile de moins de 3 mois",
+  "Dernier avis d'imposition",
+  "RIB",
+  "Carte Vitale ou attestation de droits",
+  "Livret de famille (si enfants)",
+  "Bulletins de salaire, attestations de pensions ou d'allocations des 3 derniers mois",
+  "Bail ou titre de propriété"
+ ],
+ "lettres": [
+  {
+   "id": "resiliation",
+   "titre": "Résilier un contrat ou un abonnement",
+   "desc": "Assurance, téléphone, internet, énergie, abonnement…",
+   "recommande": true,
+   "si": {
+    "ou": [
+     "assurResilier",
+     "telecomResilier",
+     "abonnementPiege",
+     "telecomHausse",
+     "assurHausse"
+    ]
+   },
+   "champs": [
+    {
+     "id": "dest",
+     "label": "Destinataire (nom de l'organisme ou de la personne)",
+     "type": "text"
+    },
+    {
+     "id": "dest_adr",
+     "label": "Adresse du destinataire",
+     "type": "text"
+    },
+    {
+     "id": "contrat",
+     "label": "Type de contrat (ex. : assurance habitation)",
+     "type": "text"
+    },
+    {
+     "id": "ref",
+     "label": "Numéro de contrat ou de client",
+     "type": "text"
+    },
+    {
+     "id": "motif",
+     "label": "Motif",
+     "type": "select",
+     "options": [
+      {
+       "v": "loi",
+       "t": "Contrat de plus d'un an (assurance, mutuelle)",
+       "x": "Mon contrat ayant plus d'un an, je fais usage de la faculté de résiliation à tout moment prévue par la loi. La résiliation prendra effet un mois après la réception de ce courrier."
+      },
+      {
+       "v": "hausse",
+       "t": "Suite à une hausse de tarif ou une modification du contrat",
+       "x": "Vous m'avez informé(e) d'une modification de mon contrat (hausse de tarif). Je refuse cette modification et résilie mon contrat sans frais, comme la loi me le permet."
+      },
+      {
+       "v": "echeance",
+       "t": "À l'échéance annuelle",
+       "x": "Je vous informe de ma décision de ne pas renouveler mon contrat à sa prochaine échéance."
+      },
+      {
+       "v": "sans",
+       "t": "Abonnement sans engagement",
+       "x": "Mon abonnement étant sans engagement, je vous demande de le résilier dans les meilleurs délais."
+      },
+      {
+       "v": "demenagement",
+       "t": "Déménagement ou changement de situation",
+       "x": "En raison d'un changement de situation (déménagement), je vous demande de résilier mon contrat."
+      }
+     ]
+    },
+    {
+     "id": "date_effet",
+     "label": "Date d'effet souhaitée (facultatif)",
+     "type": "date"
+    }
+   ],
+   "dest": "{dest}\n{dest_adr}",
+   "objet": "Résiliation de mon contrat {contrat}",
+   "ref": "Référence : {ref}",
+   "corps": "Madame, Monsieur,\n\nPar la présente, je vous informe de ma volonté de résilier mon contrat {contrat} (référence {ref}).\n\n{motif}\n\nJe vous remercie de m'adresser une confirmation écrite de cette résiliation, ainsi que, le cas échéant, le remboursement de la part de cotisation ou d'abonnement correspondant à la période non couverte.\n\nVeuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
+   "conseil": "Pour une assurance auto ou habitation, le nouvel assureur peut faire la résiliation à votre place. Pour le téléphone et internet, la portabilité du numéro résilie automatiquement l'ancien contrat."
+  },
+  {
+   "id": "reclamation",
+   "titre": "Contester une facture",
+   "desc": "Facture erronée, montant injustifié, relevé faux…",
+   "recommande": true,
+   "si": {
+    "ou": [
+     "litigeEnergie",
+     "telecomLitige",
+     "eauLitige",
+     "litigeConso"
+    ]
+   },
+   "champs": [
+    {
+     "id": "dest",
+     "label": "Destinataire (nom de l'organisme ou de la personne)",
+     "type": "text"
+    },
+    {
+     "id": "dest_adr",
+     "label": "Adresse du destinataire",
+     "type": "text"
+    },
+    {
+     "id": "ref",
+     "label": "Numéro de client ou de contrat",
+     "type": "text"
+    },
+    {
+     "id": "facture",
+     "label": "Numéro et date de la facture",
+     "type": "text"
+    },
+    {
+     "id": "montant",
+     "label": "Montant contesté (€)",
+     "type": "number"
+    },
+    {
+     "id": "explication",
+     "label": "Ce que vous contestez et pourquoi",
+     "type": "textarea"
+    }
+   ],
+   "dest": "{dest}\n{dest_adr}",
+   "objet": "Contestation de la facture {facture}",
+   "ref": "Référence client : {ref}",
+   "corps": "Madame, Monsieur,\n\nJe conteste la facture {facture}, pour un montant de {montant} €, pour les raisons suivantes :\n\n{explication}\n\nJe vous demande de bien vouloir procéder à une vérification et de m'adresser une facture rectifiée, ainsi que le remboursement des sommes indûment prélevées le cas échéant.\n\nÀ défaut de réponse satisfaisante dans un délai de deux mois, je saisirai le médiateur compétent.\n\nVeuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
+   "conseil": "Gardez une copie de ce courrier : elle sera demandée par le médiateur si le litige persiste."
+  },
+  {
+   "id": "echeancier",
+   "titre": "Demander un échéancier de paiement",
+   "desc": "Facture d'énergie, d'eau, loyer, impôts, dette…",
+   "recommande": false,
+   "si": {
+    "ou": [
+     "impayeEnergie",
+     "eauImpaye",
+     "difficulte",
+     "surendettement"
+    ]
+   },
+   "champs": [
+    {
+     "id": "dest",
+     "label": "Destinataire (nom de l'organisme ou de la personne)",
+     "type": "text"
+    },
+    {
+     "id": "dest_adr",
+     "label": "Adresse du destinataire",
+     "type": "text"
+    },
+    {
+     "id": "ref",
+     "label": "Numéro de client ou de dossier",
+     "type": "text"
+    },
+    {
+     "id": "montant",
+     "label": "Montant dû (€)",
+     "type": "number"
+    },
+    {
+     "id": "mensualite",
+     "label": "Mensualité proposée (€ par mois)",
+     "type": "number"
+    },
+    {
+     "id": "explication",
+     "label": "Votre situation en quelques mots (facultatif)",
+     "type": "textarea"
+    }
+   ],
+   "dest": "{dest}\n{dest_adr}",
+   "objet": "Demande d'échéancier de paiement",
+   "ref": "Référence : {ref}",
+   "corps": "Madame, Monsieur,\n\nJe vous informe que je rencontre actuellement des difficultés financières qui ne me permettent pas de régler en une seule fois la somme de {montant} € dont je vous suis redevable.\n\n{explication}\n\nAfin de m'acquitter de cette dette, je vous propose un échéancier de {mensualite} € par mois, à compter du mois prochain. Je vous remercie de bien vouloir suspendre toute procédure de recouvrement pendant la durée de cet échéancier.\n\nDans l'attente de votre accord, je vous prie d'agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
+   "conseil": "Proposez une mensualité que vous pourrez vraiment tenir. Le CCAS de votre mairie peut aussi vous aider à monter un dossier d'aide (FSL)."
+  },
+  {
+   "id": "retractation",
+   "titre": "Se rétracter d'un achat à distance",
+   "desc": "Achat sur Internet, par téléphone ou à domicile (14 jours)",
+   "recommande": true,
+   "si": {
+    "ou": [
+     "achatDistance",
+     "demarchage"
+    ]
+   },
+   "champs": [
+    {
+     "id": "dest",
+     "label": "Destinataire (nom de l'organisme ou de la personne)",
+     "type": "text"
+    },
+    {
+     "id": "dest_adr",
+     "label": "Adresse du destinataire",
+     "type": "text"
+    },
+    {
+     "id": "commande",
+     "label": "Numéro de commande ou de contrat",
+     "type": "text"
+    },
+    {
+     "id": "date_cmd",
+     "label": "Date de la commande",
+     "type": "date"
+    },
+    {
+     "id": "date_recep",
+     "label": "Date de réception",
+     "type": "date"
+    },
+    {
+     "id": "produit",
+     "label": "Produit ou service",
+     "type": "text"
+    }
+   ],
+   "dest": "{dest}\n{dest_adr}",
+   "objet": "Exercice de mon droit de rétractation",
+   "ref": "Commande n° {commande}",
+   "corps": "Madame, Monsieur,\n\nConformément aux articles L. 221-18 et suivants du Code de la consommation, je vous notifie par la présente ma rétractation du contrat portant sur : {produit}, commandé le {date_cmd} et reçu le {date_recep}.\n\nJe vous demande de me rembourser la totalité des sommes versées, y compris les frais de livraison initiaux, au plus tard dans les 14 jours suivant la réception de ce courrier.\n\nVeuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
+   "conseil": "Le délai est de 14 jours à partir de la réception du produit (ou de la signature pour un service). Renvoyez le produit en gardant la preuve du dépôt."
+  },
+  {
+   "id": "garantie",
+   "titre": "Faire jouer la garantie légale de conformité",
+   "desc": "Produit en panne ou défectueux (moins de 2 ans)",
+   "recommande": true,
+   "si": "achatPanne",
+   "champs": [
+    {
+     "id": "dest",
+     "label": "Destinataire (nom de l'organisme ou de la personne)",
+     "type": "text"
+    },
+    {
+     "id": "dest_adr",
+     "label": "Adresse du destinataire",
+     "type": "text"
+    },
+    {
+     "id": "produit",
+     "label": "Produit concerné",
+     "type": "text"
+    },
+    {
+     "id": "date_achat",
+     "label": "Date d'achat",
+     "type": "date"
+    },
+    {
+     "id": "defaut",
+     "label": "Description de la panne ou du défaut",
+     "type": "textarea"
+    },
+    {
+     "id": "demande",
+     "label": "Votre demande",
+     "type": "select",
+     "options": [
+      {
+       "v": "reparation",
+       "t": "Réparation",
+       "x": "la réparation du produit"
+      },
+      {
+       "v": "remplacement",
+       "t": "Remplacement",
+       "x": "le remplacement du produit"
+      }
+     ]
+    }
+   ],
+   "dest": "{dest}\n{dest_adr}",
+   "objet": "Mise en œuvre de la garantie légale de conformité",
+   "corps": "Madame, Monsieur,\n\nLe {date_achat}, j'ai acheté dans votre établissement le produit suivant : {produit}.\n\nCe produit présente le défaut suivant : {defaut}\n\nEn application des articles L. 217-3 et suivants du Code de la consommation, je vous demande {demande}, sans frais, dans un délai raisonnable. Je vous rappelle que pendant deux ans à compter de la délivrance, le défaut est présumé exister au moment de l'achat.\n\nVeuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
+   "conseil": "Adressez-vous au vendeur, pas au fabricant. Joignez une copie de la facture (gardez l'original)."
+  },
+  {
+   "id": "frais_bancaires",
+   "titre": "Demander le remboursement de frais bancaires",
+   "desc": "Frais d'incidents, commissions d'intervention…",
+   "recommande": false,
+   "si": "fraisBancaires",
+   "champs": [
+    {
+     "id": "dest",
+     "label": "Destinataire (nom de l'organisme ou de la personne)",
+     "type": "text"
+    },
+    {
+     "id": "dest_adr",
+     "label": "Adresse du destinataire",
+     "type": "text"
+    },
+    {
+     "id": "compte",
+     "label": "Numéro de compte (4 derniers chiffres suffisent)",
+     "type": "text"
+    },
+    {
+     "id": "periode",
+     "label": "Période concernée (ex. : septembre 2026)",
+     "type": "text"
+    },
+    {
+     "id": "montant",
+     "label": "Montant des frais (€)",
+     "type": "number"
+    },
+    {
+     "id": "explication",
+     "label": "Votre situation (facultatif)",
+     "type": "textarea"
+    }
+   ],
+   "dest": "{dest}\n{dest_adr}",
+   "objet": "Demande de remboursement de frais bancaires",
+   "ref": "Compte n° {compte}",
+   "corps": "Madame, Monsieur,\n\nJ'ai constaté sur mon compte des frais bancaires d'un montant total de {montant} € au titre de la période {periode}.\n\n{explication}\n\nCompte tenu de ma situation, je vous demande le remboursement de ces frais à titre commercial. Je vous demande également de vérifier le respect des plafonds légaux de frais d'incidents et, le cas échéant, de me proposer l'offre spécifique destinée aux clients en situation de fragilité financière.\n\nVeuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
+   "conseil": "Sans réponse satisfaisante, le service réclamations puis le médiateur bancaire (gratuit) peuvent être saisis."
+  },
+  {
+   "id": "depot_garantie",
+   "titre": "Réclamer son dépôt de garantie",
+   "desc": "Locataire : dépôt non rendu ou retenues injustifiées",
+   "recommande": true,
+   "si": "depotGarantie",
+   "champs": [
+    {
+     "id": "dest",
+     "label": "Destinataire (nom de l'organisme ou de la personne)",
+     "type": "text"
+    },
+    {
+     "id": "dest_adr",
+     "label": "Adresse du destinataire",
+     "type": "text"
+    },
+    {
+     "id": "logement",
+     "label": "Adresse du logement loué",
+     "type": "text"
+    },
+    {
+     "id": "date_sortie",
+     "label": "Date de l'état des lieux de sortie",
+     "type": "date"
+    },
+    {
+     "id": "montant",
+     "label": "Montant du dépôt de garantie (€)",
+     "type": "number"
+    },
+    {
+     "id": "etat",
+     "label": "État des lieux de sortie",
+     "type": "select",
+     "options": [
+      {
+       "v": "conforme",
+       "t": "Conforme à l'entrée (délai 1 mois)",
+       "x": "L'état des lieux de sortie étant conforme à l'état des lieux d'entrée, ce dépôt devait m'être restitué dans un délai d'un mois."
+      },
+      {
+       "v": "differences",
+       "t": "Avec des différences (délai 2 mois)",
+       "x": "Le dépôt devait m'être restitué dans un délai de deux mois, déduction faite des seules sommes dûment justifiées."
+      }
+     ]
+    }
+   ],
+   "dest": "{dest}\n{dest_adr}",
+   "objet": "Mise en demeure de restituer le dépôt de garantie",
+   "corps": "Madame, Monsieur,\n\nJ'ai quitté le logement situé {logement}, et l'état des lieux de sortie a été établi le {date_sortie}.\n\nÀ ce jour, le dépôt de garantie d'un montant de {montant} € ne m'a pas été restitué. {etat}\n\nConformément à l'article 22 de la loi n° 89-462 du 6 juillet 1989, je vous mets en demeure de me restituer cette somme dans les plus brefs délais. Je vous rappelle que tout retard donne lieu à une majoration égale à 10 % du loyer mensuel pour chaque mois de retard commencé.\n\nÀ défaut, je saisirai la commission départementale de conciliation, puis le tribunal compétent.\n\nVeuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
+   "conseil": "Joignez une copie des états des lieux d'entrée et de sortie. L'ADIL de votre département vous conseille gratuitement."
+  },
+  {
+   "id": "preavis",
+   "titre": "Donner son préavis de départ (locataire)",
+   "desc": "Location vide ou meublée",
+   "recommande": true,
+   "si": "preavis",
+   "champs": [
+    {
+     "id": "dest",
+     "label": "Destinataire (nom de l'organisme ou de la personne)",
+     "type": "text"
+    },
+    {
+     "id": "dest_adr",
+     "label": "Adresse du destinataire",
+     "type": "text"
+    },
+    {
+     "id": "logement",
+     "label": "Adresse du logement loué",
+     "type": "text"
+    },
+    {
+     "id": "duree",
+     "label": "Durée du préavis",
+     "type": "select",
+     "options": [
+      {
+       "v": "3",
+       "t": "3 mois (location vide)",
+       "x": "de trois mois"
+      },
+      {
+       "v": "1zone",
+       "t": "1 mois : zone tendue",
+       "x": "réduit à un mois, le logement étant situé en zone tendue"
+      },
+      {
+       "v": "1motif",
+       "t": "1 mois : mutation, perte ou nouvel emploi, santé, RSA, AAH",
+       "x": "réduit à un mois, en raison de ma situation (justificatif joint)"
+      },
+      {
+       "v": "1meuble",
+       "t": "1 mois : location meublée",
+       "x": "d'un mois, s'agissant d'une location meublée"
+      }
+     ]
+    }
+   ],
+   "dest": "{dest}\n{dest_adr}",
+   "objet": "Congé du logement situé {logement}",
+   "corps": "Madame, Monsieur,\n\nPar la présente, je vous informe de ma décision de quitter le logement que je loue, situé {logement}.\n\nLe préavis applicable est {duree}. Il court à compter de la réception de ce courrier.\n\nJe vous propose de convenir d'une date pour l'état des lieux de sortie et la remise des clés, et vous remercie de me restituer le dépôt de garantie dans les délais légaux.\n\nVeuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
+   "conseil": "En cas de préavis réduit, joignez le justificatif (attestation de l'employeur, de France Travail, de la CAF, certificat médical…)."
+  },
+  {
+   "id": "travaux",
+   "titre": "Demander des travaux au bailleur",
+   "desc": "Logement en mauvais état, réparations non faites",
+   "recommande": true,
+   "si": "indecent",
+   "champs": [
+    {
+     "id": "dest",
+     "label": "Destinataire (nom de l'organisme ou de la personne)",
+     "type": "text"
+    },
+    {
+     "id": "dest_adr",
+     "label": "Adresse du destinataire",
+     "type": "text"
+    },
+    {
+     "id": "logement",
+     "label": "Adresse du logement loué",
+     "type": "text"
+    },
+    {
+     "id": "probleme",
+     "label": "Les problèmes constatés (humidité, chauffage, électricité…)",
+     "type": "textarea"
+    },
+    {
+     "id": "depuis",
+     "label": "Depuis quand ?",
+     "type": "text"
+    }
+   ],
+   "dest": "{dest}\n{dest_adr}",
+   "objet": "Mise en demeure de réaliser des travaux",
+   "corps": "Madame, Monsieur,\n\nJe vous signale que le logement que je loue, situé {logement}, présente depuis {depuis} les désordres suivants :\n\n{probleme}\n\nConformément à l'article 6 de la loi n° 89-462 du 6 juillet 1989 et au décret n° 2002-120 du 30 janvier 2002 relatif au logement décent, il vous appartient de me délivrer un logement décent et d'effectuer les réparations autres que locatives.\n\nJe vous mets donc en demeure de réaliser les travaux nécessaires dans un délai d'un mois. À défaut, je me réserve le droit de saisir la commission départementale de conciliation, la CAF et le tribunal compétent.\n\nVeuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
+   "conseil": "Ne cessez pas de payer votre loyer sans décision d'un juge. Joignez des photos datées."
+  },
+  {
+   "id": "emprunteur",
+   "titre": "Changer d'assurance de prêt immobilier",
+   "desc": "Substitution d'assurance emprunteur",
+   "recommande": true,
+   "si": "assurEmprunteur",
+   "champs": [
+    {
+     "id": "dest",
+     "label": "Destinataire (nom de l'organisme ou de la personne)",
+     "type": "text"
+    },
+    {
+     "id": "dest_adr",
+     "label": "Adresse du destinataire",
+     "type": "text"
+    },
+    {
+     "id": "pret",
+     "label": "Numéro du prêt",
+     "type": "text"
+    },
+    {
+     "id": "assureur",
+     "label": "Nouvel assureur",
+     "type": "text"
+    },
+    {
+     "id": "date_effet",
+     "label": "Date de prise d'effet souhaitée",
+     "type": "date"
+    }
+   ],
+   "dest": "{dest}\n{dest_adr}",
+   "objet": "Demande de substitution d'assurance emprunteur",
+   "ref": "Prêt n° {pret}",
+   "corps": "Madame, Monsieur,\n\nTitulaire du prêt immobilier n° {pret}, je vous informe de ma décision de changer d'assurance emprunteur, comme la loi m'y autorise à tout moment.\n\nVous trouverez ci-joint le nouveau contrat souscrit auprès de {assureur}, qui présente un niveau de garanties équivalent à celui exigé par votre établissement. Je vous demande d'accepter cette substitution à compter du {date_effet} et de m'adresser votre décision dans un délai de dix jours ouvrés, ainsi que l'avenant à mon offre de prêt.\n\nVeuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
+   "conseil": "La banque ne peut pas modifier le taux du prêt ni facturer de frais pour ce changement. Tout refus doit être motivé."
+  },
+  {
+   "id": "amende",
+   "titre": "Contester un avis de contravention",
+   "desc": "Vous n'étiez pas le conducteur, véhicule cédé, plaque usurpée…",
+   "recommande": true,
+   "si": {
+    "ou": [
+     "amende",
+     "plaqueUsurpee"
+    ]
+   },
+   "champs": [
+    {
+     "id": "dest",
+     "label": "Destinataire",
+     "type": "text",
+     "defaut": "Officier du ministère public"
+    },
+    {
+     "id": "dest_adr",
+     "label": "Adresse (indiquée sur l'avis)",
+     "type": "text"
+    },
+    {
+     "id": "avis",
+     "label": "Numéro de l'avis de contravention",
+     "type": "text"
+    },
+    {
+     "id": "date_inf",
+     "label": "Date de l'infraction",
+     "type": "date"
+    },
+    {
+     "id": "immat",
+     "label": "Immatriculation du véhicule",
+     "type": "text"
+    },
+    {
+     "id": "motif",
+     "label": "Motif",
+     "type": "select",
+     "options": [
+      {
+       "v": "usurpation",
+       "t": "Plaque usurpée",
+       "x": "Mon véhicule n'est pas celui photographié : mon numéro d'immatriculation a été usurpé. Je joins le récépissé de ma plainte."
+      },
+      {
+       "v": "cede",
+       "t": "Véhicule vendu avant l'infraction",
+       "x": "Ce véhicule avait été cédé avant la date de l'infraction ; je joins la copie de la déclaration de cession."
+      },
+      {
+       "v": "vol",
+       "t": "Véhicule volé",
+       "x": "Ce véhicule avait été volé avant la date de l'infraction ; je joins le récépissé de ma déclaration de vol."
+      },
+      {
+       "v": "autre",
+       "t": "Autre motif (à expliquer)",
+       "x": "{explication}"
+      }
+     ]
+    },
+    {
+     "id": "explication",
+     "label": "Explication (si autre motif)",
+     "type": "textarea"
+    }
+   ],
+   "dest": "{dest}\n{dest_adr}",
+   "objet": "Requête en exonération — avis de contravention n° {avis}",
+   "corps": "Madame, Monsieur l'Officier du ministère public,\n\nJe conteste l'avis de contravention n° {avis} concernant une infraction relevée le {date_inf} pour le véhicule immatriculé {immat}.\n\n{motif}\n\nJe vous demande en conséquence de bien vouloir classer cette contravention sans suite.\n\nVeuillez agréer, Madame, Monsieur l'Officier du ministère public, l'expression de ma considération distinguée.",
+   "conseil": "La contestation se fait en principe dans les 45 jours, de préférence en ligne sur antai.gouv.fr. Ne payez pas l'amende si vous contestez (une consignation peut être demandée selon le motif)."
+  },
+  {
+   "id": "deces",
+   "titre": "Informer un organisme d'un décès",
+   "desc": "Banque, assurance, opérateur, fournisseur…",
+   "recommande": true,
+   "si": {
+    "ou": [
+     "decesProche",
+     "comptesDefunt"
+    ]
+   },
+   "champs": [
+    {
+     "id": "dest",
+     "label": "Destinataire (nom de l'organisme ou de la personne)",
+     "type": "text"
+    },
+    {
+     "id": "dest_adr",
+     "label": "Adresse du destinataire",
+     "type": "text"
+    },
+    {
+     "id": "defunt",
+     "label": "Nom et prénom du défunt",
+     "type": "text"
+    },
+    {
+     "id": "date_deces",
+     "label": "Date du décès",
+     "type": "date"
+    },
+    {
+     "id": "ref",
+     "label": "Numéros de contrat ou de compte",
+     "type": "text"
+    },
+    {
+     "id": "lien",
+     "label": "Votre lien avec le défunt (ex. : son fils)",
+     "type": "text"
+    }
+   ],
+   "dest": "{dest}\n{dest_adr}",
+   "objet": "Décès de {defunt}",
+   "ref": "Références : {ref}",
+   "corps": "Madame, Monsieur,\n\nJ'ai le regret de vous informer du décès de {defunt}, survenu le {date_deces}, dont je suis {lien}.\n\nJe vous remercie de bien vouloir procéder à la clôture ou à la résiliation des contrats et comptes référencés ci-dessus, sans frais, à compter de la date du décès, et de m'indiquer les éventuelles sommes restant dues ou à rembourser. Je vous prie de m'adresser toute correspondance à l'adresse indiquée ci-dessus.\n\nVous trouverez ci-joint une copie de l'acte de décès.\n\nVeuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
+   "conseil": "Le service en ligne « Déclarer un décès » de service-public.fr permet d'informer plusieurs organismes publics en une fois."
+  },
+  {
+   "id": "relance_mediateur",
+   "titre": "Relance avant de saisir un médiateur",
+   "desc": "Après une réclamation restée sans réponse",
+   "recommande": true,
+   "si": {
+    "ou": [
+     "litigeEnergie",
+     "telecomLitige",
+     "eauLitige",
+     "litigeConso",
+     "assurSinistre"
+    ]
+   },
+   "champs": [
+    {
+     "id": "dest",
+     "label": "Destinataire (nom de l'organisme ou de la personne)",
+     "type": "text"
+    },
+    {
+     "id": "dest_adr",
+     "label": "Adresse du destinataire",
+     "type": "text"
+    },
+    {
+     "id": "ref",
+     "label": "Numéro de client ou de dossier",
+     "type": "text"
+    },
+    {
+     "id": "date_recl",
+     "label": "Date de votre première réclamation",
+     "type": "date"
+    },
+    {
+     "id": "objet_litige",
+     "label": "Objet du litige",
+     "type": "text"
+    }
+   ],
+   "dest": "{dest}\n{dest_adr}",
+   "objet": "Relance — réclamation du {date_recl}",
+   "ref": "Référence : {ref}",
+   "corps": "Madame, Monsieur,\n\nLe {date_recl}, je vous ai adressé une réclamation concernant : {objet_litige}.\n\nÀ ce jour, je n'ai pas reçu de réponse satisfaisante. Je vous demande de traiter ma demande dans les meilleurs délais et de m'indiquer les coordonnées de votre service réclamations ou de votre service consommateurs.\n\nÀ défaut de solution, je saisirai le médiateur compétent, dont vous voudrez bien me communiquer les coordonnées conformément à vos obligations légales.\n\nVeuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.",
+   "conseil": "Le médiateur peut en général être saisi deux mois après la première réclamation écrite (un mois pour certains secteurs)."
+  }
+ ],
+ "echeances": [
+  {
+   "date": "2026-11-01",
+   "titre": "Début de la trêve hivernale (jusqu'au 31 mars)",
+   "info": "Pas de coupure d'électricité ou de gaz, pas d'expulsion locative.",
+   "si": {
+    "ou": [
+     "impayeEnergie",
+     "coupure",
+     "difficulte",
+     "locataire"
+    ]
+   },
+   "lien": "https://www.service-public.gouv.fr"
+  },
+  {
+   "date": "2026-12-15",
+   "titre": "Versement de la prime de Noël",
+   "info": "Pour les bénéficiaires du RSA, de l'ASS et de certaines autres allocations, en principe mi-décembre.",
+   "approx": true,
+   "si": {
+    "ou": [
+     {
+      "c": "niv",
+      "=": 1
+     },
+     {
+      "c": "act",
+      "=": "chomeur_fin"
+     }
+    ]
+   }
+  },
+  {
+   "date": "2026-12-31",
+   "titre": "Date limite pour demander le chèque énergie 2026",
+   "info": "Si vous êtes éligible et ne l'avez pas reçu.",
+   "si": {
+    "ou": [
+     {
+      "c": "niv",
+      "<=": 2
+     },
+     "impayeEnergie",
+     "factureElevee"
+    ]
+   },
+   "lien": "https://chequeenergie.gouv.fr"
+  },
+  {
+   "date": "2026-12-31",
+   "titre": "Fin du don familial exonéré de 100 000 € pour un logement",
+   "si": "donation",
+   "lien": "https://www.service-public.gouv.fr"
+  },
+  {
+   "date": "2027-01-31",
+   "titre": "Fermeture du réseau cuivre (ADSL, téléphone fixe) dans un nouveau lot de communes",
+   "si": "cuivre",
+   "lien": "https://maconnexioninternet.arcep.fr"
+  },
+  {
+   "date": "2027-02-01",
+   "titre": "Révision du tarif réglementé de l'électricité",
+   "info": "Le comparateur sera mis à jour.",
+   "si": {
+    "ou": [
+     "chauffageElec",
+     "factureElevee",
+     "changerFournisseur"
+    ]
+   }
+  },
+  {
+   "date": "2027-03-31",
+   "titre": "Fin de la trêve hivernale",
+   "info": "Préparez un échéancier ou une demande d'aide (FSL) avant cette date.",
+   "si": {
+    "ou": [
+     "impayeEnergie",
+     "coupure",
+     "difficulte"
+    ]
+   }
+  },
+  {
+   "date": "2027-04-01",
+   "titre": "Revalorisation annuelle de nombreuses prestations",
+   "info": "RSA, prime d'activité, AAH, allocations familiales, CEJ…",
+   "si": {
+    "ou": [
+     {
+      "c": "niv",
+      "<=": 2
+     },
+     "handOui",
+     {
+      "c": "enf20",
+      ">": 0
+     }
+    ]
+   }
+  },
+  {
+   "date": "2027-04-15",
+   "titre": "Ouverture de la déclaration de revenus",
+   "info": "Date limite en mai ou juin selon votre département. Déclarez même avec de faibles revenus : l'avis sert pour de nombreuses aides.",
+   "approx": true
+  }
+ ],
+ "annuaire": [
+  {
+   "cat": "Urgences",
+   "nom": "SAMU",
+   "num": "15",
+   "info": "Urgence médicale."
+  },
+  {
+   "cat": "Urgences",
+   "nom": "Police - gendarmerie",
+   "num": "17"
+  },
+  {
+   "cat": "Urgences",
+   "nom": "Pompiers",
+   "num": "18"
+  },
+  {
+   "cat": "Urgences",
+   "nom": "Numéro d'urgence européen",
+   "num": "112"
+  },
+  {
+   "cat": "Urgences",
+   "nom": "Urgence par SMS",
+   "num": "114",
+   "info": "Pour les personnes sourdes, malentendantes, ou qui ne peuvent pas parler (violences)."
+  },
+  {
+   "cat": "Urgences",
+   "nom": "Hébergement d'urgence (Samu social)",
+   "num": "115"
+  },
+  {
+   "cat": "Violences et victimes",
+   "nom": "Violences Femmes Info",
+   "num": "3919",
+   "info": "Gratuit, anonyme, 24 h/24.",
+   "url": "https://arretonslesviolences.gouv.fr"
+  },
+  {
+   "cat": "Violences et victimes",
+   "nom": "Aide aux victimes (France Victimes)",
+   "num": "116 006",
+   "info": "Gratuit, 7 jours sur 7.",
+   "url": "https://www.france-victimes.fr"
+  },
+  {
+   "cat": "Violences et victimes",
+   "nom": "Enfance en danger",
+   "num": "119",
+   "info": "Gratuit, 24 h/24."
+  },
+  {
+   "cat": "Violences et victimes",
+   "nom": "Maltraitance des personnes âgées ou handicapées",
+   "num": "3977",
+   "url": "https://3977.fr"
+  },
+  {
+   "cat": "Violences et victimes",
+   "nom": "Cyberharcèlement (e-Enfance)",
+   "num": "3018",
+   "url": "https://e-enfance.org"
+  },
+  {
+   "cat": "Violences et victimes",
+   "nom": "Cybermalveillance, arnaques en ligne",
+   "num": "17Cyber",
+   "info": "Diagnostic et assistance en ligne 24 h/24.",
+   "url": "https://17cyber.gouv.fr"
+  },
+  {
+   "cat": "Violences et victimes",
+   "nom": "Info Escroqueries",
+   "num": "0 805 805 817",
+   "info": "Appel gratuit."
+  },
+  {
+   "cat": "Santé et écoute",
+   "nom": "Prévention du suicide",
+   "num": "3114",
+   "info": "Gratuit, 24 h/24, pour les personnes en détresse et leurs proches."
+  },
+  {
+   "cat": "Santé et écoute",
+   "nom": "Assurance maladie",
+   "num": "3646",
+   "url": "https://www.ameli.fr"
+  },
+  {
+   "cat": "Santé et écoute",
+   "nom": "Drogues Info Service",
+   "num": "0 800 23 13 13",
+   "info": "Appel gratuit."
+  },
+  {
+   "cat": "Santé et écoute",
+   "nom": "Alcool Info Service",
+   "num": "0 980 980 930"
+  },
+  {
+   "cat": "Santé et écoute",
+   "nom": "Fil Santé Jeunes",
+   "num": "0 800 235 236",
+   "info": "Pour les 12-25 ans, appel gratuit."
+  },
+  {
+   "cat": "Démarches et aides",
+   "nom": "Allô Service Public",
+   "num": "3939",
+   "info": "Renseignements administratifs.",
+   "url": "https://www.service-public.gouv.fr"
+  },
+  {
+   "cat": "Démarches et aides",
+   "nom": "France Services",
+   "num": "Près de chez vous",
+   "info": "Aide gratuite pour toutes les démarches.",
+   "url": "https://www.france-services.gouv.fr"
+  },
+  {
+   "cat": "Démarches et aides",
+   "nom": "CAF",
+   "num": "3230",
+   "url": "https://www.caf.fr"
+  },
+  {
+   "cat": "Démarches et aides",
+   "nom": "Défenseur des droits",
+   "num": "09 69 39 00 00",
+   "info": "Litige avec un service public, discrimination, droits de l'enfant.",
+   "url": "https://www.defenseurdesdroits.fr"
+  },
+  {
+   "cat": "Emploi et retraite",
+   "nom": "France Travail",
+   "num": "3949",
+   "url": "https://www.francetravail.fr"
+  },
+  {
+   "cat": "Emploi et retraite",
+   "nom": "Assurance retraite",
+   "num": "3960",
+   "url": "https://www.lassuranceretraite.fr"
+  },
+  {
+   "cat": "Emploi et retraite",
+   "nom": "Info retraite (tous régimes)",
+   "num": "En ligne",
+   "url": "https://www.info-retraite.fr"
+  },
+  {
+   "cat": "Logement et énergie",
+   "nom": "Chèque énergie (assistance)",
+   "num": "0 805 204 805",
+   "url": "https://chequeenergie.gouv.fr"
+  },
+  {
+   "cat": "Logement et énergie",
+   "nom": "Médiateur national de l'énergie",
+   "num": "0 800 112 212",
+   "info": "Appel gratuit.",
+   "url": "https://www.energie-info.fr"
+  },
+  {
+   "cat": "Logement et énergie",
+   "nom": "France Rénov' (conseil rénovation)",
+   "num": "0 808 800 700",
+   "url": "https://france-renov.gouv.fr"
+  },
+  {
+   "cat": "Logement et énergie",
+   "nom": "ADIL (conseil logement gratuit)",
+   "num": "Selon le département",
+   "url": "https://www.anil.org"
+  },
+  {
+   "cat": "Banque, consommation, télécoms",
+   "nom": "Banque de France (surendettement, droit au compte, fichiers)",
+   "num": "3414",
+   "url": "https://www.banque-france.fr"
+  },
+  {
+   "cat": "Banque, consommation, télécoms",
+   "nom": "SignalConso",
+   "num": "En ligne",
+   "info": "Signaler un problème avec une entreprise.",
+   "url": "https://signal.conso.gouv.fr"
+  },
+  {
+   "cat": "Banque, consommation, télécoms",
+   "nom": "Code RIO (changer d'opérateur mobile)",
+   "num": "3179",
+   "info": "Depuis votre mobile."
+  },
+  {
+   "cat": "Banque, consommation, télécoms",
+   "nom": "Médiateur des communications électroniques",
+   "num": "En ligne",
+   "url": "https://www.mediateur-telecom.fr"
+  },
+  {
+   "cat": "Banque, consommation, télécoms",
+   "nom": "La Médiation de l'Assurance",
+   "num": "En ligne",
+   "url": "https://www.mediation-assurance.org"
+  }
+ ]
 }
