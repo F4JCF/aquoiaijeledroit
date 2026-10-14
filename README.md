@@ -168,3 +168,12 @@ GitHub Actions compile `AQuoiAiJeLeDroit.exe`, puis **crée seul la release `v1.
 
 - `go test ./...` : tests, dont la validation de `droits.json`.
 - `go run .` sous Linux ou macOS : interface servie sur http://127.0.0.1:8765.
+
+## Licence
+
+À quoi ai-je le droit ? — Copyright © 2026 Jean-Marie Bouthors (F4JCF).
+
+Ce logiciel est libre : vous pouvez le redistribuer et le modifier selon les termes de la
+[licence publique générale GNU, version 3](LICENSE) (GPL-3.0) ou, à votre choix, toute version
+ultérieure. Il est fourni sans aucune garantie. Toute version modifiée et redistribuée doit
+rester sous la même licence, avec ses sources.
