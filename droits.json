@@ -1,9 +1,14 @@
 {
  "schema": 1,
- "version": "2026.10.13.9",
- "mise_a_jour": "2026-10-13",
+ "version": "2026.10.15",
+ "mise_a_jour": "2026-10-15",
  "app_min": "1.9.0",
  "nouveautes": [
+  {
+   "date": "2026-10-15",
+   "v": "2026.10.15",
+   "texte": "Arrêt maladie : depuis le 15 octobre 2026, une maladie de longue durée non prise en charge à 100 % n'ouvre plus droit qu'à 1 an d'indemnités journalières (au lieu de 3 ans)."
+  },
   {
    "date": "2026-10-13",
    "v": "2026.10.13.9",
@@ -3448,7 +3453,7 @@
    "t": "Indemnités pendant un arrêt maladie",
    "o": "Assurance maladie + employeur",
    "l": "{SP}indemnit%C3%A9s%20journali%C3%A8res%20maladie%20salari%C3%A9",
-   "r": "Indemnités journalières de la Sécurité sociale après un délai de carence de 3 jours, complétées par l'employeur à partir d'un an d'ancienneté (souvent mieux avec la convention collective). Après un arrêt d'au moins 60 jours, une visite de reprise avec le médecin du travail est obligatoire.",
+   "r": "Indemnités journalières de la Sécurité sociale après un délai de carence de 3 jours, complétées par l'employeur à partir d'un an d'ancienneté (souvent mieux avec la convention collective). Pour une affection de longue durée non prise en charge à 100 %, les indemnités sont limitées à 1 an pour les arrêts prescrits depuis le 15 octobre 2026 (3 ans si elle est prise en charge à 100 %). Après un arrêt d'au moins 60 jours, une visite de reprise avec le médecin du travail est obligatoire.",
    "a": "Envoyez l'arrêt dans les 48 h ; vérifiez le maintien de salaire prévu par votre convention collective.",
    "si": {
     "et": [
