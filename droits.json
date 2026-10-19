@@ -1,9 +1,14 @@
 {
  "schema": 1,
- "version": "2026.10.15",
- "mise_a_jour": "2026-10-15",
+ "version": "2026.10.19",
+ "mise_a_jour": "2026-10-19",
  "app_min": "1.9.0",
  "nouveautes": [
+  {
+   "date": "2026-10-19",
+   "v": "2026.10.19",
+   "texte": "Gaz : nouveau prix repère au 1er novembre (+6,6 %) et offres mises à jour. Accident du travail : indemnités plafonnées pour les accidents survenus à partir du 1er novembre. Nouvelles échéances : retraites Agirc-Arrco (+1,4 %), aide « grands rouleurs » de 100 €, crédit à la consommation (20 novembre), fin des anciennes cartes d'invalidité et de stationnement (31 décembre)."
+  },
   {
    "date": "2026-10-15",
    "v": "2026.10.15",
@@ -1923,7 +1928,7 @@
    "t": "Crédit à la consommation : vos protections",
    "o": "Le prêteur",
    "l": "{SP}cr%C3%A9dit%20%C3%A0%20la%20consommation",
-   "r": "Vous disposez de 14 jours pour renoncer à un crédit à la consommation après la signature. Un crédit renouvelable peut être remboursé par anticipation et résilié à tout moment. Méfiez-vous des rachats de crédits et des « regroupements » proposés par démarchage.",
+   "r": "Vous disposez de 14 jours pour renoncer à un crédit à la consommation après la signature (ce délai peut être prolongé si le prêteur ne vous a pas correctement informé). Un crédit renouvelable peut être remboursé par anticipation et résilié à tout moment. À partir du 20 novembre 2026, les petits crédits de moins de 200 €, les crédits gratuits et le paiement en plusieurs fois financé par un organisme sont eux aussi encadrés : le prêteur doit vérifier votre capacité à rembourser. Méfiez-vous des rachats de crédits et des « regroupements » proposés par démarchage.",
    "a": "Faites le point sur le taux réel (TAEG) ; un conseiller budget (Point conseil budget) peut vous aider gratuitement.",
    "si": "credit",
    "n": "info",
@@ -2133,7 +2138,7 @@
    "t": "Carte mobilité inclusion (CMI)",
    "o": "MDPH",
    "l": "{MDPH}",
-   "r": "Mention « invalidité » (taux de 80 % et plus), « priorité » ou « stationnement » selon votre situation : places réservées, priorité, avantages fiscaux.",
+   "r": "Mention « invalidité » (taux de 80 % et plus), « priorité » ou « stationnement » selon votre situation : places réservées, priorité, avantages fiscaux. Les anciennes cartes d'invalidité, de priorité et de stationnement délivrées avant 2017 ne sont plus valables après le 31 décembre 2026 : demandez la CMI sans attendre (les délais des MDPH sont parfois de plusieurs mois).",
    "a": "Demande dans le dossier MDPH.",
    "si": {
     "ou": [
@@ -3487,7 +3492,7 @@
    "t": "Accident du travail et maladie professionnelle",
    "o": "Assurance maladie (CPAM)",
    "l": "{SP}accident%20du%20travail",
-   "r": "Indemnités journalières dès le lendemain, sans délai de carence et plus élevées qu'en maladie ; soins pris en charge à 100 % ; rente ou capital en cas de séquelles ; protection renforcée contre le licenciement pendant l'arrêt.",
+   "r": "Indemnités journalières dès le lendemain, sans délai de carence et plus élevées qu'en maladie ; soins pris en charge à 100 % ; rente ou capital en cas de séquelles ; protection renforcée contre le licenciement pendant l'arrêt. Pour un accident ou une maladie professionnelle survenu à partir du 1er novembre 2026, le salaire pris en compte est plafonné (environ 1,8 Smic) : au maximum 65,17 € par jour les 28 premiers jours, puis 86,90 € (le complément de salaire de l'employeur, s'il est prévu, peut compenser).",
    "a": "Prévenez l'employeur dans les 24 h (il doit déclarer l'accident sous 48 h) et faites constater les lésions par un médecin.",
    "si": {
     "et": [
@@ -4459,11 +4464,35 @@
    "n": "info",
    "w": "vous habitez en Corse",
    "d": "Outre-mer"
+  },
+  {
+   "id": "grands_rouleurs",
+   "d": "Code de la route",
+   "t": "Aide de 100 € pour les « grands rouleurs »",
+   "o": "Impôts (DGFiP)",
+   "l": "https://www.impots.gouv.fr",
+   "r": "Aide de 100 € pour octobre à décembre 2026, sous conditions, pour les personnes qui utilisent un véhicule thermique ou hybride non rechargeable pour travailler : au moins 15 km entre le domicile et le travail (ou 8 000 km par an pour l'activité professionnelle), et revenu fiscal de référence 2024 de 22 770 € au plus par part (ou salaire net modeste, par exemple 2 050 € par mois pour une personne seule). Les bénéficiaires de la période précédente la reçoivent automatiquement.",
+   "a": "Demande en ligne dans votre espace particulier sur impots.gouv.fr (ouverte à partir du 27 octobre 2026), jusqu'au 31 décembre 2026 : numéro fiscal, immatriculation et numéro de la carte grise. Un simulateur permet de vérifier l'éligibilité.",
+   "si": {
+    "et": [
+     "travaille",
+     {
+      "c": "niv",
+      "<=?": 2
+     }
+    ]
+   },
+   "n": "possible",
+   "w": "vous travaillez avec des revenus modestes",
+   "pj": [
+    "Numéro fiscal (sur l'avis d'impôt)",
+    "Carte grise du véhicule"
+   ]
   }
  ],
  "energie": {
-  "date": "2026-10-02",
-  "source": "tarif réglementé au 1er août 2026, prix repère CRE d'octobre 2026, offres relevées sur le comparateur du Médiateur national de l'énergie",
+  "date": "2026-10-16",
+  "source": "tarif réglementé au 1er août 2026, prix repère CRE de novembre 2026 (applicable au 1er novembre), offres d'électricité relevées le 2 octobre et offres de gaz le 16 octobre 2026 sur le comparateur du Médiateur national de l'énergie",
   "elec": {
    "trv": {
     "nom": "Tarif Bleu (réglementé)",
@@ -4564,14 +4593,14 @@
   "gaz": {
    "repere": {
     "seuil": 6000,
-    "cond": "Prix de référence publié chaque mois par la CRE.",
+    "cond": "Prix de référence publié chaque mois par la CRE (valeurs de novembre 2026).",
     "cuisson": {
      "abo": 152.52,
-     "kwh": 0.1783
+     "kwh": 0.1903
     },
     "chauffage": {
      "abo": 360.84,
-     "kwh": 0.1456
+     "kwh": 0.1576
     }
    },
    "offres": [
@@ -4584,23 +4613,30 @@
       "kwh": 0.1792
      },
      "chauffage": {
-      "abo": 341.4,
+      "abo": 341.41,
       "kwh": 0.1342
      },
      "cond": "Prix fixe 2 ans.",
      "url": "https://particulier.edf.fr"
     },
     {
+     "fournisseur": "Ekwateur",
+     "nom": "Gaz 85 % naturel / 15 % renouvelable – Prix fixe 1 an",
+     "type": "fixe",
+     "chauffage": {
+      "abo": 517.44,
+      "kwh": 0.1246
+     },
+     "cond": "Prix fixe 1 an. Abonnement plus élevé : intéressant surtout pour une forte consommation.",
+     "url": "https://ekwateur.fr"
+    },
+    {
      "fournisseur": "Engie",
      "nom": "Gaz Référence 3 ans",
      "type": "fixe",
-     "cuisson": {
-      "abo": 152.4,
-      "kwh": 0.1691
-     },
      "chauffage": {
-      "abo": 360.84,
-      "kwh": 0.1414
+      "abo": 360.79,
+      "kwh": 0.1383
      },
      "cond": "Prix fixe 3 ans.",
      "url": "https://particuliers.engie.fr"
@@ -4610,22 +4646,11 @@
      "nom": "Fixe 2 ans",
      "type": "fixe",
      "chauffage": {
-      "abo": 360.72,
-      "kwh": 0.1412
+      "abo": 360.74,
+      "kwh": 0.1394
      },
      "cond": "Prix fixe 2 ans.",
      "url": "https://www.totalenergies.fr/particuliers"
-    },
-    {
-     "fournisseur": "Alterna",
-     "nom": "Mon gaz naturel – Prix indexé",
-     "type": "indexe",
-     "cuisson": {
-      "abo": 174.0,
-      "kwh": 0.1704
-     },
-     "cond": "Indexé sur le prix repère, révisé chaque mois.",
-     "url": "https://www.alterna-energie.fr"
     }
    ]
   }
@@ -5620,6 +5645,13 @@
  ],
  "echeances": [
   {
+   "date": "2026-10-20",
+   "titre": "Taxe foncière : dernier jour pour payer en ligne",
+   "info": "Après minuit, une majoration de 10 % s'applique.",
+   "si": "proprio",
+   "lien": "https://www.impots.gouv.fr"
+  },
+  {
    "date": "2026-11-01",
    "titre": "Début de la trêve hivernale (jusqu'au 31 mars)",
    "info": "Pas de coupure d'électricité ou de gaz, pas d'expulsion locative.",
@@ -5632,6 +5664,35 @@
     ]
    },
    "lien": "https://www.service-public.gouv.fr"
+  },
+  {
+   "date": "2026-11-01",
+   "titre": "Hausse de 1,4 % des retraites complémentaires Agirc-Arrco",
+   "info": "Sur la pension versée en novembre, pour les anciens salariés du privé.",
+   "si": {
+    "c": "act",
+    "=": "retraite"
+   },
+   "lien": "https://www.agirc-arrco.fr"
+  },
+  {
+   "date": "2026-11-01",
+   "titre": "Accident du travail : nouveau plafond des indemnités journalières",
+   "info": "Pour les accidents et maladies professionnelles survenus à partir de cette date.",
+   "si": "accidentTravail",
+   "lien": "https://www.service-public.gouv.fr/particuliers/actualites/A19080"
+  },
+  {
+   "date": "2026-11-20",
+   "titre": "Nouvelles règles du crédit à la consommation",
+   "info": "Petits crédits et paiement en plusieurs fois mieux encadrés (vérification de la capacité à rembourser).",
+   "si": {
+    "ou": [
+     "credit",
+     "surendettement"
+    ]
+   },
+   "lien": "https://www.service-public.gouv.fr/particuliers/actualites/A18451"
   },
   {
    "date": "2026-12-15",
@@ -5674,10 +5735,43 @@
    "lien": "https://www.service-public.gouv.fr"
   },
   {
+   "date": "2026-12-31",
+   "titre": "Date limite pour demander l'aide de 100 € « grands rouleurs »",
+   "info": "Demande en ligne sur impots.gouv.fr, ouverte à partir du 27 octobre.",
+   "si": {
+    "et": [
+     "travaille",
+     {
+      "c": "niv",
+      "<=?": 2
+     }
+    ]
+   },
+   "lien": "https://www.impots.gouv.fr"
+  },
+  {
+   "date": "2026-12-31",
+   "titre": "Fin de validité des anciennes cartes d'invalidité, de priorité et de stationnement",
+   "info": "Demandez la carte mobilité inclusion (CMI) à la MDPH dès maintenant.",
+   "si": {
+    "ou": [
+     "handOui",
+     "autonomie"
+    ]
+   },
+   "lien": "https://monparcourshandicap.gouv.fr"
+  },
+  {
    "date": "2027-01-31",
    "titre": "Fermeture du réseau cuivre (ADSL, téléphone fixe) dans un nouveau lot de communes",
    "si": "cuivre",
    "lien": "https://maconnexioninternet.arcep.fr"
+  },
+  {
+   "date": "2027-01-31",
+   "titre": "Déclaration trimestrielle URSSAF du 4e trimestre (micro-entreprise)",
+   "info": "Si vous déclarez au trimestre : chiffre d'affaires d'octobre à décembre.",
+   "si": "microActif"
   },
   {
    "date": "2027-02-01",
@@ -5726,12 +5820,6 @@
    "titre": "Ouverture de la déclaration de revenus",
    "info": "Date limite en mai ou juin selon votre département. Déclarez même avec de faibles revenus : l'avis sert pour de nombreuses aides.",
    "approx": true
-  },
-  {
-   "date": "2027-01-31",
-   "titre": "Déclaration trimestrielle URSSAF du 4e trimestre (micro-entreprise)",
-   "info": "Si vous déclarez au trimestre : chiffre d'affaires d'octobre à décembre.",
-   "si": "microActif"
   }
  ],
  "annuaire": [
