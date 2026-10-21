@@ -1,9 +1,14 @@
 {
  "schema": 1,
- "version": "2026.10.19",
- "mise_a_jour": "2026-10-19",
+ "version": "2026.10.21",
+ "mise_a_jour": "2026-10-21",
  "app_min": "1.9.0",
  "nouveautes": [
+  {
+   "date": "2026-10-21",
+   "v": "2026.10.21",
+   "texte": "Nouvelle échéance : le cumul de l'AAH et de l'ASS, encore possible pour les personnes qui touchaient les deux au 31 décembre 2016, prend fin le 31 décembre 2026."
+  },
   {
    "date": "2026-10-19",
    "v": "2026.10.19",
@@ -5760,6 +5765,29 @@
     ]
    },
    "lien": "https://monparcourshandicap.gouv.fr"
+  },
+  {
+   "date": "2026-12-31",
+   "titre": "Fin du cumul AAH et ASS (régime transitoire de 2016)",
+   "info": "Les personnes qui touchaient à la fois l'AAH et l'ASS au 31 décembre 2016 ne pourront plus les cumuler après cette date. Rapprochez-vous de la CAF et de France Travail.",
+   "si": {
+    "et": [
+     "handOui",
+     {
+      "ou": [
+       {
+        "c": "act",
+        "=": "chomeur"
+       },
+       {
+        "c": "act",
+        "=": "chomeur_fin"
+       }
+      ]
+     }
+    ]
+   },
+   "lien": "https://www.service-public.gouv.fr/particuliers/actualites/A19095"
   },
   {
    "date": "2027-01-31",
