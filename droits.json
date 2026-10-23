@@ -1,9 +1,14 @@
 {
  "schema": 1,
- "version": "2026.10.21",
- "mise_a_jour": "2026-10-21",
+ "version": "2026.10.23",
+ "mise_a_jour": "2026-10-23",
  "app_min": "1.9.0",
  "nouveautes": [
+  {
+   "date": "2026-10-23",
+   "v": "2026.10.23",
+   "texte": "Électricité, option Tempo : à partir de cet hiver, les jours rouges sont mieux répartis, ne tombent plus les 24 et 31 décembre, et certains seront à terme annoncés deux jours à l'avance (décision de la CRE du 22 octobre 2026)."
+  },
   {
    "date": "2026-10-21",
    "v": "2026.10.21",
@@ -1245,7 +1250,7 @@
    "t": "Choisir la bonne option et la bonne puissance",
    "o": "Votre fournisseur",
    "l": "https://www.energie-info.fr",
-   "r": "Avec un chauffage électrique, l'option heures pleines / heures creuses ou Tempo peut faire baisser la facture si vous décalez une partie de votre consommation (ballon d'eau chaude, lave-linge). Tempo est très avantageux les 300 jours « bleus », mais l'électricité coûte environ 4 fois plus cher en heures pleines les 22 jours « rouges » d'hiver. Une puissance trop élevée augmente l'abonnement inutilement.",
+   "r": "Avec un chauffage électrique, l'option heures pleines / heures creuses ou Tempo peut faire baisser la facture si vous décalez une partie de votre consommation (ballon d'eau chaude, lave-linge). Tempo est très avantageux les 300 jours « bleus », mais l'électricité coûte environ 4 fois plus cher en heures pleines les 22 jours « rouges » d'hiver. Depuis l'hiver 2026-2027, les jours rouges sont mieux répartis sur l'hiver, ne tombent plus les 24 et 31 décembre, et certains seront à terme annoncés deux jours à l'avance. Une puissance trop élevée augmente l'abonnement inutilement.",
    "a": "Comparez les options dans le comparateur avec votre consommation réelle ; demandez à votre fournisseur de changer d'option ou de puissance.",
    "si": {
     "et": [
