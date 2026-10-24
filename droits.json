@@ -1,9 +1,14 @@
 {
  "schema": 1,
- "version": "2026.10.23",
- "mise_a_jour": "2026-10-23",
+ "version": "2026.10.24",
+ "mise_a_jour": "2026-10-24",
  "app_min": "1.9.0",
  "nouveautes": [
+  {
+   "date": "2026-10-24",
+   "v": "2026.10.24",
+   "texte": "Nouveau : frais de trajet domicile-travail. Jusqu'au 31 décembre 2026, la prime de transport versée par l'employeur est exonérée jusqu'à 1 000 € (au lieu de 600 €) et la prime carburant est plus largement ouverte."
+  },
   {
    "date": "2026-10-23",
    "v": "2026.10.23",
@@ -3097,6 +3102,18 @@
    "l": "{CDT}/outils/convention-collective",
    "r": "Elle prévoit souvent mieux que le Code du travail : primes, maintien de salaire en arrêt maladie, indemnités, préavis, majorations. Son nom figure sur votre bulletin de paie.",
    "a": "Retrouvez-la avec l'outil du Code du travail numérique, puis consultez les articles qui vous concernent.",
+   "si": "prive",
+   "n": "info",
+   "w": "salarié(e) du privé",
+   "d": "Droit du travail"
+  },
+  {
+   "id": "frais_transport_salarie",
+   "t": "Frais de trajet domicile-travail",
+   "o": "Employeur",
+   "l": "{SP}prise%20en%20charge%20frais%20de%20transport%20salari%C3%A9",
+   "r": "L'employeur doit rembourser au moins la moitié de votre abonnement de transports en commun ou de vélo en location. Il peut aussi, s'il le décide, verser une prime de transport (carburant, recharge électrique) ou un forfait mobilités durables (vélo, covoiturage). Du 1er octobre au 31 décembre 2026, ces sommes sont exonérées d'impôt et de cotisations jusqu'à 1 000 € par an (au lieu de 600 €), et la prime carburant est ouverte plus largement, même avec un abonnement de transport remboursé (décrets du 20 octobre 2026).",
+   "a": "Remettez à votre employeur vos justificatifs d'abonnement ; pour une prime carburant, renseignez-vous auprès des ressources humaines ou du CSE.",
    "si": "prive",
    "n": "info",
    "w": "salarié(e) du privé",
